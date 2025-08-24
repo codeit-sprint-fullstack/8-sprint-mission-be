@@ -1,1 +1,13 @@
-GET http://localhost:3000/hello
+GET http://localhost:3000/list
+
+###
+
+POST http://localhost:3000/create
+Content-Type: application/json
+
+{
+    "name": "test",
+    "description": "test",
+    "price": 10000,
+    "tags": ["test"]
+}
