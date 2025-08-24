@@ -2,22 +2,26 @@ import Product from "../models/Product.js";
 
 const getProducts = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, sort, search } = req.query;
-    const skip = (page - 1) * limit;
-    const sortOption = { createdAt: sort === "recent" ? -1 : 1 };
-    const searchQuery = search
+    const { page = 1, pageSize, orderBy, keyword } = req.query;
+    const skip = (page - 1) * pageSize;
+    const sortOption = { createdAt: orderBy === "recent" ? -1 : 1 };
+    const searchQuery = keyword
       ? {
-          $or: [{ name: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }],
+          $or: [{ name: { $regex: keyword, $options: "i" } }, { description: { $regex: keyword, $options: "i" } }],
         }
       : {};
+    const totalCount = await Product.countDocuments(searchQuery);
 
     const sortedProducts = await Product.find(searchQuery)
       .sort(sortOption)
-      .limit(limit)
+      .limit(pageSize)
       .skip(skip)
       .select("_id name price createdAt");
 
-    res.status(200).json(sortedProducts);
+    res.status(200).json({
+      products: sortedProducts,
+      totalCount,
+    });
   } catch (error) {
     next(error);
   }

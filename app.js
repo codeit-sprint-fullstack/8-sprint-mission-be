@@ -3,6 +3,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import connectDB from "./src/config/database.js";
 import productRoutes from "./src/routes/ProductRoutes.js";
+import cors from "cors";
 
 const app = express();
 
@@ -20,6 +21,14 @@ connectDB()
 
 // 포트 설정
 app.set("port", process.env.PORT || 8000);
+
+// CORS 설정
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://panda-market-kr.netlify.app"],
+    credentials: true,
+  })
+);
 
 // 미들웨어
 app.use(express.json());

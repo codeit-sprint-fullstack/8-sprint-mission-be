@@ -1,8 +1,8 @@
-GET http://localhost:3000/list
+GET http://localhost:3000/products
 
 ###
 
-GET http://localhost:3000/list?page=1&limit=30&sort=recent&search=
+GET http://localhost:3000/products?page=1&pageSize=30&orderBy=recent&search=기계
 
 ###
 

@@ -3,7 +3,7 @@ import productController from "../controllers/productController.js";
 const router = Router();
 
 // 상품 목록 조회
-router.get("/list", productController.getProducts);
+router.get("/products", productController.getProducts);
 
 // 상품 상세 조회
 router.get("/detail/:id", productController.getProductById);
