@@ -1,6 +1,6 @@
 # 판다마켓 (벡엔드)
 
-- 배포주소 :
+- 배포주소 : https://panda-market-api-qg1h.onrender.com
 
 # 2025.08.24. 스프린트 6 벡엔드 진행
 
