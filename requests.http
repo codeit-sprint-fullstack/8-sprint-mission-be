@@ -2,12 +2,35 @@ GET http://localhost:3000/list
 
 ###
 
+GET http://localhost:3000/list?page=1&limit=10&sort=recent&search=second
+
+###
+
 POST http://localhost:3000/create
 Content-Type: application/json
 
 {
-    "name": "test",
-    "description": "test",
-    "price": 10000,
-    "tags": ["test"]
+    "name": "second me",
+    "description": "my second product",
+    "price": 20000,
+    "tags": ["test", "first"]
 }
+
+###
+
+PATCH http://localhost:3000/update/651020202020202020202020
+Content-Type: application/json
+
+{
+    "name": "test2",
+    "description": "test2",
+    "price": 20000,
+    "tags": ["test2"]
+}
+
+### 
+
+DELETE http://localhost:3000/delete/651020202020202020202020
+
+### 
+
