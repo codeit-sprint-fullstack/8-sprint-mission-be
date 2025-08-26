@@ -1,0 +1,36 @@
+GET http://localhost:3000/products
+
+###
+
+GET http://localhost:3000/products?page=1&pageSize=30&orderBy=recent&search=기계
+
+###
+
+POST http://localhost:3000/create
+Content-Type: application/json
+
+{
+    "name": "second me",
+    "description": "my second product",
+    "price": 20000,
+    "tags": ["test", "first"]
+}
+
+###
+
+PATCH http://localhost:3000/update/651020202020202020202020
+Content-Type: application/json
+
+{
+    "name": "test2",
+    "description": "test2",
+    "price": 20000,
+    "tags": ["test2"]
+}
+
+### 
+
+DELETE http://localhost:3000/delete/651020202020202020202020
+
+### 
+
