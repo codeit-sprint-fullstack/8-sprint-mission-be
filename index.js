@@ -4,6 +4,8 @@ import cors from "cors";
 import prisma from "./lib/prisma.js";
 import productsRouter from "./routes/products.js";
 import articlesRouter from "./routes/articles.js";
+import marketCommentsRouter from "./routes/marketComments.js";
+import articleCommentsRouter from "./routes/articleComments.js";
 
 const app = express();
 
@@ -39,8 +41,9 @@ app.get("/panda-market/ready", async (_req, res) => {
 });
 
 app.use("/products", productsRouter);
+app.use("/products/:productId/comments", marketCommentsRouter);
 app.use("/articles", articlesRouter);
-
+app.use("/articles/:articleId/comments", articleCommentsRouter);
 // 공통 에러 핸들러
 app.use((err, _req, res, _next) => {
   const m = String(err?.message || "");
