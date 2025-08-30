@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import prisma from "./lib/prisma.js";
 import productsRouter from "./routes/products.js";
+import articlesRouter from "./routes/articles.js";
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.get("/panda-market/ready", async (_req, res) => {
 });
 
 app.use("/products", productsRouter);
+app.use("/articles", articlesRouter);
 
 // 공통 에러 핸들러
 app.use((err, _req, res, _next) => {
