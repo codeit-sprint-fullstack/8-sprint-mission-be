@@ -6,7 +6,7 @@ const getProducts = async (req, res, next) => {
     const skip = (page - 1) * pageSize;
     const take = Number(pageSize);
     // Prisma 정렬 옵션 설정
-    const sortOption = { createdAt: "desc" };
+    const sortOption = orderBy === "recent" ? { createdAt: "desc" } : { createdAt: "asc" };
     const searchQuery = keyword
       ? {
           $or: [{ name: { $regex: keyword, $options: "i" } }, { description: { $regex: keyword, $options: "i" } }],

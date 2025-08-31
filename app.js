@@ -2,6 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import productRoutes from "./src/routes/ProductRoutes.js";
+import articleRoutes from "./src/routes/ArticleRoutes.js";
+import commentRoutes from "./src/routes/CommentRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -24,6 +26,8 @@ app.use(
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(productRoutes);
+app.use(articleRoutes);
+app.use(commentRoutes);
 
 app.get("/hello", (req, res) => {
   res.status(200).send("Hellod World");
