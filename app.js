@@ -1,8 +1,10 @@
 import express from "express";
-import mongoose from "mongoose";
+import { PrismaClient } from "@prisma/client";
 import { DATABASE_URL } from "./env.js";
 import Article from "./models/Task.js";
 import mockComments from "./data/mockComments.js";
+
+const prisma = new PrismaClient();
 
 const app = express();
 app.use(express.json());
@@ -23,73 +25,42 @@ function asyncHandler(handler) {
   };
 }
 
-app.get(
-  "/mockArticles",
-  asyncHandler(async (req, res) => {
-    /**
-     * 쿼리 파라미터
-     * - sort: newest인 경우 새로운 게시글 기준, 아닌 경우 best?순
-     * - count: 게시글 개수
-     */
-    const sort = req.query.sort;
-    const count = Number(req.query.count) || 0;
+// article API
+app.get("/articles", async (req, res) => {
+  const articles = await prisma.article.findMany();
+  res.send(articles);
+});
 
-    const sortOptions = { createdAt: sort === "newest" ? "asc" : "desc" };
-    const newArticles = await Article.find().sort(sortOptions).limit(count);
+app.get("/articles/:id", async (req, res) => {
+  const { id } = req.params;
+  const articles = await prisma.article.findUnique({
+    where: { id },
+  });
+  res.send(articles);
+});
 
-    res.send(newArticles);
-  })
-);
+app.post("/articles", async (req, res) => {
+  const articles = await prisma.article.create({
+    data: req.body,
+  });
+  res.status(201).send(articles);
+});
 
-app.get(
-  "/mockArticles/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const article = await Article.findById(id);
-    if (article) {
-      res.send(article);
-    } else {
-      res.status(404).send({ message: "Cannot find given id" });
-    }
-  })
-);
+app.patch("/articles/:id", async (req, res) => {
+  const { id } = req.params;
+  const article = await prisma.article.update({
+    where: { id },
+    data: req.body,
+  });
+  res.send(article);
+});
 
-app.post(
-  "/mockArticles",
-  asyncHandler(async (req, res) => {
-    const newArticle = await Article.create(req.body);
-    res.status(201).send(newArticle);
-  })
-);
-
-app.patch(
-  "/mockArticles/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const article = await Article.findById(id);
-    if (article) {
-      Object.keys(req.body).forEach((key) => {
-        article[key] = req.body[key];
-      });
-      await article.save();
-      res.send(article);
-    } else {
-      res.status(404).send({ message: "Cannot find given id" });
-    }
-  })
-);
-
-app.delete(
-  "/mockArticles/:id",
-  asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const article = await Article.findByIdAndDelete(id);
-    if (article) {
-      res.sendStatus(204);
-    } else {
-      res.status(404).send({ message: "Cannot find given id" });
-    }
-  })
-);
+app.delete("/articles/:id", async (req, res) => {
+  const { id } = req.params;
+  await prisma.article.delete({
+    where: { id },
+  });
+  res.sendStatus(204);
+});
 
 app.listen(3000, () => console.log("Server Started"));
