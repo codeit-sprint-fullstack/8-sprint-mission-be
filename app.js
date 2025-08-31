@@ -33,14 +33,8 @@ app.get("/mockArticles/:id", async (req, res) => {
   }
 });
 
-app.post("/mockArticles", (req, res) => {
-  const newArticle = req.body;
-  const ids = mockArticles.map((mockArticle) => mockArticle.id);
-  newArticle.id = Math.max(...ids) + 1;
-  newArticle.createdAt = new Date();
-  newArticle.updatedAt = new Date();
-
-  mockArticles.push(newArticle);
+app.post("/mockArticles", async (req, res) => {
+  const newArticle = await Article.create(req.body);
   res.status(201).send(newArticle);
 });
 
