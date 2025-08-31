@@ -96,4 +96,71 @@ app.delete(
   })
 );
 
+// comment API
+app.get(
+  "/comments",
+  asyncHandler(async (req, res) => {
+    const { offset = 0, limit = 5, order = "newest" } = req.query;
+    let orderBy;
+    switch (order) {
+      case "newest":
+        orderBy = { createdAt: "desc" };
+        break;
+      case "oldest":
+        orderBy = { createdAt: "asc" };
+        break;
+    }
+    const comments = await prisma.comment.findMany({
+      orderBy,
+      skip: parseInt(offset),
+      take: parseInt(limit),
+    });
+    res.send(comments);
+  })
+);
+
+app.get(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const comments = await prisma.comment.findUniqueOrThrow({
+      where: { id },
+    });
+    res.send(comments);
+  })
+);
+
+app.post(
+  "/comments",
+  asyncHandler(async (req, res) => {
+    const comments = await prisma.comment.create({
+      data: req.body,
+    });
+    res.status(201).send(comments);
+  })
+);
+
+app.patch(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const comment = await prisma.comment.update({
+      where: { id },
+      data: req.body,
+    });
+    res.send(comment);
+  })
+);
+
+app.delete(
+  "/comments/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    await prisma.comment.delete({
+      where: { id },
+    });
+    res.sendStatus(204);
+  })
+);
+
 app.listen(3000, () => console.log("Server Started"));
