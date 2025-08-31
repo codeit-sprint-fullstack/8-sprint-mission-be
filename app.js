@@ -1,8 +1,6 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
-import { DATABASE_URL } from "./env.js";
-import Article from "./models/Task.js";
-import mockComments from "./data/mockComments.js";
+import { PrismaClient, Prisma } from "@prisma/client";
+import { assert } from "superstruct";
 
 const prisma = new PrismaClient();
 
@@ -14,9 +12,15 @@ function asyncHandler(handler) {
     try {
       await handler(req, res);
     } catch (e) {
-      if (e.name === "ValidationError") {
+      if (
+        e.name === "StructError" ||
+        e instanceof Prisma.PrismaClientValidationError
+      ) {
         res.status(400).send({ message: e.message });
-      } else if (e.name === "CastError") {
+      } else if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === "P2025"
+      ) {
         res.status(400).send({ message: "Cannot find given id" });
       } else {
         res.status(500).send({ message: e.message });
@@ -26,41 +30,70 @@ function asyncHandler(handler) {
 }
 
 // article API
-app.get("/articles", async (req, res) => {
-  const articles = await prisma.article.findMany();
-  res.send(articles);
-});
+app.get(
+  "/articles",
+  asyncHandler(async (req, res) => {
+    const { offset = 0, limit = 5, order = "newest" } = req.query;
+    let orderBy;
+    switch (order) {
+      case "newest":
+        orderBy = { createdAt: "desc" };
+        break;
+      case "oldest":
+        orderBy = { createdAt: "asc" };
+        break;
+    }
+    const articles = await prisma.article.findMany({
+      orderBy,
+      skip: parseInt(offset),
+      take: parseInt(limit),
+    });
+    res.send(articles);
+  })
+);
 
-app.get("/articles/:id", async (req, res) => {
-  const { id } = req.params;
-  const articles = await prisma.article.findUnique({
-    where: { id },
-  });
-  res.send(articles);
-});
+app.get(
+  "/articles/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const articles = await prisma.article.findUniqueOrThrow({
+      where: { id },
+    });
+    res.send(articles);
+  })
+);
 
-app.post("/articles", async (req, res) => {
-  const articles = await prisma.article.create({
-    data: req.body,
-  });
-  res.status(201).send(articles);
-});
+app.post(
+  "/articles",
+  asyncHandler(async (req, res) => {
+    const articles = await prisma.article.create({
+      data: req.body,
+    });
+    res.status(201).send(articles);
+  })
+);
 
-app.patch("/articles/:id", async (req, res) => {
-  const { id } = req.params;
-  const article = await prisma.article.update({
-    where: { id },
-    data: req.body,
-  });
-  res.send(article);
-});
+app.patch(
+  "/articles/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const article = await prisma.article.update({
+      where: { id },
+      data: req.body,
+    });
+    res.send(article);
+  })
+);
 
-app.delete("/articles/:id", async (req, res) => {
-  const { id } = req.params;
-  await prisma.article.delete({
-    where: { id },
-  });
-  res.sendStatus(204);
-});
+app.delete(
+  "/articles/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    await prisma.article.delete({
+      where: { id },
+    });
+    res.sendStatus(204);
+  })
+);
 
 app.listen(3000, () => console.log("Server Started"));
