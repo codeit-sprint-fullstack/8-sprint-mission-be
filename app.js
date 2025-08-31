@@ -1,6 +1,6 @@
 import express from "express";
-import mockArticles from "./data/mockArticle.js";
-import mockComments from "./data/mockComment.js";
+import mockArticles from "./data/mockArticles.js";
+import mockComments from "./data/mockComments.js";
 
 const app = express();
 app.use(express.json());
