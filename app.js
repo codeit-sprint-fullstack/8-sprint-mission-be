@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 import { DATABASE_URL } from "./env.js";
-import mockArticles from "./data/mockArticles.js";
 import Article from "./models/Task.js";
 import mockComments from "./data/mockComments.js";
 
@@ -46,9 +45,9 @@ app.get(
   "/mockArticles/:id",
   asyncHandler(async (req, res) => {
     const id = req.params.id;
-    const Article = await Article.findById(id);
-    if (Article) {
-      res.send(Article);
+    const article = await Article.findById(id);
+    if (article) {
+      res.send(article);
     } else {
       res.status(404).send({ message: "Cannot find given id" });
     }
@@ -66,16 +65,16 @@ app.post(
 app.patch(
   "/mockArticles/:id",
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-    const Article = mockArticles.find((Article) => Article.id === id);
-    if (Article) {
+    const id = req.params.id;
+    const article = await Article.findById(id);
+    if (article) {
       Object.keys(req.body).forEach((key) => {
-        Article[key] = req.body[key];
+        article[key] = req.body[key];
       });
+      await article.save();
+      res.send(article);
     } else {
       res.status(404).send({ message: "Cannot find given id" });
-      Article.updatedAt = new Date();
-      res.send(Article);
     }
   })
 );
@@ -83,10 +82,9 @@ app.patch(
 app.delete(
   "/mockArticles/:id",
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-    const idx = mockArticles.findIndex((Article) => Article.id === id);
-    if (idx >= 0) {
-      mockArticles.splice(idx, 1);
+    const id = req.params.id;
+    const article = await Article.findByIdAndDelete(id);
+    if (article) {
       res.sendStatus(204);
     } else {
       res.status(404).send({ message: "Cannot find given id" });
