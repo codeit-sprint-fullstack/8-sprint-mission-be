@@ -1,4 +1,4 @@
-node_moules/
+node_modules/
 .env
 coverage/node_modules/
 .env
@@ -7,3 +7,5 @@ coverage/node_modules/
 coverage/
 dist/
 *.log
+
+/generated/prisma
