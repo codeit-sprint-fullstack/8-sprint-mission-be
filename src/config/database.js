@@ -1,14 +1,5 @@
-import mongoose from "mongoose";
+import { PrismaClient } from "@prisma/client";
 
-const connectDB = async () => {
-  const DATABASE_URL = process.env.DATABASE_URL;
-  try {
-    await mongoose.connect(DATABASE_URL);
-    console.log("mongoDB 연결");
-  } catch (error) {
-    console.error("mongoDB 연결 오류", error);
-    process.exit(1); // 프로세스 종료
-  }
-};
+const prisma = new PrismaClient();
 
-export default connectDB;
+export default prisma;
