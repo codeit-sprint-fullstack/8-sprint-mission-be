@@ -1,0 +1,52 @@
+version: '2.2'
+
+services:
+  mongo-db:
+    image: mongo
+    container_name: panda-market-db
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    networks:
+      - panda-market-network
+    ports:
+      - '27017:27017'
+
+  mongo-db-express:
+    image: mongo-express
+    container_name: panda-market-db-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_URL=mongodb://root:password@mongo-db:27017/
+      - ME_CONFIG_BASICAUTH=false
+    networks:
+      - panda-market-network
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo-db
+
+  service:
+    container_name: panda-market-app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: no
+    environment:
+      # Application
+      - NODE_ENV=development
+    networks:
+      - panda-market-network
+    ports:
+      - '13000:3000'
+    volumes:
+      - .:/app/
+    depends_on:
+      - mongo-db
+
+networks:
+  panda-market-network:
+    name: panda-market-network
