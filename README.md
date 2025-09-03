@@ -37,6 +37,4 @@ _위 이미지는 판다마켓의 대표 이미지입니다. 프로젝트가 진
 
 > _스프린트 미션 내 프론트엔드 요구사항은 [프론트엔드 레포지토리](https://github.com/codeit-sprint-fullstack/8-Sprint-mission-FE)의 브랜치에서 관리해주세요_
 
----
-
 본 프로젝트는 [코드잇](https://www.codeit.kr)의 소유이며, 교육 목적으로만 사용됩니다. © 2024 Codeit. All rights reserved.
