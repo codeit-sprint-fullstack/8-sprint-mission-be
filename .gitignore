@@ -1,0 +1,28 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Build / Coverage
+dist/
+build/
+coverage/
+.nyc_output/
+
+# Env (실제 비밀키는 커밋 금지)
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE/Editor
+.vscode/
+.idea/
+
+# Misc
+*.log
+*.pid
+*.seed
+*.pid.lock
