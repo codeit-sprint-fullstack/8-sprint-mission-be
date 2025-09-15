@@ -1,8 +1,68 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/Product");
+const { Op } = require("sequelize");
+const Product = require("../models/product");
 
-// 상품 목록 조회 (페이지네이션, 검색, 정렬)
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: 상품 목록 조회
+ *     description: 페이지네이션, 검색, 정렬 기능을 포함한 상품 목록을 조회합니다.
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: 페이지 번호
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: 페이지당 상품 수
+ *       - in: query
+ *         name: keyword
+ *         schema:
+ *           type: string
+ *           default: ""
+ *         description: 검색 키워드 (상품명, 설명)
+ *       - in: query
+ *         name: orderBy
+ *         schema:
+ *           type: string
+ *           enum: [recent, favorite]
+ *           default: recent
+ *         description: 정렬 기준
+ *     responses:
+ *       200:
+ *         description: 상품 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 list:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *                 totalCount:
+ *                   type: integer
+ *                 page:
+ *                   type: integer
+ *                 pageSize:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get("/", async (req, res) => {
   try {
     const {
@@ -13,41 +73,43 @@ router.get("/", async (req, res) => {
     } = req.query;
 
     // 검색 조건
-    const searchCondition = {};
+    let whereCondition = {};
     if (keyword) {
-      searchCondition.$or = [
-        { name: { $regex: keyword, $options: "i" } },
-        { description: { $regex: keyword, $options: "i" } },
-      ];
+      whereCondition = {
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${keyword}%` } },
+          { description: { [Op.iLike]: `%${keyword}%` } },
+        ],
+      };
     }
 
     // 정렬 조건
-    let sortCondition = {};
+    let orderCondition = [];
     if (orderBy === "recent") {
-      sortCondition = { createdAt: -1 };
+      orderCondition = [["createdAt", "DESC"]];
     } else if (orderBy === "favorite") {
-      sortCondition = { favoriteCount: -1 };
+      orderCondition = [["favoriteCount", "DESC"]];
     }
 
     // 페이지네이션 계산
-    const skip = (parseInt(page) - 1) * parseInt(pageSize);
+    const limit = parseInt(pageSize);
+    const offset = (parseInt(page) - 1) * limit;
 
     // 상품 조회
-    const products = await Product.find(searchCondition)
-      .select("id name price createdAt")
-      .sort(sortCondition)
-      .skip(skip)
-      .limit(parseInt(pageSize));
-
-    // 전체 개수 조회
-    const totalCount = await Product.countDocuments(searchCondition);
+    const products = await Product.findAndCountAll({
+      where: whereCondition,
+      order: orderCondition,
+      limit: limit,
+      offset: offset,
+      attributes: ["id", "name", "price", "createdAt"],
+    });
 
     res.json({
-      list: products,
-      totalCount,
+      list: products.rows,
+      totalCount: products.count,
       page: parseInt(page),
-      pageSize: parseInt(pageSize),
-      totalPages: Math.ceil(totalCount / parseInt(pageSize)),
+      pageSize: limit,
+      totalPages: Math.ceil(products.count / limit),
     });
   } catch (error) {
     console.error("상품 목록 조회 실패:", error);
@@ -60,7 +122,17 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const product = await Product.findById(id);
+    const product = await Product.findByPk(id, {
+      attributes: [
+        "id",
+        "name",
+        "description",
+        "price",
+        "tags",
+        "createdAt",
+        "images",
+      ],
+    });
 
     if (!product) {
       return res.status(404).json({ error: "상품을 찾을 수 없습니다." });
@@ -83,7 +155,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "필수 필드가 누락되었습니다." });
     }
 
-    const product = new Product({
+    const product = await Product.create({
       name,
       description,
       price: parseInt(price),
@@ -91,11 +163,22 @@ router.post("/", async (req, res) => {
       images,
     });
 
-    const savedProduct = await product.save();
-
-    res.status(201).json(savedProduct);
+    res.status(201).json({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      tags: product.tags,
+      createdAt: product.createdAt,
+      images: product.images,
+    });
   } catch (error) {
     console.error("상품 등록 실패:", error);
+    if (error.name === "SequelizeValidationError") {
+      return res
+        .status(400)
+        .json({ error: "입력 데이터가 올바르지 않습니다." });
+    }
     res.status(500).json({ error: "서버 오류가 발생했습니다." });
   }
 });
@@ -104,20 +187,41 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const updateData = req.body;
+    const { name, description, price, tags, images } = req.body;
 
-    const product = await Product.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    const product = await Product.findByPk(id);
 
     if (!product) {
       return res.status(404).json({ error: "상품을 찾을 수 없습니다." });
     }
 
-    res.json(product);
+    // 수정할 필드만 업데이트
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (description !== undefined) updateData.description = description;
+    if (price !== undefined) updateData.price = parseInt(price);
+    if (tags !== undefined) updateData.tags = tags;
+    if (images !== undefined) updateData.images = images;
+
+    await product.update(updateData);
+
+    res.json({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      tags: product.tags,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
+      images: product.images,
+    });
   } catch (error) {
     console.error("상품 수정 실패:", error);
+    if (error.name === "SequelizeValidationError") {
+      return res
+        .status(400)
+        .json({ error: "입력 데이터가 올바르지 않습니다." });
+    }
     res.status(500).json({ error: "서버 오류가 발생했습니다." });
   }
 });
@@ -127,13 +231,15 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const product = await Product.findByIdAndDelete(id);
+    const product = await Product.findByPk(id);
 
     if (!product) {
       return res.status(404).json({ error: "상품을 찾을 수 없습니다." });
     }
 
-    res.json({ message: "상품이 삭제되었습니다." });
+    await product.destroy();
+
+    res.status(204).send(); // No Content
   } catch (error) {
     console.error("상품 삭제 실패:", error);
     res.status(500).json({ error: "서버 오류가 발생했습니다." });

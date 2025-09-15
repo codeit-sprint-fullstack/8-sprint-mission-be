@@ -1,6 +1,8 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpecs = require("./config/swagger");
+const { sequelize } = require("./config/database");
 require("dotenv").config();
 
 const app = express();
@@ -11,18 +13,35 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB 연결
-mongoose
-  .connect(process.env.MONGODB_URI)
+// PostgreSQL 연결
+sequelize
+  .authenticate()
   .then(() => {
-    console.log("MongoDB 연결 성공");
+    console.log("PostgreSQL 연결 성공");
+    return sequelize.sync(); // 테이블 생성
+  })
+  .then(() => {
+    console.log("데이터베이스 동기화 완료");
   })
   .catch((error) => {
-    console.error("MongoDB 연결 실패:", error);
+    console.error("PostgreSQL 연결 실패:", error);
   });
+
+// Swagger API 문서 설정
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpecs, {
+    explorer: true,
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "판다마켓 API 문서",
+  })
+);
 
 // 라우터 설정
 app.use("/products", require("./routes/products"));
+app.use("/articles", require("./routes/articles"));
+app.use("/comments", require("./routes/comments"));
 
 // 기본 라우트
 app.get("/", (req, res) => {

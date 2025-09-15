@@ -1,41 +1,48 @@
-const mongoose = require("mongoose");
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
 
-const productSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    tags: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-    images: [
-      {
-        type: String,
-      },
-    ],
-    favoriteCount: {
-      type: Number,
-      default: 0,
-    },
+const Product = sequelize.define('Product', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      len: [1, 10]
+    }
   },
-  {
-    timestamps: true, // createdAt, updatedAt 자동 생성
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      len: [10, 100]
+    }
+  },
+  price: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 1
+    }
+  },
+  tags: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: []
+  },
+  images: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: []
+  },
+  favoriteCount: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
-);
+}, {
+  timestamps: true, // createdAt, updatedAt 자동 생성
+  tableName: 'products'
+});
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = Product;
