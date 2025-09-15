@@ -1,5 +1,5 @@
-import { string, trim } from "superstruct";
+import { coerce, object, nonempty, string } from "superstruct";
 
-export const CreateCommentRequestStruct = {
-  content: trim(string()),
-};
+export const CreateCommentRequestStruct = object({
+  content: coerce(nonempty(string()), string(), (value) => value.trim()),
+});

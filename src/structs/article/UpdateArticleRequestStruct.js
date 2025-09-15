@@ -1,6 +1,6 @@
-import { string, trim, optional } from "superstruct";
+import { coerce, object, optional, string } from "superstruct";
 
-export const UpdateArticleRequestStruct = {
-  title: optional(trim(string())),
-  content: optional(trim(string())),
-};
+export const UpdateArticleRequestStruct = object({
+  title: optional(coerce(string(), string(), (value) => value.trim())),
+  content: optional(string()),
+});

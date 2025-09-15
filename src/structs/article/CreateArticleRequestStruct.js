@@ -1,6 +1,6 @@
-import { string, trim } from "superstruct";
+import { coerce, object, nonempty, string } from 'superstruct';
 
-export const CreateArticleRequestStruct = {
-  title: trim(string()),
-  content: trim(string()),
-};
+export const CreateArticleRequestStruct = object({
+  title: coerce(nonempty(string()), string(), (value) => value.trim()),
+  content: nonempty(string()),
+});
