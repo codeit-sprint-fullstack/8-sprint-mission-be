@@ -1,0 +1,64 @@
+# 게시글 댓글
+GET http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91/comments
+
+###
+
+GET http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91/comments?page=1&pageSize=2
+
+###
+
+GET http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91/comments/e1755bde-6c83-464e-a57f-e152f21ff0a5
+
+###
+
+POST http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91/comments
+Content-Type: application/json
+
+{
+  "content": "테스트 댓글입니다. 테스트"
+}
+
+###
+
+PATCH http://localhost:3000/comments/e1755bde-6c83-464e-a57f-e152f21ff0a5
+Content-Type: application/json
+
+{
+  "content": "맥북 16인치 댓글"
+}
+
+###
+
+DELETE http://localhost:3000/comments/e1755bde-6c83-464e-a57f-e152f21ff0a5
+
+###
+
+# 상품 댓글
+
+GET http://localhost:3000/products/d74898d4-9783-474d-bdc2-c42adf3627cc/comments
+
+###
+
+GET http://localhost:3000/products/d74898d4-9783-474d-bdc2-c42adf3627cc/comments?page=1&pageSize=2
+
+###
+
+POST http://localhost:3000/products/comments
+Content-Type: application/json
+
+{
+  "content": "테스트 댓글입니다. 테스트"
+}
+
+###
+
+PATCH http://localhost:3000/products/comments/733653fb-6a4d-4a0d-90ca-31de1072de91
+Content-Type: application/json
+
+{
+  "content": "맥북 16인치 댓글"
+}
+
+###
+
+DELETE http://localhost:3000/products/comments/733653fb-6a4d-4a0d-90ca-31de1072de91

@@ -1,0 +1,30 @@
+GET http://localhost:3000/articles
+
+###
+
+GET http://localhost:3000/articles?page=1&pageSize=2
+
+###
+
+POST http://localhost:3000/articles
+Content-Type: application/json
+
+{
+  "title": "테스트 게시글",
+  "content": "테스트 게시글입니다. 테스트"
+}
+
+# 댓글은 자동 생성 (comment)
+
+###
+
+PATCH http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
+Content-Type: application/json
+
+{
+  "title": "맥북 16인치"
+}
+
+###
+
+DELETE http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
