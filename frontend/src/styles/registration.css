@@ -1,0 +1,119 @@
+.registMain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--Secondary-800, #1F2937);   
+}
+
+.registMain .wrapper{
+    width: 100%;
+    max-width: 1200px; 
+    font-weight: 700;
+    margin: 26px auto 162px;
+}
+
+.registMain .headline{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+}
+
+.registMain .headline h1{
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 32px;
+}
+
+/* 버튼 공통 스타일은 global.css에 정의 */
+.registMain .headline .button{
+    height: 42px;
+    padding: 12px 23px;
+    gap: 10px;
+
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px; /* 162.5% */
+}
+
+.registMain .inputForm{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
+}
+
+.registMain .inputForm label{
+    margin-bottom: 16px;
+
+    text-align: left;
+    font-size: 18px;
+    line-height: 26px;
+}
+
+.registMain .inputForm .inputPlace{
+    display: flex;
+    padding: 16px 24px;
+    resize: none;        /* 사용자가 크기 조절 못하게 */
+    overflow: hidden;    /* 스크롤 안 생기게 */
+
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+
+    border-radius: 12px;
+    border: none;
+    background: var(--Cool-Gray-100, #F3F4F6);
+}
+
+.registMain .inputForm .inputPlace::placeholder{
+    color: var(--Secondary-400, #9CA3AF);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px; /* 162.5% */
+}
+
+.selectedTags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.selectedTag{
+    height: 36px;
+    padding: 6px 12px 6px 16px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border-radius: 26px;
+    background: var(--Cool-Gray-100, #F3F4F6);
+}
+
+.selectedTag p{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+.selectedTag img{
+    width: 22px;
+    height: 24px;
+}
+
+.validErrorMsg{
+    display: flex;
+    padding-left: 16px;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--error-red, #F74747);   
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px; /* 171.429% */
+
+    margin-top: 8px;
+}

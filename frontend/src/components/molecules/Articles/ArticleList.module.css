@@ -1,0 +1,69 @@
+.rowList{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+}
+
+.columList{
+  width: 100%;
+  height: 600px; 
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  overflow: scroll;
+
+  /* 스크롤 바 만 없애고 기능은 유지 */
+  -ms-overflow-style: none;     /* IE, Edge */
+  scrollbar-width: none;        /* Firefox */
+}
+
+.columList::-webkit-scrollbar {
+  /* 스크롤 바 만 없애고 기능은 유지 */
+  display: none;                /* Chrome, Safari, Opera */
+}
+
+/* 스크롤 바 만 없애고 기능은 유지 */
+.no-scrollbar {
+  -ms-overflow-style: none;     /* IE, Edge */
+  scrollbar-width: none;        /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+
+@media (max-width: 743px){
+  /* 한 개까지만 표시하고 2개부터는 표시 x */
+  .rowList li:nth-of-type(n + 2) {
+    display: none;
+  }
+}
+
+@media (min-width: 744px){
+  .rowList{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  /* 3개쨰 부터는 표시 x */
+  .rowList li:nth-of-type(n + 3) {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px){
+  .rowList{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  /* 4개쨰 부터는 표시 x */
+  .rowList li:nth-of-type(n) {
+    display: block;
+  }
+}

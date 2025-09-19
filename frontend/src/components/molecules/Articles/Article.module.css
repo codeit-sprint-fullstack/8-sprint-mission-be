@@ -1,0 +1,138 @@
+.article{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    background-color: #FCFCFC; 
+    padding-bottom: 24px;
+}
+
+.article .headline{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.headline p{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+    color: var(--Cool-Gray-800);
+    font: var(--font-20-semibold);
+}
+
+.mainImg{
+    width: 72px;
+    height: 72px;
+
+    border-radius: 8px;
+    border: 1px solid var(--Cool-Gray-100, #F3F4F6);
+    background-color: #FFF;
+
+    flex-shrink: 0;
+}
+
+.detail{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.detail div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.userIcon{
+    width: 24px;
+    height: 24px;
+}
+
+.userName{
+    color: var(--Secondary-600);
+    font: var(--font-14-regular);
+}
+
+.date{
+    color: var(--Secondary-400);
+    font: var(--font-14-regular);
+}
+
+.favoriteCnt img{
+    width: 24px;
+    height: 24px;
+}
+
+.favoriteCnt p{
+    width: 50px;
+    height: 26px;
+    color: var(--Secondary-500);
+    font: var(--font-16-regular);
+}
+
+.divider{
+    width: 100%;
+    border-top: 1px solid var(--Cool-Gray-200);
+    margin: 0;
+}
+
+
+/* === BestArticle 스타일 === */
+.bestTag{
+    display: flex;
+    width: 102px;
+    height: 30px;
+    padding: 2px 24px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+
+    border-radius: 0 0 16px 16px;
+    background: var(--brand-blue);
+}
+    
+.bestTag img{
+    width: 16px;
+    height: 16px;
+}
+
+.bestTag p{
+    color: var(--white-FFFFFF);
+    font: var(--font-16-semibold);
+}
+
+.bestArticle{
+    width: 1fr;
+    height: 100%;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+
+    background-color: var(--Cool-Gray-50); 
+    padding: 0 24px 10px 24px;
+
+    border-radius: 8px;
+}
+
+.bestArticle .headline{
+    width: 100%;
+    display: flex;
+    gap: 8px;
+}
+
+.titleDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

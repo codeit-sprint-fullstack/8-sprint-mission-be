@@ -1,0 +1,41 @@
+.main{
+    padding: 0;
+}
+
+.wrapper{
+    padding: 17px 16px 140px;
+}
+
+.section{
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}   
+
+.best{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 40px;
+}
+
+.common{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+@media (min-width: 744px) {
+    .wrapper{
+        padding: 26px 24px 140px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .wrapper{
+        padding: 26px 0 140px;
+    }
+}

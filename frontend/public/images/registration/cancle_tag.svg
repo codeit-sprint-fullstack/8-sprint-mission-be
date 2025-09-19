@@ -1,0 +1,9 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 원 -->
+  <circle cx="10" cy="10" r="10" fill="#9CA3AF"/>
+  
+  <!-- X 라인: 정확히 중심에 위치하도록 좌표 조정 -->
+  <path d="M6 6 L14 14" stroke="#F9FAFB" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M14 6 L6 14" stroke="#F9FAFB" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+
