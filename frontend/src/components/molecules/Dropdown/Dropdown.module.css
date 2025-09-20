@@ -53,9 +53,13 @@
 
         /* 글자 스타일 */
         color: var(--Secondary-800, #1f2937);
-        /* pretendard/lg-16px-regular */
         font-size: 16px;
         font-weight: 400;
         line-height: 22px; /* 162.5% */
+
+        background-image: url('/images/items/ic_arrow_down.svg');
+        background-repeat: no-repeat;
+        background-size: 15%;
+        background-position: center right 16px;
     }
 }

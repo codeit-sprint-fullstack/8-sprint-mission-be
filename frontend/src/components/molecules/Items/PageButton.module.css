@@ -1,0 +1,42 @@
+/* 상품 페이지 인덱스  */
+.list-page-index {
+    display: flex;
+    gap: 4px;
+}
+
+.list-page-index button {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    padding: 12.5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12.5px;
+    flex-shrink: 0;
+
+    border-radius: 40px;
+    border: 1px solid var(--Cool-Gray-200, #e5e7eb);
+    background: #fff;
+
+    /* 글자 속성 */
+    color: var(--Cool-Gray-500, #6b7280);
+    /* pretendard/lg-16px-semibold */
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px; /* 162.5% */
+}
+
+.list-page-index .arrow-left {
+    background-image: url('/images/items/arrow_left.svg');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: center;
+}
+
+.list-page-index .arrow-right {
+    background-image: url('/images/items/arrow_right.svg');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: center;
+}

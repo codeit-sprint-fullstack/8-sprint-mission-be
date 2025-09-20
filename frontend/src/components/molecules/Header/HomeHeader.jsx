@@ -1,24 +1,22 @@
 'use client';
 
-import { useContext } from 'react';
 import Link from 'next/link';
-import LocaleContext from '../contexts/LocaleContext';
 import Image from 'next/image';
 
-import logoImg from '../../public/images/logo/logo.svg';
-import logoMobileImg from '../../public/images/logo/logo_mobile.svg';
+import Button from '../../Atoms/Button';
+import logoImg from './logo.svg';
+import logoMobileImg from './logo_mobile.svg';
+import { deviceStyle } from '../Device/Device';
+import styles from './Header.module.css';
 
 function HomeHeader({ isHome = false }) {
-    const deviceType = useContext(LocaleContext);
-
-    const logo = deviceType == 'mobile' ? logoMobileImg : logoImg;
-    const logoWidth = deviceType == 'mobile' ? '81px' : '153px';
-
     return (
         <header>
             <div>
                 <Link href="/">
-                    <Image src={logo} alt="판다마켓 로고" width={logoWidth} />
+                    <Image src={logoMobileImg} className={deviceStyle.mobile} alt="판다마켓 로고" width='81px' />
+                    <Image src={logoImg}  className={deviceStyle.tablet} alt="판다마켓 로고" width='153px' />
+                    <Image src={logoImg}  className={deviceStyle.desktop} alt="판다마켓 로고" width='153px' />
                 </Link>
                 {/* 랜딩 페이지에서는 네비게이션 목록이 안나오도록 설정 */}
 
@@ -34,9 +32,9 @@ function HomeHeader({ isHome = false }) {
                 )}
             </div>
             <Link href="/">
-                <button id="loginLink" className="button">
+                <Button className={styles.button}>
                     로그인
-                </button>
+                </Button>
             </Link>
         </header>
     );

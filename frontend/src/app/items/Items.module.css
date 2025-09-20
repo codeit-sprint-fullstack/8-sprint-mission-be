@@ -1,0 +1,30 @@
+.itemsMain {
+    width: 100%;
+    padding: 0;
+}
+
+.wrapper {
+    width: 100%;
+    height: fit-content;
+    padding: 17px 16px 140px;
+}
+
+.itemsMain section {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+@media (min-width: 744px) {
+    .wrapper {
+        padding: 26px 24px 140px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .wrapper {
+        padding: 26px 0 140px;
+    }
+}

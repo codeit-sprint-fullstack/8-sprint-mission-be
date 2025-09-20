@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 import useAsync from '../../hooks/useAsync.jsx';
 import LocaleContext from '../../contexts/LocaleContext.js';
 
-import HomeHeader from '../../components/HomeHeader.jsx';
-import HomeFooter from '../../components/HomeFooter.jsx';
+import HomeHeader from '../../components/molecules/Header/HomeHeader.jsx';
+import HomeFooter from '../../components/molecules/Footer/HomeFooter.jsx';
 import Headline from '../../components/molecules/Headline/Headline.jsx';
 
 import productApi from '../../api/ProductService.js';

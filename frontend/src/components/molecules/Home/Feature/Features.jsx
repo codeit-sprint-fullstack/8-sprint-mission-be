@@ -1,23 +1,17 @@
-'use client';
-
-import { useContext } from 'react';
-import LocaleContext from '../../../contexts/LocaleContext';
-
 import Image from 'next/image';
-const feature_1 = '/images/home/feature1-image.png';
-const feature_2 = '/images/home/feature2-image.png';
-const feature_3 = '/images/home/feature3-image.png';
+import feature_1 from './feature1-image.png';
+import feature_2 from './feature2-image.png';
+import feature_3 from './feature3-image.png';
 
 import styles from './Featrue.module.css';
 
-function Features() {
-    const deviceType = useContext(LocaleContext);
+export default function Features() {
 
     const featureContents = [
         {
             img: feature_1,
             name: 'Hot items',
-            title: <>인기 상품을 {deviceType === 'desktop' && <br />}확인해 보세요</>,
+            title: <>인기 상품을 <br />확인해 보세요</>,
             description: (
                 <>
                     가장 HOT한 중고거래 물품을
@@ -29,7 +23,7 @@ function Features() {
         {
             img: feature_2,
             name: 'Search',
-            title: <>구매를 원하는 {deviceType === 'desktop' && <br />}상품을 검색하세요</>,
+            title: <>구매를 원하는 <br />상품을 검색하세요</>,
             description: (
                 <>
                     구매하고 싶은 물품은 검색해서
@@ -41,7 +35,7 @@ function Features() {
         {
             img: feature_3,
             name: 'Register',
-            title: <>판매를 원하는 {deviceType === 'desktop' && <br />}상품을 등록하세요</>,
+            title: <>판매를 원하는 <br />상품을 등록하세요</>,
             description: (
                 <>
                     어떤 물건이든 판매하고 싶은 상품을
@@ -53,7 +47,7 @@ function Features() {
     ];
 
     return (
-        <section id={styles.features} className={styles.wrapper}>
+        <section className={`${styles.features} ${styles.wrapper}`}>
             {featureContents.map((contents) => (
                 <Feature key={featureContents.indexOf(contents)} contents={contents} />
             ))}
@@ -64,14 +58,12 @@ function Features() {
 function Feature({ contents }) {
     return (
         <div className={styles.feature}>
-            <Image src={contents.img} alt={contents.name} />
-            <div className={styles.eature - content}>
+            <Image src={contents.img} className={styles.img} alt={contents.name} />
+            <div className={styles.featureContent}>
                 <h2>{contents.name}</h2>
                 <h1>{contents.title}</h1>
-                <p className={styles.feature - description}>{contents.description}</p>
+                <p className={styles.featureDescription}>{contents.description}</p>
             </div>
         </div>
     );
 }
-
-export default Features;

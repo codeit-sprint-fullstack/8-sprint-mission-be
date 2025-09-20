@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import Link from 'next/link';
-import LocaleContext from '../../../contexts/LocaleContext.js';
 
 const searchIcon = '/images/items/ic_search.svg';
 
 import styles from './Headline.module.css';
 import Dropdown from '../Dropdown/Dropdown.jsx';
+import Button from '@/components/Atoms/Button';
 
 function Headline({
     title = '',
@@ -16,7 +15,7 @@ function Headline({
     search = '',
     onChangeSearch = null,
 }) {
-    const deviceType = useContext(LocaleContext);
+    const deviceType = 'desktop';
     const isUseRegistBtn = registerName !== '' && registerUrl !== '';
     const design = title === '게시글' || deviceType == 'mobile';
 
@@ -34,34 +33,34 @@ function Headline({
     // 3) 타이틀만 사용 / 버튼 검색창도 사용
     // 구분 디자인 적용
     return (
-        <div className={styles.headline + ' ' + (design ? styles.columDiv : styles.rowDiv)}>
+        <div className={`${styles.headline} ${design ? styles.columDiv : styles.rowDiv}`}>
             <div className={styles.title} style={titleGap}>
                 <p>{title}</p>
                 {isUseRegistBtn && design && (
-                    <Link to={registerUrl} className={'button ' + styles.button}>
+                    <Link to={registerUrl} className={styles.button}>
                         {registerName}
                     </Link>
                 )}
             </div>
             {isUseRegistBtn && (
-                <div>
-                    <div className={design ? styles.searchBoxWide : styles.searchBoxDefault}>
-                        <img className={styles.searchIcon} src={searchIcon} />
-                        <input
-                            className={styles.searchInput}
-                            name="search-input"
-                            placeholder="검색할 상품을 입력해주세요"
-                            value={search}
-                            onChange={onChangeSearch}
-                        />
-                    </div>
-                    {!design && (
-                        <Link href={registerUrl} className={'button ' + styles.button}>
-                            {registerName}
-                        </Link>
-                    )}
-                    <Dropdown order={order} onChangeOrder={onChangeOrder} />
+            <div className={styles.searchBox}>
+                <div className={design ? styles.searchBoxWide : styles.searchBoxDefault}>
+                    <img className={styles.searchIcon} src={searchIcon} />
+                    <input
+                        className={styles.searchInput}
+                        name="search-input"
+                        placeholder="검색할 상품을 입력해주세요"
+                        value={search}
+                        onChange={onChangeSearch}
+                    />
                 </div>
+                {!design && (
+                    <Link href={registerUrl}>
+                        <Button className={styles.button}>{registerName}</Button>
+                    </Link>
+                )}
+                <Dropdown order={order} onChangeOrder={onChangeOrder} />
+            </div>
             )}
         </div>
     );

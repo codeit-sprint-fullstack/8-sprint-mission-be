@@ -1,3 +1,5 @@
+import styles from './ProductList.module.css';
+
 //pubic 폴더는 루트로 어디서는 정의 가능.
 const heartIcon = '/images/items/ic_heart.svg';
 const productDefault = '/images/items/product_default.png';
@@ -14,14 +16,14 @@ function Product({ item }) {
     };
 
     return (
-        <div className="product">
+        <div className={styles.product}>
             {/* 리스폰스 이미지가 없는 url이어서 임의로 랜덤 이미지를 넣었습니다.*/}
-            <div className="image-box" style={style}></div>
-            <div className="description">
-                <p className="name">{item.name}</p>
-                <p className="price">{item.price.toLocaleString() + '원'}</p>
+            <div className={styles.imageBox} style={style}></div>
+            <div className={styles.description}>
+                <p className={styles.name}>{item.name}</p>
+                <p className={styles.price}>{item.price.toLocaleString() + '원'}</p>
                 {/* 어째선지 리스폰스에 좋아요 수가 없습니다. 임의로 240을 넣었습니다.*/}
-                <div className="favorite">
+                <div className={styles.favorite}>
                     <button>
                         <img src={heartIcon} />
                     </button>
@@ -32,9 +34,9 @@ function Product({ item }) {
     );
 }
 
-function ProductList({ items }) {
+function ProductList({ items, isCommon}) {
     return (
-        <ul className="list-grid">
+        <ul className={`${styles.listGrid} ${isCommon ? styles.common : styles.best}`}>
             {items.map((item) => {
                 return (
                     <li key={item.id}>

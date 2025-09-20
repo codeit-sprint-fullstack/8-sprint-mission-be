@@ -1,0 +1,75 @@
+.mobile{
+    display: flex;
+}
+
+.tablet{
+    display: none;
+}
+
+.desktop{
+    display: none;
+}
+
+.notMobile{
+    display: none;
+}
+
+.notTablet{
+    display: flex;
+}
+
+.notDesktop{
+    display: flex;
+}
+
+@media (min-width: 744px) {
+    .mobile{
+        display: none;
+    }
+
+    .tablet{
+        display: flex;
+    }
+
+    .desktop{
+        display: none;
+    }
+
+    .notMobile{
+        display: flex;
+    }
+
+    .notTablet{
+        display: none;
+    }
+
+    .notDesktop{
+        display: flex;
+    }
+}
+
+@media (min-width: 1200px) {
+    .mobile{
+        display: none;
+    }
+
+    .tablet{
+        display: none;
+    }
+
+    .desktop{
+        display: flex;
+    }
+
+    .notMobile{
+        display: flex;
+    }
+
+    .notTablet{
+        display: flex;
+    }
+
+    .notDesktop{
+        display: none;
+    }
+}

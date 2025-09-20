@@ -1,5 +1,9 @@
-/* Mobile styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+
+/* Mobile styles */
 :root {
     /* cool Gray */
     --Cool-Gray-50: #f9fafb;
@@ -92,6 +96,7 @@ select {
 }
 
 button {
+    all: unset; /* 기본 스타일 제거 */
     background: none;
     border: none;
     outline: none;
@@ -122,7 +127,7 @@ header {
     background-color: #ffffff;
     border-bottom: 1px solid #dfdfdf;
 
-    z-index: 1;
+    z-index: 10;
 }
 
 ol,
@@ -198,35 +203,6 @@ h1 {
     letter-spacing: 0.02em;
 }
 
-.button {
-    background-color: var(--brand-blue);
-    color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.button:hover {
-    background-color: #1967d6;
-}
-
-.button:focus {
-    background-color: #1251aa;
-}
-
-.button:disabled {
-    background-color: #9ca3af;
-    cursor: default;
-    pointer-events: none;
-}
-
-.pill-button {
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 999px;
-    padding: 14.5px 33.5px;
-}
-
 .full-width {
     width: 100%;
 }
@@ -258,12 +234,6 @@ h1 {
 
     .wrapper {
         padding: 0 24px;
-    }
-
-    .pill-button {
-        font-size: 20px;
-        font-weight: 700;
-        padding: 16px 126px;
     }
 
     footer {

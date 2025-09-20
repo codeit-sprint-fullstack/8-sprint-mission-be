@@ -1,0 +1,161 @@
+/* Mobile styles - 기본 스타일 */
+.best {
+    margin: 0 auto 40px;
+}
+
+.common {
+    margin: 0 auto;
+}
+
+.listGrid {
+    display: grid;
+    row-gap: 40px;
+    column-gap: 24px;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    height: fit-content;
+}
+
+.listGrid li {
+    display: flex;
+}
+
+/* 개별 상품 표시 스타일 */
+.product {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.product p {
+    text-align: left;
+}
+
+.imageBox {
+    width: 100%;
+    height: auto;
+    object-fit: 'cover';    
+    aspect-ratio: 1;
+}
+
+.description {
+    gap: 6px;
+}
+
+.name {
+    color: var(--Secondary-800, #1f2937);
+    /* pretendard/md-14px-medium */
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px; /* 171.429% */
+}
+
+.price {
+    color: var(--Secondary-800, #1f2937);
+    /* pretendard/lg-16px-bold */
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 26px; /* 162.5% */
+}
+
+.favorite {
+    display: flex;
+
+    color: var(--Secondary-600, #4b5563);
+    /* pretendard/xs-12px-medium */
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px; /* 150% */
+}
+
+.favorite button {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* Mobile styles */
+@media (max-width: 743px) {
+    .common .section-headline {
+        margin: 0 0 16px;
+    }
+
+    .listGrid.best {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .listGrid.common  {
+        grid-template-columns: repeat(2, 1fr);
+        margin: 0 0 43px;
+    }
+
+    .listGrid.best li:nth-of-type(n + 2) {
+        display: none;
+    }
+    .listGrid.common li:nth-of-type(n + 5) {
+        display: none;
+    }
+
+    .listGrid {
+        column-gap: 8px;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 744px) {
+    .common .section-headline {
+        margin: 0 0 24px;
+    }
+
+    .listGrid.best {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .listGrid.common  {
+        grid-template-columns: repeat(3, 1fr);
+        margin: 0 0 43px;
+    }
+
+    .listGrid.best li:nth-of-type(n + 3) {
+        display: none;
+    }
+
+    .listGrid.common li:nth-of-type(n + 7) {
+        display: none;
+    }
+
+    .listGrid {
+        column-gap: 16px;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1200px) {
+    .common .section-headline {
+        margin: 0 0 24px;
+    }
+
+    .listGrid.best  {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .listGrid.common  {
+        grid-template-columns: repeat(5, 1fr);
+        margin: 0 0 43px;
+    }
+
+    .listGrid.best li:nth-of-type(n) {
+        display: flex;
+    }
+
+    .listGrid.common li:nth-of-type(n) {
+        display: flex;
+    }
+
+    .listGrid {
+        column-gap: 24px;
+    }
+}
