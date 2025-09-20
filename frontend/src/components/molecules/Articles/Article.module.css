@@ -1,48 +1,48 @@
-.article{
+.article {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 16px;
 
-    background-color: #FCFCFC; 
+    background-color: #fcfcfc;
     padding-bottom: 24px;
 }
 
-.article .headline{
+.article .headline {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-.headline p{
+.headline p {
     width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    
+
     color: var(--Cool-Gray-800);
     font: var(--font-20-semibold);
 }
 
-.mainImg{
+.mainImg {
     width: 72px;
     height: 72px;
 
     border-radius: 8px;
-    border: 1px solid var(--Cool-Gray-100, #F3F4F6);
-    background-color: #FFF;
+    border: 1px solid var(--Cool-Gray-100, #f3f4f6);
+    background-color: #fff;
 
     flex-shrink: 0;
 }
 
-.detail{
+.detail {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.detail div{
+.detail div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -50,42 +50,41 @@
     gap: 8px;
 }
 
-.userIcon{
+.userIcon {
     width: 24px;
     height: 24px;
 }
 
-.userName{
+.userName {
     color: var(--Secondary-600);
     font: var(--font-14-regular);
 }
 
-.date{
+.date {
     color: var(--Secondary-400);
     font: var(--font-14-regular);
 }
 
-.favoriteCnt img{
+.favoriteCnt img {
     width: 24px;
     height: 24px;
 }
 
-.favoriteCnt p{
+.favoriteCnt p {
     width: 50px;
     height: 26px;
     color: var(--Secondary-500);
     font: var(--font-16-regular);
 }
 
-.divider{
+.divider {
     width: 100%;
     border-top: 1px solid var(--Cool-Gray-200);
     margin: 0;
 }
 
-
 /* === BestArticle 스타일 === */
-.bestTag{
+.bestTag {
     display: flex;
     width: 102px;
     height: 30px;
@@ -98,18 +97,18 @@
     border-radius: 0 0 16px 16px;
     background: var(--brand-blue);
 }
-    
-.bestTag img{
+
+.bestTag img {
     width: 16px;
     height: 16px;
 }
 
-.bestTag p{
+.bestTag p {
     color: var(--white-FFFFFF);
     font: var(--font-16-semibold);
 }
 
-.bestArticle{
+.bestArticle {
     width: 1fr;
     height: 100%;
     flex-shrink: 0;
@@ -119,19 +118,19 @@
     justify-content: space-between;
     gap: 24px;
 
-    background-color: var(--Cool-Gray-50); 
+    background-color: var(--Cool-Gray-50);
     padding: 0 24px 10px 24px;
 
     border-radius: 8px;
 }
 
-.bestArticle .headline{
+.bestArticle .headline {
     width: 100%;
     display: flex;
     gap: 8px;
 }
 
-.titleDiv{
+.titleDiv {
     display: flex;
     flex-direction: column;
     gap: 16px;

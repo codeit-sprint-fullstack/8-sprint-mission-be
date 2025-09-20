@@ -1,18 +1,21 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 
-function Banner({bgImg, btnUrl='', btnText='', children}){
-
+function Banner({ bgImg, btnUrl = '', btnText = '', children }) {
     const style = {
-        backgroundImage: `url(${bgImg})`
-    }
+        backgroundImage: `url(${bgImg})`,
+    };
 
-    return(
+    return (
         <section style={style} className="banner">
             <div className="wrapper">
                 {children}
-                {btnUrl && <Link href={btnUrl}><button className="button pill-button">{btnText}</button></Link>}
+                {btnUrl && (
+                    <Link href={btnUrl}>
+                        <button className="button pill-button">{btnText}</button>
+                    </Link>
+                )}
             </div>
         </section>
     );

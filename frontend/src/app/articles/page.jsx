@@ -2,26 +2,24 @@ import { useState, useEffect, useContext } from 'react';
 import useAsync from '../../hooks/useAsync.jsx';
 import LocaleContext from '../../contexts/LocaleContext.js';
 
-import HomeHeader from "../../components/HomeHeader.jsx";
-import HomeFooter from "../../components/HomeFooter.jsx";
+import HomeHeader from '../../components/HomeHeader.jsx';
+import HomeFooter from '../../components/HomeFooter.jsx';
 import Headline from '../../components/molecules/Headline/Headline.jsx';
 
 import productApi from '../../api/ProductService.js';
-import {ArticleList, BestArticleList } from '../../components/molecules/Articles/ArticleList.jsx';
+import { ArticleList, BestArticleList } from '../../components/molecules/Articles/ArticleList.jsx';
 
 import styles from './ArticlePage.module.css';
 
 export default function Articles() {
-
     const [bestProducts, setBestProducts] = useState([]);
     const [commonProducts, setCommonProducts] = useState([]);
 
     //삼화 미션 - 커스텀 훅 만들기 (GET 리퀘스트 오류, 지연 처리 훅)
-    const [isLoading, loadingError, getItemsAsync] = useAsync(productApi.getProductList); 
+    const [isLoading, loadingError, getItemsAsync] = useAsync(productApi.getProductList);
     const [pageIdx, setPageIdx] = useState(1);
     const [order, setOrder] = useState('recent');
     const [search, setSearch] = useState('');
-    
 
     const deviceType = useContext(LocaleContext);
 
@@ -38,60 +36,58 @@ export default function Articles() {
     const handleBestProductLoad = async () => {
         const res1 = await productApi.getProductList(1, 4, 'favorite');
         setBestProducts(res1);
-    }
+    };
 
-    const handleCommonProductLoad = async(deviceType, pageIdx, order, search) => {
+    const handleCommonProductLoad = async (deviceType, pageIdx, order, search) => {
         const setPageSize = {
-            'mobile' : 4,
-            'tablet' : 6,
-            'desktop' : 10,
-        }
+            mobile: 4,
+            tablet: 6,
+            desktop: 10,
+        };
         //페이지 로딩이 끝날 때까지 페이지 이동이 안되도록 막았습니다.
         const res = await getItemsAsync(pageIdx, setPageSize[deviceType], order, search);
-        if(!res)return;
+        if (!res) return;
         setCommonProducts(res);
-    }
+    };
 
     const handlePagechange = (idx) => {
         setPageIdx(idx);
-    }
-    
+    };
+
     const handleDropdown = (e) => {
         setOrder(e.target.value);
-    }
+    };
 
     const handleSearchInput = (e) => {
         setSearch(e.target.value);
-    }
+    };
 
     return (
         <>
-            <HomeHeader/>
-            <main className={"with-header " + styles.main}>
+            <HomeHeader />
+            <main className={'with-header ' + styles.main}>
                 <div className={styles.wrapper}>
-                    <section className={`${styles.section} ${styles.best    }`}>
-                        <Headline 
-                            title='베스트 게시글'
-                        />
-                        <BestArticleList/>
+                    <section className={`${styles.section} ${styles.best}`}>
+                        <Headline title="베스트 게시글" />
+                        <BestArticleList />
                         {/* <ProductList items={bestProducts}/> */}
                     </section>
 
                     <section className={`${styles.section} ${styles.common}`}>
-                        <Headline 
-                            title='게시글'
-                            registerName='글쓰기'
-                            registerUrl='/uploadArticle'
+                        <Headline
+                            title="게시글"
+                            registerName="글쓰기"
+                            registerUrl="/uploadArticle"
                             order={order}
                             onChangeOrder={handleDropdown}
                             search={search}
                             onChangeSearch={handleSearchInput}
                         />
-                        <ArticleList/>
+                        <ArticleList />
                         {loadingError?.massege && <div>{loadingError.message}</div>}
                     </section>
                 </div>
-            </main> 
+            </main>
             <HomeFooter />
         </>
     );

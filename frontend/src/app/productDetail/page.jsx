@@ -1,10 +1,9 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
-import HomeHeader from "../components/HomeHeader.jsx";
-import HomeFooter from "../components/HomeFooter.jsx";
+import HomeHeader from '../components/HomeHeader.jsx';
+import HomeFooter from '../components/HomeFooter.jsx';
 
 export default function ProductDetail() {
-
     const [deviceType, setDeviceType] = useState(getDeviceType(window.innerWidth));
 
     // 창 크기에 따라 deviceType 계산
@@ -29,15 +28,15 @@ export default function ProductDetail() {
         width: '100%',
         height: '600px',
         fontSize: '20px',
-        textAlign: 'center'
+        textAlign: 'center',
     };
 
     return (
         <>
-            <HomeHeader/>
+            <HomeHeader />
             <main className="with-header">
                 <p style={style}> 상품 상세 페이지 (미구현) </p>
-            </main> 
+            </main>
             <HomeFooter />
         </>
     );

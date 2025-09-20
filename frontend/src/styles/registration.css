@@ -1,32 +1,32 @@
-.registMain{
+.registMain {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--Secondary-800, #1F2937);   
+    color: var(--Secondary-800, #1f2937);
 }
 
-.registMain .wrapper{
+.registMain .wrapper {
     width: 100%;
-    max-width: 1200px; 
+    max-width: 1200px;
     font-weight: 700;
     margin: 26px auto 162px;
 }
 
-.registMain .headline{
+.registMain .headline {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 26px;
 }
 
-.registMain .headline h1{
+.registMain .headline h1 {
     font-size: 20px;
     font-weight: 700;
     line-height: 32px;
 }
 
 /* 버튼 공통 스타일은 global.css에 정의 */
-.registMain .headline .button{
+.registMain .headline .button {
     height: 42px;
     padding: 12px 23px;
     gap: 10px;
@@ -37,13 +37,13 @@
     line-height: 26px; /* 162.5% */
 }
 
-.registMain .inputForm{
+.registMain .inputForm {
     display: flex;
     flex-direction: column;
     margin-bottom: 32px;
 }
 
-.registMain .inputForm label{
+.registMain .inputForm label {
     margin-bottom: 16px;
 
     text-align: left;
@@ -51,11 +51,11 @@
     line-height: 26px;
 }
 
-.registMain .inputForm .inputPlace{
+.registMain .inputForm .inputPlace {
     display: flex;
     padding: 16px 24px;
-    resize: none;        /* 사용자가 크기 조절 못하게 */
-    overflow: hidden;    /* 스크롤 안 생기게 */
+    resize: none; /* 사용자가 크기 조절 못하게 */
+    overflow: hidden; /* 스크롤 안 생기게 */
 
     align-items: flex-start;
     gap: 10px;
@@ -63,54 +63,54 @@
 
     border-radius: 12px;
     border: none;
-    background: var(--Cool-Gray-100, #F3F4F6);
+    background: var(--Cool-Gray-100, #f3f4f6);
 }
 
-.registMain .inputForm .inputPlace::placeholder{
-    color: var(--Secondary-400, #9CA3AF);
+.registMain .inputForm .inputPlace::placeholder {
+    color: var(--Secondary-400, #9ca3af);
     font-size: 16px;
     font-weight: 400;
     line-height: 26px; /* 162.5% */
 }
 
-.selectedTags{
+.selectedTags {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
 
-.selectedTag{
+.selectedTag {
     height: 36px;
     padding: 6px 12px 6px 16px;
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 
     border-radius: 26px;
-    background: var(--Cool-Gray-100, #F3F4F6);
+    background: var(--Cool-Gray-100, #f3f4f6);
 }
 
-.selectedTag p{
+.selectedTag p {
     font-size: 16px;
     font-weight: 400;
     line-height: 26px;
 }
 
-.selectedTag img{
+.selectedTag img {
     width: 22px;
     height: 24px;
 }
 
-.validErrorMsg{
+.validErrorMsg {
     display: flex;
     padding-left: 16px;
     justify-content: left;
     align-items: center;
     gap: 10px;
 
-    color: var(--error-red, #F74747);   
+    color: var(--error-red, #f74747);
     font-size: 14px;
     font-weight: 600;
     line-height: 24px; /* 171.429% */
