@@ -21,7 +21,7 @@ function asyncHandler(handler) {
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === "P2025"
       ) {
-        res.status(400).send({ message: "Cannot find given id" });
+        res.status(404).send({ message: "Cannot find given id" });
       } else {
         res.status(500).send({ message: e.message });
       }
@@ -29,9 +29,9 @@ function asyncHandler(handler) {
   };
 }
 
-// article API
+// freeboard API
 app.get(
-  "/articles",
+  "/freeboard",
   asyncHandler(async (req, res) => {
     const { offset = 0, limit = 5, order = "newest" } = req.query;
     let orderBy;
@@ -53,7 +53,7 @@ app.get(
 );
 
 app.get(
-  "/articles/:id",
+  "/freeboard/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const articles = await prisma.article.findUniqueOrThrow({
@@ -64,7 +64,7 @@ app.get(
 );
 
 app.post(
-  "/articles",
+  "/freeboard",
   asyncHandler(async (req, res) => {
     const articles = await prisma.article.create({
       data: req.body,
@@ -74,7 +74,7 @@ app.post(
 );
 
 app.patch(
-  "/articles/:id",
+  "/freeboard/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const article = await prisma.article.update({
@@ -86,7 +86,7 @@ app.patch(
 );
 
 app.delete(
-  "/articles/:id",
+  "/freeboard/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     await prisma.article.delete({
