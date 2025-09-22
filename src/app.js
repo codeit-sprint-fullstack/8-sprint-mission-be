@@ -7,6 +7,7 @@ import helmet from 'helmet';
 
 // 라우터 import
 import productRoutes from './routes/productRoutes.js';
+import articleRoutes from './routes/articleRoutes.js';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(morgan('combined'));
 
 // 라우터 설정
 app.use('/products', productRoutes);
+app.use('/articles', articleRoutes);
 
 // /health 경로 처리
 app.get('/health', (req, res) => {
