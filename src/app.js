@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 // 라우터 import
-import productRoutes from './routes/productRoutes';
+import productRoutes from './routes/productRoutes.js';
 
 const app = express();
 

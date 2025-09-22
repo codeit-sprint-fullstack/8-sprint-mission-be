@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @db.Uuid
   name        String   @db.VarChar(255)
   description String   @db.VarChar(255)
   price       Float
@@ -24,16 +24,21 @@ model Product {
 }
 
 model Article {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   title     String
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  comments Comment[] @relation("ArticleComments")
 }
 
 model Comment {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  article   Article? @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String?  @db.Uuid
 }
