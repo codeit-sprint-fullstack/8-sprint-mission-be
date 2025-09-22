@@ -1,0 +1,50 @@
+.inputForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
+}
+
+.inputForm label {
+    margin-bottom: 16px;
+
+    text-align: left;
+    font-size: 18px;
+    line-height: 26px;
+}
+
+.inputForm .inputPlace {
+    display: flex;
+    padding: 16px 24px;
+    resize: none; /* 사용자가 크기 조절 못하게 */
+    overflow: hidden; /* 스크롤 안 생기게 */
+
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+
+    border-radius: 12px;
+    border: none;
+    background: var(--Cool-Gray-100, #f3f4f6);
+}
+
+.inputForm .inputPlace::placeholder {
+    color: var(--Secondary-400, #9ca3af);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px; /* 162.5% */
+}
+
+.validErrorMsg {
+    display: flex;
+    padding-left: 16px;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--error-red, #f74747);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px; /* 171.429% */
+
+    margin-top: 8px;
+}

@@ -37,13 +37,13 @@ function Headline({
             <div className={styles.title} style={titleGap}>
                 <p>{title}</p>
                 {isUseRegistBtn && design && (
-                    <Link to={registerUrl} className={styles.button}>
+                    <Link href={registerUrl} className={styles.button}>
                         {registerName}
                     </Link>
                 )}
             </div>
             {isUseRegistBtn && (
-            <div className={styles.searchBox}>
+            <div className={`${styles.div} ${styles.row}`}>
                 <div className={design ? styles.searchBoxWide : styles.searchBoxDefault}>
                     <img className={styles.searchIcon} src={searchIcon} />
                     <input

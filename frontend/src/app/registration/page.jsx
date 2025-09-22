@@ -1,46 +1,15 @@
-import '../styles/registration.css';
+"use client"
 
-import HomeHeader from '../components/HomeHeader.jsx';
-import HomeFooter from '../components/HomeFooter.jsx';
+import HomeHeader from '@/components/molecules/Header/HomeHeader.jsx';
+import HomeFooter from '@/components/molecules/Footer/HomeFooter.jsx';
 
-import cancleTagImg from '/images/registration/cancle_tag.svg';
-import useRegisterInput from '../hooks/useRegisterInput.jsx';
+import cancleTagImg from './cancle_tag.svg';
+import useRegisterInput from '@/hooks/useRegisterInput.jsx';
+import InputForm from '@/components/molecules/Articles/InputForm/InputForm';
 
-function InputForm({
-    label,
-    name,
-    value,
-    onChange,
-    onKeyDown = null,
-    placeholder = '',
-    rows = 1,
-    validErrorMsg = '',
-}) {
-    const style = validErrorMsg === '' ? {} : { border: '1px solid var(--error-red, #F74747)' };
-
-    //공통되는 prop을 묶었습니다.
-    const props = {
-        className: 'inputPlace',
-        style: style,
-        name: name,
-        value: value,
-        onChange: onChange,
-        onKeyDown: onKeyDown,
-        placeholder: placeholder,
-    };
-
-    //textara는 기본적으로 rows={2}로 설정 되어 있다.
-    //input처럼 높이를 맞추려면 rows={1}이 꼭 필요.
-    //rows={1}인 textarea보다 input이 UX적으로 좋다고 판단.
-    return (
-        <div className="inputForm">
-            <label>{label}</label>
-            {rows === 1 && <input {...props} />}
-            {rows > 1 && <textarea {...props} rows={rows} />}
-            {validErrorMsg.length > 0 && <p className="validErrorMsg">{validErrorMsg}</p>}
-        </div>
-    );
-}
+import styles from './upload.module.css';
+import Link from 'next/link';
+import Button from '@/components/Atoms/Button';
 
 function SelectedTags({ tags, handleDelete }) {
     return (
@@ -69,7 +38,6 @@ function Registration({}) {
         onChange, //입력폼 onChange
         addTag, //태그 추가
         deleteTag, //태그 삭제
-        register, //상품 등록
     ] = useRegisterInput();
 
     const handleKeyDown = (e) => {
@@ -82,13 +50,15 @@ function Registration({}) {
     return (
         <>
             <HomeHeader />
-            <main className="with-header registMain">
-                <div className="wrapper">
-                    <div className="headline">
+            <main className={`with-header ${styles.main}`}>
+                <div className={styles.wrapper}>
+                    <div className={styles.headline}>
                         <h1>상품 등록하기</h1>
-                        <button className="button" onClick={register} disabled={!isSubmitActive}>
-                            등록
-                        </button>
+                        <Link href={`product/${1}/detail`}>
+                            <Button className={styles.button}>
+                                등록
+                            </Button>
+                        </Link>
                     </div>
                     <InputForm
                         label="상품명"

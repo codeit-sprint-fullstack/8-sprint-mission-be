@@ -1,9 +1,13 @@
-import '../styles/registration.css';
+"use client"
+import Link from 'next/link';
+import Button from '@/components/Atoms/Button';
+import HomeHeader from '@/components/molecules/Header/HomeHeader';
+import HomeFooter from '@/components/molecules/Footer/HomeFooter';
+import useRegisterInput from '@/hooks/useRegisterInput';
+import InputForm from '@/components/molecules/Articles/InputForm/InputForm';
 
-import HomeHeader from '../components/HomeHeader.jsx';
-import HomeFooter from '../components/HomeFooter.jsx';
+import styles from './upload.module.css';
 
-import useRegisterInput from '../components/hooks/useRegisterInput.jsx';
 
 export default function Upload({}) {
     //입력값, 유효성 검사, 입력값을 다루는 함수 묶어서 커스텀 훅으로 만들었습니다.
@@ -13,28 +17,29 @@ export default function Upload({}) {
         errors, //유효성 메세지
         isSubmitActive, //등록 버튼 활성화 여부
         onChange, //입력폼 onChange
-        register, //상품 등록
     ] = useRegisterInput();
 
     //이번에 배운 사실: 리액트 JSX는 객체를 {}표현식에 넣어도 그대로 출력할 수 없다.
     return (
         <>
-            <HomeHeader />
-            <main className="with-header registMain">
-                <div className="wrapper">
-                    <div className="headline">
+            <HomeHeader isHome={true}/>
+            <main className={`with-header ${styles.main}`}>
+                <div className={styles.wrapper}>
+                    <div className={styles.headline}>
                         <h1>게시글 쓰기</h1>
-                        <button className="button" onClick={register} disabled={!isSubmitActive}>
-                            등록
-                        </button>
+                        <Link href={`/article/${1}`}>
+                            <Button className={styles.button}>
+                                등록
+                            </Button>
+                        </Link>
                     </div>
                     <InputForm
                         label="제목"
                         name="name"
-                        value={values.description}
+                        value={values.name}
                         onChange={onChange}
                         placeholder="제목을 입력해 주세요."
-                        rows={10}
+                        rows={1}
                         validErrorMsg={errors.description}
                     />
                     <InputForm

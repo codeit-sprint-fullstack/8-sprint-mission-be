@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import productApi from '../api/ProductService.js';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 //유효성 검사 커스텀 훅
 function useInputValidation(values) {
@@ -101,7 +101,7 @@ function useRegisterInput() {
         }));
     };
 
-    const nav = useNavigate();
+    const router = useRouter();
 
     const register = async () => {
         //등록 시 name, description, price 항목 유효성 검사 후 오류메세지를 띄웁니다.
@@ -128,7 +128,7 @@ function useRegisterInput() {
 
         //리퀘스트에 성공하면 상품 상세 사이트 이동
         if (res) {
-            nav('/productdetail');
+            router.push('/productdetail');
         }
     };
 

@@ -32,23 +32,38 @@
     padding: 0;
 }
 
-.headline > div {
-    width: fit-content;
+.div {
     display: flex;
     gap: 12px;
+}
+
+.row{
+    flex-direction:  row;
+}
+
+.wide{
+    width: 100%;
+}
+
+.fit{
+    width: fit-content;
 }
 
 .title {
     flex-shrink: 0;
 }
 
+.between {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
 .searchBoxWide {
     display: flex;
     position: relative;
     align-items: center;
-    width: 0;
-    max-width: fit-content;
+    width: 100%;
 }
 
 .searchBoxDefault {

@@ -1,6 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+"use client"
+
+import { useState, useEffect } from 'react';
 import useAsync from '../../hooks/useAsync.jsx';
-import LocaleContext from '../../contexts/LocaleContext.js';
 
 import HomeHeader from '../../components/molecules/Header/HomeHeader.jsx';
 import HomeFooter from '../../components/molecules/Footer/HomeFooter.jsx';
@@ -10,6 +11,8 @@ import productApi from '../../api/ProductService.js';
 import { ArticleList, BestArticleList } from '../../components/molecules/Articles/ArticleList.jsx';
 
 import styles from './ArticlePage.module.css';
+import { useProvider } from '@/components/Provider/Provider.jsx';
+import ArticleHeadline from '@/components/molecules/Headline/ArticleHeadline.jsx';
 
 export default function Articles() {
     const [bestProducts, setBestProducts] = useState([]);
@@ -21,7 +24,7 @@ export default function Articles() {
     const [order, setOrder] = useState('recent');
     const [search, setSearch] = useState('');
 
-    const deviceType = useContext(LocaleContext);
+    const deviceType = useProvider();
 
     //화면 크기에 따라 다시 상품 목록을 받아옵니다.
     //목록 배열 스타일은 이번에는 CSS에서 관리하는 걸로 했습니다.
@@ -74,10 +77,10 @@ export default function Articles() {
                     </section>
 
                     <section className={`${styles.section} ${styles.common}`}>
-                        <Headline
+                        <ArticleHeadline
                             title="게시글"
                             registerName="글쓰기"
-                            registerUrl="/uploadArticle"
+                            registerUrl="/articles/upload"
                             order={order}
                             onChangeOrder={handleDropdown}
                             search={search}

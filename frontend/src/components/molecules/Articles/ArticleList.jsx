@@ -1,7 +1,8 @@
-import heartIcon from '/images/items/ic_heart.svg';
-import notebook from '/images/articles/notebook.png';
-import userPanda from '/images/articles/userPanda.svg';
-import bestIcon from '/images/articles/bestIcon.svg';
+import Image from 'next/image';
+import heartIcon from '../../../../public/images/items/ic_heart.svg';
+import notebook from './images/notebook.png';
+import userPanda from './images/userPanda.svg';
+import bestIcon from './images/bestIcon.svg';
 
 import article_st from './Article.module.css';
 import list_st from './ArticleList.module.css';
@@ -24,16 +25,16 @@ function Article({ data }) {
             </div>
             <div className={article_st.detail}>
                 <div>
-                    <img className={article_st.userIcon} src={userIcon} />
+                    <Image className={article_st.userIcon} src={userIcon} alt='userIcon'/>
                     <p className={article_st.username}>{userName}</p>
                     <p className={article_st.date}>{uploadDate}</p>
                 </div>
                 <div className={article_st.favoriteCnt}>
-                    <img src={heartIcon} />
+                    <Image src={heartIcon} alt='heartIcon'/>
                     <p>{favoriteCnt > 9999 ? '9999+' : favoriteCnt}</p>
                 </div>
             </div>
-            <div class={article_st.divider}></div>
+            <div className={article_st.divider}></div>
         </div>
     );
 }
@@ -52,7 +53,7 @@ function BestArticle({ data }) {
         <div className={article_st.bestArticle}>
             <div className={article_st.titleDiv}>
                 <div className={article_st.bestTag}>
-                    <img src={bestIcon} />
+                    <Image src={bestIcon} alt='bestIcon'/>
                     <p>Best</p>
                 </div>
                 <div className={article_st.headline}>
@@ -64,7 +65,7 @@ function BestArticle({ data }) {
                 <div>
                     <p className={article_st.username}>{userName}</p>
                     <div className={article_st.favoriteCnt}>
-                        <img src={heartIcon} />
+                        <Image src={heartIcon} alt='heartIcon'/>
                         <p>{favoriteCnt > 9999 ? '9999+' : favoriteCnt}</p>
                     </div>
                 </div>
@@ -105,7 +106,7 @@ export function ArticleList({}) {
     return (
         <ul className={list_st.columList}>
             {mockList.map((data) => (
-                <li>
+                <li key={mockList.indexOf(data)}>
                     <Article data={data} />
                 </li>
             ))}
@@ -117,7 +118,7 @@ export function BestArticleList({}) {
     return (
         <ul className={list_st.rowList}>
             {mockList.map((data) => (
-                <li>
+                <li key={mockList.indexOf(data)}>
                     <BestArticle data={data} />
                 </li>
             ))}

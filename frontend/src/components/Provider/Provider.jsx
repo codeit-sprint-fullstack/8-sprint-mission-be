@@ -16,6 +16,9 @@ export function Provider({children}){
 
     // 창 크기 변경 감지
     useEffect(() => {
+        const newType = getDeviceType(window.innerWidth);
+        setDeviceType((prev) => (prev !== newType ? newType : prev));
+
         const handleResize = () => {
             const newType = getDeviceType(window.innerWidth);
             setDeviceType((prev) => (prev !== newType ? newType : prev));
