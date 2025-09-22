@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Articledata } from "./mockArticles.js";
+import { Freeboarddata } from "./mockArticles.js";
 import { Commentdata } from "./mockComments.js";
 
 const prisma = new PrismaClient();
@@ -7,11 +7,11 @@ const prisma = new PrismaClient();
 async function main() {
   // 기존 데이터 삭제
   await prisma.comment.deleteMany();
-  await prisma.article.deleteMany();
+  await prisma.freeboard.deleteMany();
 
   // 목 데이터 삽입
-  await prisma.article.createMany({
-    data: Articledata,
+  await prisma.freeboard.createMany({
+    data: Freeboarddata,
     skipDuplicates: true,
   });
   await prisma.comment.createMany({

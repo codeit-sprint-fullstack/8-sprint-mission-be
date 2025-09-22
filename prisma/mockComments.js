@@ -6,7 +6,7 @@ export const Commentdata = [
     isDeleted: false,
     createdAt: new Date("2025-09-01T11:00:00Z"),
     updatedAt: new Date("2025-09-01T11:00:00Z"),
-    articleId: "a1",
+    freeboardId: "a1",
   },
   {
     id: "c2",
@@ -15,7 +15,7 @@ export const Commentdata = [
     isDeleted: false,
     createdAt: new Date("2025-09-02T10:00:00Z"),
     updatedAt: new Date("2025-09-02T10:00:00Z"),
-    articleId: "a2",
+    freeboardId: "a2",
   },
   {
     id: "c3",
@@ -24,7 +24,7 @@ export const Commentdata = [
     isDeleted: false,
     createdAt: new Date("2025-09-03T15:00:00Z"),
     updatedAt: new Date("2025-09-03T15:00:00Z"),
-    articleId: "a3",
+    freeboardId: "a3",
   },
   {
     id: "c4",
@@ -33,7 +33,7 @@ export const Commentdata = [
     isDeleted: false,
     createdAt: new Date("2025-09-04T12:00:00Z"),
     updatedAt: new Date("2025-09-04T12:00:00Z"),
-    articleId: "a4",
+    freeboardId: "a4",
   },
   {
     id: "c5",
@@ -42,6 +42,6 @@ export const Commentdata = [
     isDeleted: false,
     createdAt: new Date("2025-09-05T09:00:00Z"),
     updatedAt: new Date("2025-09-05T09:00:00Z"),
-    articleId: "a5",
+    freeboardId: "a5",
   },
 ];

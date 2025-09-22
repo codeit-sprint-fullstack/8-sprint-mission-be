@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Article {
+model Freeboard {
   id          String @id @default(uuid())
   title       String
   content     String
@@ -35,6 +35,6 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String?
+  freeboard   Freeboard? @relation(fields: [freeboardId], references: [id], onDelete: Cascade)
+  freeboardId String?
 }

@@ -64,7 +64,7 @@ app.get(
 );
 
 app.post(
-  "/freeboard",
+  "/freeboard/write",
   asyncHandler(async (req, res) => {
     const articles = await prisma.article.create({
       data: req.body,
@@ -74,7 +74,7 @@ app.post(
 );
 
 app.patch(
-  "/freeboard/:id",
+  "/freeboard/edit",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const article = await prisma.article.update({
@@ -98,7 +98,7 @@ app.delete(
 
 // comment API
 app.get(
-  "/comments",
+  "/freeboard/:id/comments",
   asyncHandler(async (req, res) => {
     const { offset = 0, limit = 5, order = "newest" } = req.query;
     let orderBy;
@@ -119,19 +119,19 @@ app.get(
   })
 );
 
-app.get(
-  "/comments/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const comments = await prisma.comment.findUniqueOrThrow({
-      where: { id },
-    });
-    res.send(comments);
-  })
-);
+// app.get(
+//   "/comments/:id",
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const comments = await prisma.comment.findUniqueOrThrow({
+//       where: { id },
+//     });
+//     res.send(comments);
+//   })
+// );
 
 app.post(
-  "/comments",
+  "/freeboard/:id/comments",
   asyncHandler(async (req, res) => {
     const comments = await prisma.comment.create({
       data: req.body,
@@ -141,7 +141,7 @@ app.post(
 );
 
 app.patch(
-  "/comments/:id",
+  "/freeboard/:id/comment",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const comment = await prisma.comment.update({
@@ -153,7 +153,7 @@ app.patch(
 );
 
 app.delete(
-  "/comments/:id",
+  "/freeboard/:id/comment",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     await prisma.comment.delete({

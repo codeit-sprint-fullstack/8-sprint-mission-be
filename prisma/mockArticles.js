@@ -1,4 +1,4 @@
-export const Articledata = [
+export const Freeboarddata = [
   {
     id: "a1",
     title: "첫 번째 게시글",
