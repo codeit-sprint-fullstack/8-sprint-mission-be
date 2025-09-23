@@ -52,4 +52,4 @@ Prisma, Postgresql, Express 기반으로 프로젝트를 진행했습니다.
 
 ## 배포 링크
 
-https://codeitsprintmission.onrender.com/health
+https://codeitsprintmission.onrender.com/api-docs
