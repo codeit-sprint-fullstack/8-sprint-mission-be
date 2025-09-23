@@ -2,8 +2,12 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+
+// Swagger Setting
+import { specs, swaggerUiOptions } from './swaggerOptions.js';
 
 // 라우터 import
 import productRoutes from './routes/productRoutes.js';
@@ -27,6 +31,9 @@ app.use(morgan('combined'));
 app.use('/products', productRoutes);
 app.use('/articles', articleRoutes);
 app.use('/comments', commentRoutes);
+
+// Swagger API Docs Setting
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerUiOptions));
 
 // /health 경로 처리
 app.get('/health', (req, res) => {
