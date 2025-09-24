@@ -14,11 +14,11 @@ datasource db {
 }
 
 model Freeboard {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   title       String
   content     String
-  user_name   String
-  heart_count Int
+  user_name   String?
+  heart_count Int?
 
   isDeleted Boolean
   createdAt DateTime  @default(now())
@@ -27,9 +27,9 @@ model Freeboard {
 }
 
 model Comment {
-  id        String @id @default(uuid())
+  id        String  @id @default(uuid())
   content   String
-  user_name String
+  user_name String?
 
   isDeleted Boolean
   createdAt DateTime @default(now())

@@ -69,7 +69,10 @@ app.post(
   "/freeboard",
   asyncHandler(async (req, res) => {
     const freeboards = await prisma.freeboard.create({
-      data: req.body,
+      data: {
+        ...req.body,
+        isDeleted: false,
+      },
     });
     res.status(201).send(freeboards);
   })
@@ -142,6 +145,7 @@ app.post(
       data: {
         ...req.body,
         freeboardId: id,
+        isDeleted: false,
       },
     });
     res.status(201).send(comments);
