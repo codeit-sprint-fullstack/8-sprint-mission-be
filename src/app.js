@@ -63,5 +63,13 @@ app.use((err, req, res, next) => {
   });
 });
 
+// app 시작 지점
+console.log(
+  '[BOOT] DB HOST/PORT =',
+  new URL(process.env.DATABASE_URL).host,
+  new URL(process.env.DATABASE_URL).port,
+);
+// 기대: aws-1-ap-southeast-1.pooler.supabase.com 6543
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server on ${PORT}`));
