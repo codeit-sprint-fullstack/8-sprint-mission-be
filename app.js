@@ -103,7 +103,7 @@ app.delete(
 
 // comment API
 app.get(
-  "/comments",
+  "/freeboard/:id/comments",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { offset = 0, limit = 5, order = "newest" } = req.query;
@@ -138,7 +138,7 @@ app.get(
 // );
 
 app.post(
-  "/comments",
+  "/freeboard/:id/comments",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const comments = await prisma.comment.create({
