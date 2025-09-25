@@ -35,7 +35,7 @@ function asyncHandler(handler) {
 app.get(
   "/freeboard",
   asyncHandler(async (req, res) => {
-    const { offset = 0, limit = 5, order = "newest" } = req.query;
+    const { cursor, limit = 5, order = "newest" } = req.query;
     let orderBy;
     switch (order) {
       case "newest":
@@ -45,11 +45,18 @@ app.get(
         orderBy = { createdAt: "asc" };
         break;
     }
+
     const freeboards = await prisma.freeboard.findMany({
       orderBy,
-      skip: parseInt(offset),
       take: parseInt(limit),
+      ...(cursor
+        ? {
+            skip: 1,
+            cursor: { id: cursor },
+          }
+        : {}),
     });
+
     res.send(freeboards);
   })
 );
@@ -106,7 +113,7 @@ app.get(
   "/freeboard/:id/comments",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { offset = 0, limit = 5, order = "newest" } = req.query;
+    const { cursor, limit = 5, order = "newest" } = req.query;
     let orderBy;
     switch (order) {
       case "newest":
@@ -116,12 +123,19 @@ app.get(
         orderBy = { createdAt: "asc" };
         break;
     }
+
     const comments = await prisma.comment.findMany({
       where: { freeboardId: id },
       orderBy,
-      skip: parseInt(offset),
       take: parseInt(limit),
+      ...(cursor
+        ? {
+            skip: 1,
+            cursor: { id: cursor },
+          }
+        : {}),
     });
+
     res.send(comments);
   })
 );
