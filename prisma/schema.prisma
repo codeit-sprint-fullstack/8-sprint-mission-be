@@ -9,9 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL") // 런타임: Pooler(6543)
-  directUrl = env("DIRECT_URL") // 마이그/시드/Studio: Direct(5432)
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Product {
