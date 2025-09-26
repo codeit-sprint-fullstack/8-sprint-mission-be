@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "nodemon src/app.js",
     "start": "node src/app.js",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "reset": "node prisma/reset.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
