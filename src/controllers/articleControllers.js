@@ -10,6 +10,7 @@ export const createArticle = async (req, res, next) => {
 
     const article = await prisma.article.create({
       data: { title, content },
+      select: { id: true, title: true, content: true, like: true, createdAt: true },
     });
 
     res.status(201).json({ success: true, data: article });
@@ -50,7 +51,7 @@ export const getArticle = async (req, res, next) => {
 
     const articles = await prisma.article.findMany({
       where: whereCondition,
-      select: { id: true, title: true, content: true, createdAt: true },
+      select: { id: true, title: true, content: true, like: true, createdAt: true },
       skip: offset,
       take: limit,
       orderBy: {
@@ -92,7 +93,7 @@ export const getArticleById = async (req, res, next) => {
     const { id } = req.params;
     const article = await prisma.article.findUnique({
       where: { id },
-      select: { id: true, title: true, content: true, createdAt: true },
+      select: { id: true, title: true, content: true, like: true, createdAt: true },
     });
 
     if (!article) {
@@ -117,7 +118,7 @@ export const updateArticle = async (req, res, next) => {
     const article = await prisma.article.update({
       where: { id },
       data: { title, content },
-      select: { id: true, title: true, content: true, createdAt: true },
+      select: { id: true, title: true, content: true, like: true, createdAt: true },
     });
     res.status(200).json({ success: true, data: article });
   } catch (error) {
