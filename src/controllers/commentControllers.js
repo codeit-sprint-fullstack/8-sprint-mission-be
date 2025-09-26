@@ -2,13 +2,13 @@ import prisma from '../lib/prisma.js';
 
 export const createComment = async (req, res, next) => {
   try {
-    const { content } = req.body;
+    const { content, articleId } = req.body;
 
     if (!content) {
       return res.status(400).json({ success: false, message: 'Content is required' });
     }
 
-    const comment = await prisma.comment.create({ data: { content } });
+    const comment = await prisma.comment.create({ data: { content, articleId } });
     res.status(201).json({ success: true, data: comment });
   } catch (error) {
     next(error);
