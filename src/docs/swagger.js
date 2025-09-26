@@ -51,6 +51,8 @@
  *           type: string
  *         content:
  *           type: string
+ *          like:
+ *            type: int
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -58,6 +60,7 @@
  *         id: "art_123"
  *         title: "판다마켓 공지"
  *         content: "신규 기능이 추가되었습니다."
+ *         like: 3
  *         createdAt: "2025-09-23T10:00:00.000Z"
  *     Comment:
  *       type: object
@@ -66,6 +69,8 @@
  *           type: string
  *         content:
  *           type: string
+ *          like:
+ *            type: int
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -298,6 +303,7 @@
  *                 - id: "art_123"
  *                   title: "판다마켓 공지"
  *                   content: "신규 기능이 추가되었습니다."
+ *                   like: 3
  *                   createdAt: "2025-09-23T10:00:00.000Z"
  *               pagination:
  *                 currentPage: 1
@@ -335,6 +341,7 @@
  *               data:
  *                 id: "art_123"
  *                 title: "판다마켓 공지"
+ *                 like: 3
  *                 content: "신규 기능이 추가되었습니다."
  *                 createdAt: "2025-09-23T10:00:00.000Z"
  */
@@ -361,6 +368,7 @@
  *                 id: "art_123"
  *                 title: "판다마켓 공지"
  *                 content: "신규 기능이 추가되었습니다."
+ *                 like: 3
  *                 createdAt: "2025-09-23T10:00:00.000Z"
  *   patch:
  *     tags: [Articles]
