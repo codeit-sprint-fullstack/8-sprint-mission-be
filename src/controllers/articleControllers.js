@@ -24,6 +24,7 @@ export const getArticle = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const searchQuery = req.query.q;
+    const sort = req.query.sort;
 
     const validPage = Math.max(1, page);
 
@@ -49,14 +50,17 @@ export const getArticle = async (req, res, next) => {
         }
       : {};
 
+    let orderBy = { createdAt: 'desc' };
+
+    if (sort === 'recent') orderBy = { createdAt: 'desc' };
+    if (sort === 'like') orderBy = { like: 'desc' };
+
     const articles = await prisma.article.findMany({
       where: whereCondition,
       select: { id: true, title: true, content: true, like: true, createdAt: true },
       skip: offset,
       take: limit,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy,
     });
 
     const totalCount = await prisma.article.count({
@@ -70,6 +74,7 @@ export const getArticle = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: articles,
+      orderBy,
       pagination: {
         currentPage: validPage,
         totalPages,

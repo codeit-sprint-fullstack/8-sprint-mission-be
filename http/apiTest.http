@@ -69,6 +69,9 @@ GET {{base_url}}/articles?page=1&limit=3
 ### 3.5 아티클 검색 + 페이지네이션
 GET {{base_url}}/articles?q=카메라&page=1&limit=2
 
+###
+GET {{base_url}}/articles?sort=like
+
 ### 3.6 특정 아티클 조회
 GET {{base_url}}/articles/{{articleId}}
 
