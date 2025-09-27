@@ -6,22 +6,31 @@ const router = Router();
 // 게시글 목록 조회
 router.get("/articles", articleController.getArticles);
 
+// 최고 인기 게시글 목록 조회
+router.get("/best-articles", articleController.getBestArticles);
+
 // 게시글 상세 조회
-router.get("/article/:id", articleController.getArticleById);
+router.get("/articles/:id", articleController.getArticleById);
 
 // 게시글 등록
-router.post("/article", articleController.createArticle);
+router.post("/articles", articleController.createArticle);
 
 // 게시글 수정
-router.patch("/article/:id", articleController.updateArticle);
+router.patch("/articles/:id", articleController.updateArticle);
 
 // 게시글 삭제
-router.delete("/article/:id", articleController.deleteArticle);
+router.delete("/articles/:id", articleController.deleteArticle);
 
 // 게시글 댓글 등록
-router.post("/article/:articleId/comments", commentController.createArticleComment);
+router.post(
+  "/articles/:articleId/comments",
+  commentController.createArticleComment
+);
 
 // 게시글 댓글 목록 조회
-router.get("/article/:articleId/comments", commentController.getArticleComments);
+router.get(
+  "/articles/:articleId/comments",
+  commentController.getArticleComments
+);
 
 export default router;

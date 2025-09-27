@@ -2,14 +2,23 @@ import prisma from "../config/database.js";
 
 const getProducts = async (req, res, next) => {
   try {
-    const { page = 1, pageSize = 10, orderBy = "recent", keyword = "" } = req.query;
+    const {
+      page = 1,
+      pageSize = 10,
+      orderBy = "recent",
+      keyword = "",
+    } = req.query;
     const skip = (page - 1) * pageSize;
     const take = Number(pageSize);
     // Prisma 정렬 옵션 설정
-    const sortOption = orderBy === "recent" ? { createdAt: "desc" } : { createdAt: "asc" };
+    const sortOption =
+      orderBy === "recent" ? { createdAt: "desc" } : { createdAt: "asc" };
     const searchQuery = keyword
       ? {
-          $or: [{ name: { $regex: keyword, $options: "i" } }, { description: { $regex: keyword, $options: "i" } }],
+          $or: [
+            { name: { $regex: keyword, $options: "i" } },
+            { description: { $regex: keyword, $options: "i" } },
+          ],
         }
       : {};
 

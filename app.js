@@ -17,8 +17,16 @@ app.set("port", process.env.PORT || 8000);
 // CORS 설정
 app.use(
   cors({
-    origin: [process.env.CORS_ORIGIN_DEV, process.env.CORS_ORIGIN_PROD],
+    origin: [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      process.env.CORS_ORIGIN_DEV,
+      process.env.CORS_ORIGIN_PROD,
+    ], // undefined 값 제거
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    optionsSuccessStatus: 200, // IE11 지원을 위해
   })
 );
 
