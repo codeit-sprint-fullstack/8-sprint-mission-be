@@ -15,8 +15,8 @@ import { useProvider } from '@/components/Provider/Provider.jsx';
 import ArticleHeadline from '@/components/molecules/Headline/ArticleHeadline.jsx';
 
 export default function Articles() {
-    const [bestProducts, setBestProducts] = useState([]);
-    const [commonProducts, setCommonProducts] = useState([]);
+    const [bestArticles, setBestArticles] = useState([]);
+    const [commonArticles, setCommonArticles] = useState([]);
 
     //삼화 미션 - 커스텀 훅 만들기 (GET 리퀘스트 오류, 지연 처리 훅)
     const [isLoading, loadingError, getItemsAsync] = useAsync(productApi.getProductList);
@@ -38,7 +38,7 @@ export default function Articles() {
 
     const handleBestProductLoad = async () => {
         const res1 = await productApi.getProductList(1, 4, 'favorite');
-        setBestProducts(res1);
+        setBestArticles(res1);
     };
 
     const handleCommonProductLoad = async (deviceType, pageIdx, order, search) => {
@@ -50,7 +50,7 @@ export default function Articles() {
         //페이지 로딩이 끝날 때까지 페이지 이동이 안되도록 막았습니다.
         const res = await getItemsAsync(pageIdx, setPageSize[deviceType], order, search);
         if (!res) return;
-        setCommonProducts(res);
+        setCommonArticles(res);
     };
 
     const handlePagechange = (idx) => {
@@ -67,7 +67,7 @@ export default function Articles() {
 
     return (
         <>
-            <HomeHeader />
+            <HomeHeader isHome={true}/>
             <main className={'with-header ' + styles.main}>
                 <div className={styles.wrapper}>
                     <section className={`${styles.section} ${styles.best}`}>

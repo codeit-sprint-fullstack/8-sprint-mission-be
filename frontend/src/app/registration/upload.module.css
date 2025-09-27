@@ -75,3 +75,9 @@
     width: 22px;
     height: 24px;
 }
+
+.inputDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}

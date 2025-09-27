@@ -1,15 +1,14 @@
 .inputForm {
     display: flex;
     flex-direction: column;
-    margin-bottom: 32px;
 }
 
 .inputForm label {
     margin-bottom: 16px;
-
     text-align: left;
-    font-size: 18px;
-    line-height: 26px;
+
+    color: var(--Cool-Gray-900);
+    font: var(--font-18-bold);
 }
 
 .inputForm .inputPlace {

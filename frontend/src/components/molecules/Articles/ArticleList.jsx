@@ -1,15 +1,18 @@
 import Image from 'next/image';
 import heartIcon from '../../../../public/images/items/ic_heart.svg';
-import notebook from './images/notebook.png';
-import userPanda from './images/userPanda.svg';
+import userPanda from '@/images/userPanda.svg';
 import bestIcon from './images/bestIcon.svg';
 
 import article_st from './Article.module.css';
 import list_st from './ArticleList.module.css';
 
+//bg 이미지를 url로 넘기려면, next (ssr)에서는 절대 경로를 사용하는 방법 밖에 없네는 것 같아요.
+const notebook = '/images/articles/notebook.png';
+
 function Article({ data }) {
     const { title, mainImg, userIcon, userName, uploadDate, favoriteCnt } = data;
 
+    //bg 이미지를 url로 넘기려면, next (ssr)에서는 절대 경로를 사용하는 방법 밖에 없네는 것 같아요.
     const mainImgStyle = {
         backgroundImage: `url(${mainImg})`,
         backgroundRepeat: 'no-repeat',

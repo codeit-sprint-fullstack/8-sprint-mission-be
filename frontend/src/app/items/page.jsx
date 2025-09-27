@@ -63,7 +63,7 @@ export default function Items() {
 
     return (
         <>
-            <HomeHeader />
+            <HomeHeader isHome={true}/>
             <main className={`with-header ${styles.itemsMain}`}>
                 <div className={styles.wrapper}>
                     {/* 베스트 상품 표시를 임시로 막았습니다. - 요구사항 */}

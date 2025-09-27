@@ -18,11 +18,15 @@
 /* Mobile styles */
 :root {
     /* cool Gray */
-    --Cool-Gray-50: #f9fafb;
-    --Cool-Gray-200: #e5e7eb;
+    --Cool-Gray-900: #111827;
     --Cool-Gray-800: #1f2937;
+    --Cool-Gray-500: #6B7280;
+    --Cool-Gray-400: #9CA3AF;
+    --Cool-Gray-200: #e5e7eb;
+    --Cool-Gray-50: #f9fafb;
 
     /* Secondary */
+    --Secondary-800: #1F2937;
     --Secondary-600: #4b5563;
     --Secondary-500: #6b7280;
     --Secondary-400: #9ca3af;
@@ -151,6 +155,7 @@ li {
 .with-header {
     margin-top: var(--header-height);
     padding: 0;
+    overflow: auto;
 }
 
 header div {

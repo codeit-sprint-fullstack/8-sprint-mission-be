@@ -1,0 +1,195 @@
+/* mobile */
+.frame {
+    width: 100%;
+    height: fit-content;
+
+    margin: 24px auto 319px;
+    padding: 0 16px;
+}
+
+.headline {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.titleDiv {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.title{
+    font: var(--font-20-bold);
+}
+
+.infoDiv {
+    width: 100%;
+    height: fit-content;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.userDiv {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.articleUserProfile{
+    width: 40px;
+    height: 40px;
+}
+
+.userNameDiv {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.userName {
+    color: var(--Secondary-600);
+    font: var(--font-14-medium);
+}
+
+.date {
+    color: var(--Cool-Gray-400);
+    font: var(--font-14-regular);
+}
+
+.dividerV {
+    width: 0;
+    height: 34px;
+    border-right: 1px solid var(--Cool-Gray-200);
+    margin: 0 32px;
+}
+
+.dividerH {
+    width: 100%;
+    border-top: 1px solid var(--Cool-Gray-200);
+}
+
+.favoriteDiv {
+    width: fit-content;
+    height: 40px;
+    padding: 4px 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    border-radius: 35px;
+    border: 1px solid var(--Secondary-200, #E5E7EB);
+}
+
+.heartIcon {
+    width: 32px;
+    height: 32px;
+}
+
+.favoriteCntText {
+    color: var(--Cool-Gray-500);
+    font: var(--font-16-medium);
+}
+
+.content {
+    margin: 24px 0 36px;
+    color: var(--Secondary-800);
+    font: var(--font-18-regular);
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    padding: 12px 23px;
+    border-radius: 8px;
+}
+
+.commnetForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.commentList {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.comment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background-color: #FCFCFC;
+}
+
+.commentContentDiv {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.commentInfoDiv {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.commentInfoDiv > div {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.commentUserProfile {
+    width: 32px;
+    height: 32px;   
+}
+
+.commentUserName {
+    color: var(--Secondary-600);
+    font: var(--font-12-regular);
+}
+
+.commentDate {
+    color: var(--Secondary-400);
+    font: var(--font-12-regular);
+}
+
+/* tablet */
+@media (min-width: 744px) {
+    .frame {
+        width: 100%;
+        height: fit-content;
+
+        margin: 34px auto 193px;
+        padding: 0 24px;
+    }
+}
+
+/* desktop */
+@media (min-width: 1200px) {
+    .frame {
+        width: 100%;
+        max-width: 1200px;
+        height: fit-content;
+
+        margin: 34px auto 193px;
+        padding: 0;
+    }
+}

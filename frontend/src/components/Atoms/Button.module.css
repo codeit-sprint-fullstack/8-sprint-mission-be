@@ -4,7 +4,6 @@
     border-radius: 8px;
     padding: 12px 23px;
 
-    background-color: var(--brand-blue);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -13,10 +12,9 @@
     border: none;
     outline: none;
     box-shadow: none;
-    cursor: pointer;
 }
 
-.button:hover {
+.button.default:hover {
     background-color: #1967d6;
 }
 
@@ -28,4 +26,13 @@
     background-color: #9ca3af;
     cursor: default;
     pointer-events: none;
+}
+
+.default {
+    background-color: var(--brand-blue);
+    cursor: pointer;
+}
+
+.disabled{
+    background-color: var(--Cool-Gray-400);
 }

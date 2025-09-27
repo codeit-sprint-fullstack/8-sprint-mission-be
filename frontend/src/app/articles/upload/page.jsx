@@ -1,60 +1,9 @@
 "use client"
-import Link from 'next/link';
-import Button from '@/components/Atoms/Button';
-import HomeHeader from '@/components/molecules/Header/HomeHeader';
-import HomeFooter from '@/components/molecules/Footer/HomeFooter';
-import useRegisterInput from '@/hooks/useRegisterInput';
-import InputForm from '@/components/molecules/Articles/InputForm/InputForm';
 
-import styles from './upload.module.css';
-
+import ArticleForm from "@/components/pages/ArticleForm/AticleForm"
 
 export default function Upload({}) {
-    //입력값, 유효성 검사, 입력값을 다루는 함수 묶어서 커스텀 훅으로 만들었습니다.
-    //유효성 검사 커스텀 훅(요구사항)은 이 커스텀 훅 안에 있습니다.
-    const [
-        values, //입력값
-        errors, //유효성 메세지
-        isSubmitActive, //등록 버튼 활성화 여부
-        onChange, //입력폼 onChange
-    ] = useRegisterInput();
-
-    //이번에 배운 사실: 리액트 JSX는 객체를 {}표현식에 넣어도 그대로 출력할 수 없다.
-    return (
-        <>
-            <HomeHeader isHome={true}/>
-            <main className={`with-header ${styles.main}`}>
-                <div className={styles.wrapper}>
-                    <div className={styles.headline}>
-                        <h1>게시글 쓰기</h1>
-                        <Link href={`/article/${1}`}>
-                            <Button className={styles.button}>
-                                등록
-                            </Button>
-                        </Link>
-                    </div>
-                    <InputForm
-                        label="제목"
-                        name="name"
-                        value={values.name}
-                        onChange={onChange}
-                        placeholder="제목을 입력해 주세요."
-                        rows={1}
-                        validErrorMsg={errors.description}
-                    />
-                    <InputForm
-                        label="내용"
-                        name="description"
-                        value={values.description}
-                        onChange={onChange}
-                        placeholder="내용을 입력해 주세요."
-                        rows={10}
-                        validErrorMsg={errors.description}
-                    />
-                    <p>이미지 인풋 구현하기</p>
-                </div>
-            </main>
-            <HomeFooter />
-        </>
-    );
+  return (
+    <ArticleForm/>
+  );
 }
