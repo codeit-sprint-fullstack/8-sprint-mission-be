@@ -1,0 +1,12 @@
+.page{
+    height: fit-content;
+    min-height: calc(100vh - var(--header-height));
+}
+
+.withHeader {
+    height: fit-content;
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    margin-top: var(--header-height);
+    padding: 0;
+    overflow: auto;
+}

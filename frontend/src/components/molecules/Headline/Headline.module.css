@@ -113,9 +113,12 @@
     font: var(--font-16-semmibold);
     padding: 12px 23px;
     border-radius: 8px;
+
+    white-space: nowrap;
     flex-shrink: 0;
 }
 
 .button * {
+    white-space: nowrap;
     flex-shrink: 0;
 }

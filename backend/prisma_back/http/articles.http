@@ -1,12 +1,16 @@
-GET http://localhost:3000/articles
+GET http://localhost:4000/articles
 
 ###
 
-GET http://localhost:3000/articles?page=1&pageSize=2
+GET http://localhost:4000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
 
 ###
 
-POST http://localhost:3000/articles
+GET http://localhost:4000/articles?page=1&pageSize=2
+
+###
+
+POST http://localhost:4000/articles
 Content-Type: application/json
 
 {
@@ -18,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
+PATCH http://localhost:4000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
 Content-Type: application/json
 
 {
@@ -27,4 +31,10 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
+# DELETE http://localhost:4000/articles/733653fb-6a4d-4a0d-90ca-31de1072de91
+
+###
+
+GET http://localhost:4000/articles/9357bdc8-e8c5-43bf-a234-85d86d252145/comments
+
+###

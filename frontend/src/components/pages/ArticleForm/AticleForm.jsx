@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import MainFrame from '../../organism/mainFrame';
 import Button from '../../Atoms/Button';
-import useRegisterInput from '@/hooks/useRegisterInput';
+import useArticle from '@/hooks/useArticle';
 import InputForm from '../../molecules/Articles/InputForm/InputForm';
 
 import styles from './ArticleForm.module.css';
@@ -16,38 +16,44 @@ export default function ArticleForm({}) {
         errors, //유효성 메세지
         isSubmitActive, //등록 버튼 활성화 여부
         onChange, //입력폼 onChange
-    ] = useRegisterInput();
+        register
+    ] = useArticle();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(isSubmitActive) {
+            register(values);
+        }
+    }
 
     //이번에 배운 사실: 리액트 JSX는 객체를 {}표현식에 넣어도 그대로 출력할 수 없다.
     return (
         <MainFrame>
-            <form className={styles.wrapper}>
+            <form className={styles.wrapper} onSubmit={handleSubmit}>
                 <div className={styles.headline}>
                     <h1>게시글 쓰기</h1>
-                    <Link href={`/article/${1}`}>
-                        <Button className={styles.button}>
-                            등록
-                        </Button>
-                    </Link>
+                    <Button className={styles.button} disabled={!isSubmitActive}>
+                        등록
+                    </Button>
                 </div>
                 <div className={styles.inputDiv}>
                     <InputForm
                         label="제목"
-                        name="name"
-                        value={values.name}
+                        name="title"
+                        value={values.title}
                         onChange={onChange}
                         placeholder="제목을 입력해 주세요."
                         rows={1}
-                        validErrorMsg={errors.description}
+                        validErrorMsg={errors.title}
                     />
                     <InputForm
                         label="내용"
-                        name="description"
-                        value={values.description}
+                        name="content"
+                        value={values.content}
                         onChange={onChange}
                         placeholder="내용을 입력해 주세요."
                         rows={10}
-                        validErrorMsg={errors.description}
+                        validErrorMsg={errors.content}
                     />
                 </div>
             </form>

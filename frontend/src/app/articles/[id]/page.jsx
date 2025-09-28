@@ -1,6 +1,9 @@
 "use client"
+
 //라이브러리
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { getArticle, getComments, createComment } from '@/api/ArticleSevice';
 
 //컴포넌트
 import MainFrame from '@/components/organism/mainFrame';
@@ -12,69 +15,15 @@ import moreImg from './ic_more.svg';
 import userPanda from '@/images/userPanda.svg';
 import heartIcon from './ic_heart.svg';
 import noComment from './ic_noComment.svg';
+import backIcon from './ic_back.svg';
 
 //스타일
 import styles from './articlePage.module.css';
 import InputForm from '@/components/molecules/Articles/InputForm/InputForm';
 import Button from '@/components/Atoms/Button';
-import { useState } from 'react';
+import useAsync from '@/hooks/useAsync';
 
 const notebook = '/images/articles/notebook.png';
-
-function Comment(){
-
-}
-
-const mockList = [
-    {
-        title: '맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?',
-        mainImg: notebook,
-        userIcon: userPanda,
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-        content: "제곧내",
-        favoriteCnt: 0,
-    },
-    {
-        title: '맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?',
-        mainImg: notebook,
-        userIcon: userPanda,
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-        content: "제곧내",
-        favoriteCnt: 10000,
-    },
-    {
-        title: '맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?',
-        mainImg: notebook,
-        userIcon: userPanda,
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-        content: "제곧내",
-        favoriteCnt: 0,
-    },
-];
-
-const commentList = [
-    // {   
-    //     id: 1,
-    //     content: "사용 기간이 어떻게 되시나요?",
-    //     userName: '총명한 판다',
-    //     uploadDate: '2024. 04. 16',
-    // },
-    // {
-    //     id: 2,
-    //     content: "사용 기간이 어떻게 되시나요?",
-    //     userName: '총명한 판다',
-    //     uploadDate: '2024. 04. 16',
-    // },
-    // {
-    //     id: 3,
-    //     content: "사용 기간이 어떻게 되시나요?",
-    //     userName: '총명한 판다',
-    //     uploadDate: '2024. 04. 16',
-    // }
-]
 
 function CommentList({list}) {
     return (
@@ -99,7 +48,7 @@ function CommentList({list}) {
                     <Image src={userPanda} alt='profile' className={styles.commentUserProfile}></Image>
                     <div>
                         <p className={styles.commentuserName}>{comment.userName}</p>
-                        <p className={styles.commentDate}>{comment.uploadDate}</p>
+                        <p className={styles.commentDate}>{comment.createdAt}</p>
                     </div>
                 </div>
                 <div className={styles.dividerH}></div>
@@ -108,11 +57,43 @@ function CommentList({list}) {
     )
 }
 
-export default function ArticlePage({id}){
-    const article = mockList.find(e=>e.id===id);
+export default function ArticlePage({}){
     const router = useRouter();
 
-    const [comment, setCommnet] = useState('');
+    const { id } = useParams();
+    const [article, setArticle] = useState({
+        title: '',
+        content: '',
+        createdAt: '',
+        userName: '',
+        favoriteCount: 0
+    });
+    const [commentInput, setCommnetInput] = useState('');
+    const [comments, setCommnets] = useState([]);
+
+    const [isLoading, error, write] = useAsync(createComment);
+
+    useEffect(()=>{
+        const handleLoad = async() => {
+            setArticle(await getArticle(id));
+            setCommnets(await getComments(id));
+        }
+        handleLoad();
+    }, []);
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        if(commentInput.length > 0 && !isLoading){
+            const body = {
+                content: commentInput,
+                userName: "댓글판다"
+            }
+            const res = await write(id, body);
+            console.log(res);
+            setCommnets([res, ...comments]);
+            setCommnetInput('');
+        }
+    }
 
     return(
         <MainFrame>
@@ -142,13 +123,13 @@ export default function ArticlePage({id}){
                             />
                             <div className={styles.userNameDiv}>
                                 <p className={styles.userName} >{article.userName}</p>
-                                <p className={styles.date}>{article.uploadDate}</p>
+                                <p className={styles.date}>{article.createdAt}</p>
                             </div>
                         </div>
                         <div className={styles.dividerV}></div>
                         <div className={styles.favoriteDiv}>
                             <Image src={heartIcon} alt='favoriteIcon' className={styles.heartIcon}/>
-                            <p className={styles.favoriteCntText}>{article.favoriteCnt}</p>
+                            <p className={styles.favoriteCntText}>{article.favoriteCount}</p>
                         </div>
                     </div>
                     <div className={styles.dividerH}></div>
@@ -156,31 +137,36 @@ export default function ArticlePage({id}){
                 <div className={styles.content}>
                     <p>{article.content}</p>
                 </div>
-                <form className={styles.commnetForm}>
+                <form className={styles.commnetForm} onSubmit={handleSubmit}>
                     <InputForm
                         label='댓글달기'
                         placeholder='댓글을 입력해주세요.'
                         rows={3}
-                        value={comment}
-                        onChange={(e)=>setCommnet(e.target.value)}
+                        value={commentInput}
+                        onChange={(e)=>setCommnetInput(e.target.value)}
                     />       
                     <div className={styles.buttonDiv}>
                         <Button 
                             className={styles.button} 
-                            disabled={comment.length <= 0}
+                            disabled={commentInput.length <= 0 || isLoading}
                         >
-                            등록
+                            {isLoading ? "등록 중.." : "등록"}
                         </Button> 
                     </div>
                 </form>
-                {commentList.length > 0 
-                    ? <CommentList list={commentList}/>
+                {comments.length > 0 
+                    ? <CommentList list={comments}/>
                     : <div className={styles.noComment}>
                         <Image src={noComment} alt="no_comment" className={styles.noCommentImg}/>
                         <p>아직 댓글이 없어요.<br/>지금 댓글을 달아보세요!</p>
                     </div>
                 }
-
+                <div className={styles.backButtonDiv}>
+                    <Button to='/articles' className={styles.backButton}>
+                        <p>목록으로 돌아가기</p>
+                        <Image src={backIcon} alt='back_button'/>
+                    </Button>
+                </div>
             </div>
         </MainFrame>
     )

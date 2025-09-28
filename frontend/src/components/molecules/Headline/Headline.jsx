@@ -37,9 +37,7 @@ function Headline({
             <div className={styles.title} style={titleGap}>
                 <p>{title}</p>
                 {isUseRegistBtn && design && (
-                    <Link href={registerUrl} className={styles.button}>
-                        {registerName}
-                    </Link>
+                    <Button to={registerUrl} className={styles.button}>{registerName}</Button>
                 )}
             </div>
             {isUseRegistBtn && (

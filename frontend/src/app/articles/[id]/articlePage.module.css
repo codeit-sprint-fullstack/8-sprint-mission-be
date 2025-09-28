@@ -175,7 +175,11 @@
     width: fit-content;
     height: fit-content;
 
-    margin: 40px auto 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 40px auto 0;
 }
 
 .noComment p{
@@ -187,6 +191,21 @@
 .noCommentImg {
     width: 140px;
     height: 140px;
+}
+
+.backButtonDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 48px auto 0;
+}
+
+.backButton{
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 14.5px 33.5px;
 }
 
 /* tablet */

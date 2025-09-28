@@ -58,9 +58,17 @@
 .userName {
     color: var(--Secondary-600);
     font: var(--font-14-regular);
+
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .date {
+    width: fit-content;
+
+    display: flex;
+    align-items: center;
+
     color: var(--Secondary-400);
     font: var(--font-14-regular);
 }
@@ -71,8 +79,9 @@
 }
 
 .favoriteCnt p {
-    width: 50px;
-    height: 26px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
     color: var(--Secondary-500);
     font: var(--font-16-regular);
 }
@@ -106,6 +115,9 @@
 .bestTag p {
     color: var(--white-FFFFFF);
     font: var(--font-16-semibold);
+
+    display: flex;
+    align-items: center;
 }
 
 .bestArticle {

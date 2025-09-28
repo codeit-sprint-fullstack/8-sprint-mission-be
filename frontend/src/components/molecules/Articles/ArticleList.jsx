@@ -5,12 +5,15 @@ import bestIcon from './images/bestIcon.svg';
 
 import article_st from './Article.module.css';
 import list_st from './ArticleList.module.css';
+import Link from 'next/link';
 
 //bg 이미지를 url로 넘기려면, next (ssr)에서는 절대 경로를 사용하는 방법 밖에 없네는 것 같아요.
 const notebook = '/images/articles/notebook.png';
 
 function Article({ data }) {
-    const { title, mainImg, userIcon, userName, uploadDate, favoriteCnt } = data;
+    const { title, userName, createdAt: uploadDate, favoriteCount } = data;
+    const mainImg = notebook;
+    const userIcon = userPanda;
 
     //bg 이미지를 url로 넘기려면, next (ssr)에서는 절대 경로를 사용하는 방법 밖에 없네는 것 같아요.
     const mainImgStyle = {
@@ -34,7 +37,7 @@ function Article({ data }) {
                 </div>
                 <div className={article_st.favoriteCnt}>
                     <Image src={heartIcon} alt='heartIcon'/>
-                    <p>{favoriteCnt > 9999 ? '9999+' : favoriteCnt}</p>
+                    <p>{favoriteCount > 9999 ? '9999+' : favoriteCount}</p>
                 </div>
             </div>
             <div className={article_st.divider}></div>
@@ -43,7 +46,9 @@ function Article({ data }) {
 }
 
 function BestArticle({ data }) {
-    const { title, mainImg, userName, uploadDate, favoriteCnt } = data;
+    const { title, userName, createdAt: uploadDate, favoriteCount } = data;
+
+    const mainImg = notebook;
 
     const mainImgStyle = {
         backgroundImage: `url(${mainImg})`,
@@ -66,10 +71,10 @@ function BestArticle({ data }) {
             </div>
             <div className={article_st.detail}>
                 <div>
-                    <p className={article_st.username}>{userName}</p>
+                    <p className={article_st.userName}>{userName}</p>
                     <div className={article_st.favoriteCnt}>
                         <Image src={heartIcon} alt='heartIcon'/>
-                        <p>{favoriteCnt > 9999 ? '9999+' : favoriteCnt}</p>
+                        <p>{favoriteCount > 9999 ? '9999+' : favoriteCount}</p>
                     </div>
                 </div>
                 <p className={article_st.date}>{uploadDate}</p>
@@ -78,51 +83,28 @@ function BestArticle({ data }) {
     );
 }
 
-const mockList = [
-    {
-        title: '맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?',
-        mainImg: notebook,
-        userIcon: userPanda,
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-        favoriteCnt: 0,
-    },
-    {
-        title: '맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?',
-        mainImg: notebook,
-        userIcon: userPanda,
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-        favoriteCnt: 10000,
-    },
-    {
-        title: '맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?',
-        mainImg: notebook,
-        userIcon: userPanda,
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-        favoriteCnt: 0,
-    },
-];
-
-export function ArticleList({}) {
+export function ArticleList({list=[]}) {
     return (
         <ul className={list_st.columList}>
-            {mockList.map((data) => (
-                <li key={mockList.indexOf(data)}>
-                    <Article data={data} />
+            {list.map((data) => (
+                <li key={data.id}>
+                    <Link href={`/articles/${data.id}`}>
+                        <Article data={data} />
+                    </Link>
                 </li>
             ))}
         </ul>
     );
 }
 
-export function BestArticleList({}) {
+export function BestArticleList({list=[]}) {
     return (
         <ul className={list_st.rowList}>
-            {mockList.map((data) => (
-                <li key={mockList.indexOf(data)}>
-                    <BestArticle data={data} />
+            {list.map((data) => (
+                <li key={data.id}>
+                    <Link href={`/articles/${data.id}`}>
+                        <BestArticle data={data} />
+                    </Link>
                 </li>
             ))}
         </ul>

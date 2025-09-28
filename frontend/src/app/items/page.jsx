@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import useAsync from '../../hooks/useAsync.jsx';
 
-import HomeHeader from '../../components/molecules/Header/HomeHeader.jsx';
-import HomeFooter from '../../components/molecules/Footer/HomeFooter.jsx';
+import MainFrame from '@/components/organism/mainFrame.jsx';
 import Headline from '../../components/molecules/Headline/Headline.jsx';
 import ProductList from '../../components/molecules/Items/ProductList.jsx';
 import PageButton from '../../components/molecules/Items/PageButton.jsx';
@@ -62,41 +61,37 @@ export default function Items() {
     };
 
     return (
-        <>
-            <HomeHeader isHome={true}/>
-            <main className={`with-header ${styles.itemsMain}`}>
-                <div className={styles.wrapper}>
-                    {/* 베스트 상품 표시를 임시로 막았습니다. - 요구사항 */}
-                    {false && (
-                        <section>
-                            <div className="">
-                                <p>베스트 상품</p>
-                            </div>
-                            <ProductList items={bestProducts} isCommon={false} />
-                        </section>
-                    )}
-
+        <MainFrame isHaveNav={true}>
+            <div className={styles.wrapper}>
+                {/* 베스트 상품 표시를 임시로 막았습니다. - 요구사항 */}
+                {false && (
                     <section>
-                        <Headline
-                            title="판매 중인 상품"
-                            registerName="상품 등록하기"
-                            registerUrl="/registration"
-                            order={order}
-                            onChangeOrder={handleDropdown}
-                            search={search}
-                            onChangeSearch={handleSearchInput}
-                        />
-                        {loadingError?.massege && <div>{loadingError.message}</div>}
-                        <ProductList items={commonProducts} isCommon={true}/>
-                        <PageButton
-                            pageIdx={pageIdx}
-                            onPageChange={handlePagechange}
-                            disabled={isLoading}
-                        />
+                        <div className="">
+                            <p>베스트 상품</p>
+                        </div>
+                        <ProductList items={bestProducts} isCommon={false} />
                     </section>
-                </div>
-            </main>
-            <HomeFooter />
-        </>
+                )}
+
+                <section>
+                    <Headline
+                        title="판매 중인 상품"
+                        registerName="상품 등록하기"
+                        registerUrl="/registration"
+                        order={order}
+                        onChangeOrder={handleDropdown}
+                        search={search}
+                        onChangeSearch={handleSearchInput}
+                    />
+                    {loadingError?.massege && <div>{loadingError.message}</div>}
+                    <ProductList items={commonProducts} isCommon={true}/>
+                    <PageButton
+                        pageIdx={pageIdx}
+                        onPageChange={handlePagechange}
+                        disabled={isLoading}
+                    />
+                </section>
+            </div>
+        </MainFrame>
     );
 }

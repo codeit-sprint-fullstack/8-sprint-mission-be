@@ -14,9 +14,7 @@ function Banner({ bgImg, btnUrl = '', btnText = '', children }) {
                 <div className={styles.content}>
                     {children}
                     {btnUrl && (
-                        <Link href={btnUrl}>
-                            <Button className={styles.button}>{btnText}</Button>
-                        </Link>
+                        <Button to={btnUrl} className={styles.button}>{btnText}</Button>
                     )}
                 </div>
                 <Image

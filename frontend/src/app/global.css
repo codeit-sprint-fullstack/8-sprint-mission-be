@@ -49,6 +49,7 @@
 
     /* Layout dimensions */
     --header-height: 70px;
+    --footer-height: 164px;
 
     /* ================= Font Families ================= */
     --font-family: 'Pretendard', sans-serif;
@@ -180,6 +181,7 @@ header p {
 }
 
 footer {
+    height: var(--footer-height);
     background-color: #111827;
     color: #9ca3af;
     font-size: 16px;

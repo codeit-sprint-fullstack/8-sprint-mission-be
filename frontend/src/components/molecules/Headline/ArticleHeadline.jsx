@@ -15,11 +15,6 @@ export default function ArticleHeadline({
     search = '',
     onChangeSearch = null,
 }) {
-    const titleGap = {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    }
 
     return (
         <div className={`${styles.headline} ${styles.columDiv}`}>
@@ -35,7 +30,7 @@ export default function ArticleHeadline({
                     <input
                         className={styles.searchInput}
                         name="search-input"
-                        placeholder="검색할 상품을 입력해주세요"
+                        placeholder="검색할 게시글을 입력해주세요"
                         value={search}
                         onChange={onChangeSearch}
                     />

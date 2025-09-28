@@ -116,7 +116,10 @@ app.get(
         const offset = (parseInt(page) - 1) * limit;
 
         const articles = await prisma.article.findMany({
-            //게시글에는 아직 favoriteCount가 없지만 일단 구현했습니다. (쿼리로 전달하지 말아주세요)
+            where: {
+                // 검색 쿼리
+                OR: [{ title: { contains: keyword } }, { content: { contains: keyword } }],
+            },
             orderBy: orderBy == 'recent' ? { createdAt: 'desc' } : { favoriteCount: 'desc' },
             skip: parseInt(offset),
             take: parseInt(limit),
@@ -242,11 +245,9 @@ app.get(
         const comments = await prisma.comment.findMany({
             where: { articleId },
             skip: lastId ? 1 : 0, //cursor 항목 제외
-            take: parseInt(limit),
-            cursor: lastId,
+            take: limit,
             ...(lastId && { cursor: { id: lastId } }), //lastId를 쿼리로 받으면 커서 사용.
 
-            //댓글에는 아직 favoriteCount가 없지만 일단 구현했습니다.(쿼리로 전달하지 말아주세요)
             orderBy: orderBy == 'recent' ? { createdAt: 'desc' } : { favoriteCount: 'desc' },
         });
         res.json(comments);

@@ -1,8 +1,3 @@
-.itemsMain {
-    width: 100%;
-    padding: 0;
-}
-
 .wrapper {
     width: 100%;
     height: fit-content;
@@ -13,9 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
 
-.itemsMain section {
     width: 100%;
     max-width: 1200px;
     display: flex;
