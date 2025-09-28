@@ -1,9 +1,9 @@
 // 리퀘스트 통신은 JSON 파일로 주고 받습니다.
 // Swagger에 등록된 API 문서를 참고하여 함수를 구현했습니다.
 
-const url = 'https://pandamarket-1.onrender.com/articles';
+const url = 'https://pandamarket-1.onrender.com:3001/articles';
 // const url = 'http://localhost:4000/articles';
-    
+
 async function resErrorCatch(res) {
     if (!res.ok) {
         //404, 500 에러는 리퀘스트 에러가 아니라 리스폰스 에러. fetch는 따로 처리해줘야 합니다.(axois는 같이 담아준다)
