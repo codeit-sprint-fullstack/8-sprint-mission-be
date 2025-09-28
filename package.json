@@ -15,8 +15,8 @@
         "build": "cd frontend && npm run build",
         "start": "concurrently \"npm run backstart\" \"npm run frontstart\"",
         "frontstart": "cd frontend && npm run start",
-        "backstrat": "cd backend/prisma_back && node app.js",
-        "deploy": "npm run setup && npm run migrate && npm run build"
+        "backstart": "cd backend/prisma_back && node app.js",
+        "deploy": "npm run setup && npm run migrate && npm run build"   
     },
     "repository": {
         "type": "git",
