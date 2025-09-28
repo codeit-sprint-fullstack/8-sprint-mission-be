@@ -14,7 +14,7 @@
         "seed": "cd backend/prisma_back & npm run seed",
         "build": "cd frontend & npm run build",
         "start": "cd frontend & npm run start",
-        "deploy": "npm run install & npm run migrate & npm run build"
+        "deploy": "npm run setup & npm run migrate & npm run build"
     },
     "repository": {
         "type": "git",
