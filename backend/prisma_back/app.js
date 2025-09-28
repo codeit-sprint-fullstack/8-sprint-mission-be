@@ -12,7 +12,7 @@ app.use(express.json());
 //cors 설정
 const corsOptions = {
     //origin: ['http://localhost:3000'], //프론트엔드 개발 로컬 주소
-    origin: ['https://loclahost:5432'] //render 배포 주소
+    origin: ['https://pandamarket-1.onrender.com'] //render 배포 주소
 };
 app.use(cors(corsOptions));
 
