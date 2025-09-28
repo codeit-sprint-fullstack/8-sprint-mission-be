@@ -11,6 +11,7 @@ import Image from 'next/image';
 import moreImg from './ic_more.svg';
 import userPanda from '@/images/userPanda.svg';
 import heartIcon from './ic_heart.svg';
+import noComment from './ic_noComment.svg';
 
 //스타일
 import styles from './articlePage.module.css';
@@ -55,24 +56,24 @@ const mockList = [
 ];
 
 const commentList = [
-    {   
-        id: 1,
-        content: "사용 기간이 어떻게 되시나요?",
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-    },
-    {
-        id: 2,
-        content: "사용 기간이 어떻게 되시나요?",
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-    },
-    {
-        id: 3,
-        content: "사용 기간이 어떻게 되시나요?",
-        userName: '총명한 판다',
-        uploadDate: '2024. 04. 16',
-    }
+    // {   
+    //     id: 1,
+    //     content: "사용 기간이 어떻게 되시나요?",
+    //     userName: '총명한 판다',
+    //     uploadDate: '2024. 04. 16',
+    // },
+    // {
+    //     id: 2,
+    //     content: "사용 기간이 어떻게 되시나요?",
+    //     userName: '총명한 판다',
+    //     uploadDate: '2024. 04. 16',
+    // },
+    // {
+    //     id: 3,
+    //     content: "사용 기간이 어떻게 되시나요?",
+    //     userName: '총명한 판다',
+    //     uploadDate: '2024. 04. 16',
+    // }
 ]
 
 function CommentList({list}) {
@@ -172,7 +173,14 @@ export default function ArticlePage({id}){
                         </Button> 
                     </div>
                 </form>
-                <CommentList list={commentList}/>
+                {commentList.length > 0 
+                    ? <CommentList list={commentList}/>
+                    : <div className={styles.noComment}>
+                        <Image src={noComment} alt="no_comment" className={styles.noCommentImg}/>
+                        <p>아직 댓글이 없어요.<br/>지금 댓글을 달아보세요!</p>
+                    </div>
+                }
+
             </div>
         </MainFrame>
     )

@@ -39,6 +39,7 @@
 
 .row{
     flex-direction:  row;
+    align-items: center;
 }
 
 .wide{
@@ -108,8 +109,8 @@
 
 .button {
     width: fit-content;
+    height: fit-content;
     font: var(--font-16-semmibold);
-    height: 42px;
     padding: 12px 23px;
     border-radius: 8px;
     flex-shrink: 0;

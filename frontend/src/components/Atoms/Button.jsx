@@ -10,7 +10,7 @@ export default function Button({className, to=null, disabled=false, children}){
             >
                 {children}
             </button>}
-            { to && <Link href={to}>
+            { to && <Link href={to} className={`${styles.button} ${disabled ? styles.disabled : styles.default} ${className}`}>
                 {children}
             </Link>}
         </div>

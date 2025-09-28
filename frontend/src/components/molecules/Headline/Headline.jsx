@@ -55,9 +55,7 @@ function Headline({
                     />
                 </div>
                 {!design && (
-                    <Link href={registerUrl}>
-                        <Button className={styles.button}>{registerName}</Button>
-                    </Link>
+                    <Button to={registerUrl} className={styles.button}>{registerName}</Button>
                 )}
                 <Dropdown order={order} onChangeOrder={onChangeOrder} />
             </div>

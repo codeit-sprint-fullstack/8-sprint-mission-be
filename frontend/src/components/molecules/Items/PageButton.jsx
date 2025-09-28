@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import styles from './PageButton.module.css';
+import Image from 'next/image';
+import arrowLeft from './arrow_left.svg';
+import arrowRight from './arrow_right.svg';
 
 function PageButton({ pageIdx, onPageChange, disabled }) {
     const PageNums = [1, 2, 3, 4, 5];
@@ -31,12 +35,13 @@ function PageButton({ pageIdx, onPageChange, disabled }) {
     };
 
     return (
-        <div className="list-page-index">
+        <div className={styles.pageIndex}>
             <button
-                className="arrow-left"
                 onClick={() => handlePageListChange('down')}
                 disabled={disabled}
-            ></button>
+            >
+                <Image src={arrowLeft} alt="pageButtonLeft"/>
+            </button>
             {PageNums.map((e) => {
                 const pageNum = e + pageListIdx * 5;
                 let btnStyle;
@@ -48,10 +53,11 @@ function PageButton({ pageIdx, onPageChange, disabled }) {
                 );
             })}
             <button
-                className="arrow-right"
                 onClick={() => handlePageListChange('up')}
                 disabled={disabled}
-            ></button>
+            >
+                <Image src={arrowRight} alt="pageButtonRight"/>
+            </button>
         </div>
     );
 }

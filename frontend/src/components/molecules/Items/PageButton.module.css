@@ -1,10 +1,10 @@
 /* 상품 페이지 인덱스  */
-.list-page-index {
+.pageIndex {
     display: flex;
     gap: 4px;
 }
 
-.list-page-index button {
+.pageIndex button {
     display: flex;
     width: 40px;
     height: 40px;
@@ -27,14 +27,14 @@
     line-height: 26px; /* 162.5% */
 }
 
-.list-page-index .arrow-left {
+.arrowLeft {
     background-image: url('/images/items/arrow_left.svg');
     background-repeat: no-repeat;
     background-size: 40%;
     background-position: center;
 }
 
-.list-page-index .arrow-right {
+.arrowRight {
     background-image: url('/images/items/arrow_right.svg');
     background-repeat: no-repeat;
     background-size: 40%;

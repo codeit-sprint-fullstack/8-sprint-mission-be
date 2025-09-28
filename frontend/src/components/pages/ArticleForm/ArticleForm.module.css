@@ -12,13 +12,15 @@
     margin: 26px auto 162px;
 }
 
+.inputDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .header{
     display: flex;
     justify-content: space-between;
-}
-
-.button{
-    width: fit-content;
 }
 
 .headline {
@@ -34,9 +36,9 @@
     line-height: 32px;
 }
 
-/* 버튼 공통 스타일은 global.css에 정의 */
-.headline .button {
-    height: 42px;
+.button {
+    width: fit-content;
+    height: fit-content;
     padding: 12px 23px;
     gap: 10px;
 

@@ -30,24 +30,26 @@ export default function ArticleForm({}) {
                         </Button>
                     </Link>
                 </div>
-                <InputForm
-                    label="제목"
-                    name="name"
-                    value={values.name}
-                    onChange={onChange}
-                    placeholder="제목을 입력해 주세요."
-                    rows={1}
-                    validErrorMsg={errors.description}
-                />
-                <InputForm
-                    label="내용"
-                    name="description"
-                    value={values.description}
-                    onChange={onChange}
-                    placeholder="내용을 입력해 주세요."
-                    rows={10}
-                    validErrorMsg={errors.description}
-                />
+                <div className={styles.inputDiv}>
+                    <InputForm
+                        label="제목"
+                        name="name"
+                        value={values.name}
+                        onChange={onChange}
+                        placeholder="제목을 입력해 주세요."
+                        rows={1}
+                        validErrorMsg={errors.description}
+                    />
+                    <InputForm
+                        label="내용"
+                        name="description"
+                        value={values.description}
+                        onChange={onChange}
+                        placeholder="내용을 입력해 주세요."
+                        rows={10}
+                        validErrorMsg={errors.description}
+                    />
+                </div>
             </form>
         </MainFrame>
     );

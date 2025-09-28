@@ -171,6 +171,24 @@
     font: var(--font-12-regular);
 }
 
+.noComment {
+    width: fit-content;
+    height: fit-content;
+
+    margin: 40px auto 48px;
+}
+
+.noComment p{
+    color: var(--Secondary-400);
+    font: var(--font-16-regular);
+    text-align: center;
+}
+
+.noCommentImg {
+    width: 140px;
+    height: 140px;
+}
+
 /* tablet */
 @media (min-width: 744px) {
     .frame {

@@ -9,6 +9,12 @@
     padding: 17px 16px 140px;
 }
 
+.wrapper section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .itemsMain section {
     width: 100%;
     max-width: 1200px;
