@@ -11,10 +11,18 @@ app.use(express.json());
 
 //cors 설정
 const corsOptions = {
-    // origin: ['http://localhost:3000'], //프론트엔드 개발 로컬 주소
-    origin: ['https://pandamarket-1.onrender.com/api'] //render 배포 주소
+    origin: ['http://localhost:3000'], //프론트엔드 개발 로컬 주소
+    // origin: ['https://pandamarket-1.onrender.com/api'] //render 배포 주소
 };
 app.use(cors(corsOptions));
+
+// // 정적 파일 서빙
+// app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+// // SPA 라우팅 처리 (React Router 등)
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
+// });
 
 /* 오류 검사 핸들러 */
 function asyncHandeler(handler) {
