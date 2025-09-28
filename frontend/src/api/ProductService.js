@@ -1,6 +1,6 @@
 //const url = 'https://panda-market-api-crud.vercel.app/products' //판다마켓 코드잇 api (사용시 result.list 경로 사용)
-const url = 'http://localhost:4000/products'; //직접 만든 개발용 백엔드 로컬 주소입니다.
-//const url = 'https://pandamarket-kwxe.onrender.com/products' //Render 배포 백엔드 주소입니다.
+//const url = 'http://localhost:4000/products'; //직접 만든 개발용 백엔드 로컬 주소입니다.
+const url = 'https://pandamarket-1.onrender.com//products' //Render 배포 백엔드 주소입니다.
 
 //상품 목록 조회 - 요구사항
 async function getProductList(page = 1, pagesize = 10, orderBy = 'recent', keyword = '') {

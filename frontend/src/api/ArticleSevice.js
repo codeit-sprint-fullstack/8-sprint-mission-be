@@ -1,8 +1,8 @@
 // 리퀘스트 통신은 JSON 파일로 주고 받습니다.
 // Swagger에 등록된 API 문서를 참고하여 함수를 구현했습니다.
 
-//const url = 'https://panda-market-api-crud.vercel.app/articles';
-const url = 'http://localhost:4000/articles';
+const url = 'https://pandamarket-1.onrender.com/articles';
+// const url = 'http://localhost:4000/articles';
 
 async function resErrorCatch(res) {
     if (!res.ok) {
