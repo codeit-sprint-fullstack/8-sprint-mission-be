@@ -13,7 +13,7 @@
         "migrate": "cd backend/prisma_back && npx prisma migrate deploy && npx prisma generate",
         "seed": "cd backend/prisma_back && npm run seed",
         "build": "cd frontend && npm run build",
-        "start": "npm run backstrat && npm run frontstart",
+        "start": "concurrently \"npm run backstart\" \"npm run frontstart\"",
         "frontstart": "cd frontend && npm run start",
         "backstrat": "cd backend/prisma_back && node app.js",
         "deploy": "npm run setup && npm run migrate && npm run build"

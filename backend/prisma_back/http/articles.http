@@ -38,3 +38,10 @@ Content-Type: application/json
 GET http://localhost:4000/articles/9357bdc8-e8c5-43bf-a234-85d86d252145/comments
 
 ###
+
+PATCH http://localhost:4000/comments/cc5efc64-b79d-4913-934b-b12e9f28ad89
+Content-Type: application/json
+
+{
+  "content": "맥북 16인치"
+}

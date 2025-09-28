@@ -3,7 +3,7 @@
 //라이브러리
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getArticle, getComments, createComment } from '@/api/ArticleSevice';
+import { getArticle, deleteArticle, getComments, createComment, updateComment, deleteComment } from '@/api/ArticleSevice';
 
 //컴포넌트
 import MainFrame from '@/components/organism/mainFrame';
@@ -25,33 +25,72 @@ import useAsync from '@/hooks/useAsync';
 
 const notebook = '/images/articles/notebook.png';
 
-function CommentList({list}) {
+function CommentList({list, handlePatch, handleDelete}) {
+    const [ editId, setEditId ] = useState('');
+    const [ commentEdit, setCommentEdit ] = useState('');
+
     return (
         <ul className={styles.commentList}>
-            {list.map(comment=><li className={styles.comment} key={comment.id}>
-                <div className={styles.commentContentDiv}>
-                    <p>{comment.content}</p>
-                    <DropdownList list={[
-                        {
-                            name: '수정하기',
-                            onClick: null
-                        },
-                        {
-                            name: '삭제하기',
-                            onClick: null
-                        }
-                    ]}>
-                        <Image src={moreImg} alt="more_button_icon"/>
-                    </DropdownList>
-                </div>
-                <div className={styles.commentInfoDiv}>
-                    <Image src={userPanda} alt='profile' className={styles.commentUserProfile}></Image>
-                    <div>
-                        <p className={styles.commentuserName}>{comment.userName}</p>
-                        <p className={styles.commentDate}>{comment.createdAt}</p>
+            {list.map(comment=><li key={comment.id}>
+                {editId===comment.id 
+                ? <div>
+                    <textarea 
+                        className={styles.editCommentInput} 
+                        value={commentEdit} 
+                        onChange={(e)=>{setCommentEdit(e.target.value)}} 
+                        rows={3}
+                    />
+                    <div className={styles.editInfoDiv}>
+                        <div className={styles.commentInfoDiv}>
+                            <Image src={userPanda} alt='profile' className={styles.commentUserProfile}></Image>
+                            <div className={styles.editBtnDiv}>
+                                <p className={styles.commentuserName}>{comment.userName}</p>
+                                <p className={styles.commentDate}>{comment.createdAt}</p>
+                            </div>
+                        </div>
+                        <button 
+                            className={styles.cancle} 
+                            onClick={()=>{
+                                setCommentEdit(''); 
+                                setEditId('');
+                        }}>취소</button>
+                        <Button 
+                            className={styles.edit} 
+                            onClick={()=>{
+                                handlePatch(comment.id, commentEdit); 
+                                setEditId('');
+                        }}>수정 완료</Button>
                     </div>
                 </div>
-                <div className={styles.dividerH}></div>
+                : <div className={styles.comment}>
+                    <div className={styles.commentContentDiv}>
+                        <p>{comment.content}</p>
+                        <DropdownList list={[
+                            {
+                                name: '수정하기',
+                                onClick: () => {
+                                    setCommentEdit(comment.content); 
+                                    setEditId(comment.id);
+                                }
+                            },
+                            {
+                                name: '삭제하기',
+                                onClick: () => {handleDelete(comment.id)}
+                            }
+                        ]}>
+                            <Image src={moreImg} alt="more_button_icon"/>
+                        </DropdownList>
+                    </div>
+                    <div className={styles.commentInfoDiv}>
+                        <Image src={userPanda} alt='profile' className={styles.commentUserProfile}></Image>
+                        <div>
+                            <p className={styles.commentuserName}>{comment.userName}</p>
+                            <p className={styles.commentDate}>{comment.createdAt}</p>
+                        </div>
+                    </div>
+                    <div className={styles.dividerH}></div>
+                </div>
+                }
             </li>)}
         </ul>
     )
@@ -95,6 +134,24 @@ export default function ArticlePage({}){
         }
     }
 
+    const handleDeleteArticle = () => {
+        deleteArticle(id);
+        router.push('/articles');
+    }
+
+    const handlePatchComment = async(commentId, content) => {
+        const body = {
+            content: content
+        }
+        const res = await updateComment(commentId, body);
+        setCommnets(comments.map(e=>{return e.id===commentId ? {...e, content} : e}));
+    }
+
+    const handleDeleteComment = async(commentId) => {
+        await deleteComment(commentId);
+        setCommnets(comments.filter(e=>e.id!==commentId));
+    }
+
     return(
         <MainFrame>
             <div className={styles.frame}>
@@ -104,11 +161,11 @@ export default function ArticlePage({}){
                         <DropdownList list={[
                             {
                                 name: '수정하기',
-                                onClick: () => {}
+                                onClick: () => {router.push(`/articles/${id}/edit`)}
                             }, 
                             {
                                 name: '삭제하기',
-                                onClick: () => {}
+                                onClick: () => {handleDeleteArticle();}
                             }
                         ]}>
                             <Image src={moreImg} alt="more_button_icon"/>
@@ -155,7 +212,7 @@ export default function ArticlePage({}){
                     </div>
                 </form>
                 {comments.length > 0 
-                    ? <CommentList list={comments}/>
+                    ? <CommentList list={comments} handlePatch={handlePatchComment} handleDelete={handleDeleteComment}/>
                     : <div className={styles.noComment}>
                         <Image src={noComment} alt="no_comment" className={styles.noCommentImg}/>
                         <p>아직 댓글이 없어요.<br/>지금 댓글을 달아보세요!</p>

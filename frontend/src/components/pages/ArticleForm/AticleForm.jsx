@@ -8,7 +8,7 @@ import InputForm from '../../molecules/Articles/InputForm/InputForm';
 
 import styles from './ArticleForm.module.css';
 
-export default function ArticleForm({}) {
+export default function ArticleForm({isCreate=true}) {
     //입력값, 유효성 검사, 입력값을 다루는 함수 묶어서 커스텀 훅으로 만들었습니다.
     //유효성 검사 커스텀 훅(요구사항)은 이 커스텀 훅 안에 있습니다.
     const [
@@ -22,7 +22,8 @@ export default function ArticleForm({}) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(isSubmitActive) {
-            register(values);
+            if(isCreate) {register(values);}
+            else{}
         }
     }
 

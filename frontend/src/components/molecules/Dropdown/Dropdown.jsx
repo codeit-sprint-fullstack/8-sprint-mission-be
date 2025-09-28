@@ -15,7 +15,7 @@ export function Dropdown({ order, onChangeOrder }) {
     );
 }
 
-export function DropdownList({value, list=[], children}){
+export function DropdownList({list=[], children}){
     const [isOpen, setIsOpen] = useState(false);
 
     return (

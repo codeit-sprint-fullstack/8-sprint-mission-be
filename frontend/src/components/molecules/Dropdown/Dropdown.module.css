@@ -79,6 +79,9 @@
 
 .listBox {
     position: absolute;
+    right: 0;
+    top: 100%;
+
     width: 140px;
     height:  fit-content;
     

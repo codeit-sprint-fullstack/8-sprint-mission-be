@@ -208,6 +208,45 @@
     padding: 14.5px 33.5px;
 }
 
+
+.editCommentInput {
+    width: 100%;
+    display: flex;
+    padding: 16px 24px;
+    resize: none; /* 사용자가 크기 조절 못하게 */
+    overflow: hidden; /* 스크롤 안 생기게 */
+
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+
+    border-radius: 12px;
+    border: none;
+    background: var(--Cool-Gray-100, #f3f4f6);
+    margin-bottom: 16px;
+}
+
+.editInfoDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editBtnDiv {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.cancle {
+    padding: 12px 23px;
+}
+
+.edit {
+    padding: 12px 23px;
+    white-space: nowrap;
+}
+
 /* tablet */
 @media (min-width: 744px) {
     .frame {
