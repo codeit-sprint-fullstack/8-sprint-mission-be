@@ -10,9 +10,9 @@ import helmet from 'helmet';
 import { specs, swaggerUiOptions } from './swaggerOptions.js';
 
 // 라우터 import
-import productRoutes from './routes/productRoutes.js';
-import articleRoutes from './routes/articleRoutes.js';
-import commentRoutes from './routes/commentRoutes.js';
+import productRoutes from './routes/productRouter.js';
+import articleRoutes from './routes/articleRouter.js';
+import commentRoutes from './routes/commentRouter.js';
 
 const app = express();
 
