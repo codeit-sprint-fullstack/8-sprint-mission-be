@@ -1,4 +1,4 @@
-import prisma from '../lib/prisma.js';
+import prisma from '../middlewares/prisma.js';
 
 export const createArticle = async (req, res, next) => {
   try {

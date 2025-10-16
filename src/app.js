@@ -10,9 +10,10 @@ import helmet from 'helmet';
 import { specs, swaggerUiOptions } from './swaggerOptions.js';
 
 // 라우터 import
-import productRoutes from './routes/productRouter.js';
-import articleRoutes from './routes/articleRouter.js';
-import commentRoutes from './routes/commentRouter.js';
+import productRouter from './routes/productRouter.js';
+import articleRouter from './routes/articleRouter.js';
+import commentRouter from './routes/commentRouter.js';
+import authRouter from './routes/authRouter.js';
 
 const app = express();
 
@@ -28,9 +29,10 @@ app.use(express.json());
 app.use(morgan('combined'));
 
 // 라우터 설정
-app.use('/products', productRoutes);
-app.use('/articles', articleRoutes);
-app.use('/comments', commentRoutes);
+app.use('/products', productRouter);
+app.use('/articles', articleRouter);
+app.use('/comments', commentRouter);
+app.use('/auth', authRouter);
 
 // Swagger API Docs Setting
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerUiOptions));
