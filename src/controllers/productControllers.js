@@ -1,4 +1,4 @@
-import prisma from '../middlewares/prisma.js';
+import * as productRepository from '../repositories/productRepository.js';
 
 export const getAllProducts = async (req, res, next) => {
   try {
@@ -6,66 +6,18 @@ export const getAllProducts = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 10;
     const searchQuery = req.query.q;
 
-    const validPage = Math.max(1, page);
-
-    const offset = (validPage - 1) * limit;
-
-    // 검색 조건 구성
-    const whereCondition = searchQuery
-      ? {
-          OR: [
-            {
-              name: {
-                contains: searchQuery,
-                mode: 'insensitive',
-              },
-            },
-            {
-              description: {
-                contains: searchQuery,
-                mode: 'insensitive',
-              },
-            },
-          ],
-        }
-      : {};
-
-    const totalCount = await prisma.product.count({
-      where: whereCondition,
-    });
-
-    const products = await prisma.product.findMany({
-      where: whereCondition,
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        tags: true,
-        createdAt: true,
-      },
-      skip: offset,
-      take: limit,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    // 페이지네이션 메타데이터 계산
-    const totalPages = Math.ceil(totalCount / limit);
-    const hasNextPage = validPage < totalPages;
-    const hasPrevPage = validPage > 1;
+    const result = await productRepository.getAllProducts(page, limit, searchQuery);
 
     res.status(200).json({
       success: true,
-      data: products,
+      data: result.products,
       pagination: {
-        currentPage: validPage,
-        totalPages,
-        totalCount,
+        currentPage: result.currentPage,
+        totalPages: result.totalPages,
+        totalCount: result.totalCount,
         limit,
-        hasNextPage,
-        hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        hasPrevPage: result.hasPrevPage,
       },
       search: {
         query: searchQuery || null,
@@ -80,6 +32,7 @@ export const getAllProducts = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const { name, description, price, tags } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (!name || !description || !price) {
       return res
@@ -87,18 +40,7 @@ export const createProduct = async (req, res, next) => {
         .json({ success: false, message: 'Name, description, and price are required' });
     }
 
-    const product = await prisma.product.create({
-      data: { name: name.trim(), description: description.trim(), price, tags },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        tags: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    const product = await productRepository.createProduct(name, description, price, tags, imageUrl);
 
     res.status(201).json({ success: true, data: product });
   } catch (error) {
@@ -114,10 +56,7 @@ export const getProductById = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Id is required' });
     }
 
-    const product = await prisma.product.findUnique({
-      where: { id },
-      select: { id: true, name: true, description: true, price: true, tags: true, createdAt: true },
-    });
+    const product = await productRepository.getProductById(id);
     res.status(200).json({ success: true, data: product });
   } catch (error) {
     next(error);
@@ -148,19 +87,7 @@ export const updateProduct = async (req, res, next) => {
       });
     }
 
-    const product = await prisma.product.update({
-      where: { id },
-      data: updateData,
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        tags: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    const product = await productRepository.updateProduct(id, updateData);
 
     res.status(200).json({ success: true, data: product });
   } catch (error) {
@@ -183,7 +110,7 @@ export const deleteProduct = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Id is required' });
     }
 
-    await prisma.product.delete({ where: { id } });
+    await productRepository.deleteProduct(id);
     res.status(200).json({ success: true, data: null });
   } catch (error) {
     next(error);
