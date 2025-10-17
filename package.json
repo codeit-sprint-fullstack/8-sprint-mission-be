@@ -1,11 +1,13 @@
 {
   "dependencies": {
     "@prisma/client": "^5.4.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
     "mongoose": "^8.18.0",
+    "prettier": "^3.6.2",
     "prisma": "^5.4.2",
     "superstruct": "^1.0.3"
   },
@@ -17,8 +19,8 @@
     "seed": "node prisma/seed.js"
   },
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js",
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
     "db:seed": "prisma db seed"
   }
 }
