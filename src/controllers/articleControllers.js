@@ -1,17 +1,10 @@
-import prisma from '../lib/prisma.js';
+import * as articleRepository from '../repositories/articleRepository.js';
 
 export const createArticle = async (req, res, next) => {
   try {
     const { title, content } = req.body;
 
-    if (!title || !content) {
-      return res.status(400).json({ success: false, message: 'Title and content are required' });
-    }
-
-    const article = await prisma.article.create({
-      data: { title, content },
-      select: { id: true, title: true, content: true, like: true, createdAt: true },
-    });
+    const article = await articleRepository.createArticle(title, content);
 
     res.status(201).json({ success: true, data: article });
   } catch (error) {
@@ -55,17 +48,9 @@ export const getArticle = async (req, res, next) => {
     if (sort === 'recent') orderBy = { createdAt: 'desc' };
     if (sort === 'like') orderBy = { like: 'desc' };
 
-    const articles = await prisma.article.findMany({
-      where: whereCondition,
-      select: { id: true, title: true, content: true, like: true, createdAt: true },
-      skip: offset,
-      take: limit,
-      orderBy,
-    });
+    const articles = await articleRepository.getArticles(whereCondition, orderBy, offset, limit);
 
-    const totalCount = await prisma.article.count({
-      where: whereCondition,
-    });
+    const totalCount = await articleRepository.getArticleCount(whereCondition);
 
     const totalPages = Math.ceil(totalCount / limit);
     const hasNextPage = validPage < totalPages;
@@ -96,16 +81,28 @@ export const getArticle = async (req, res, next) => {
 export const getArticleById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const article = await prisma.article.findUnique({
-      where: { id },
-      select: { id: true, title: true, content: true, like: true, createdAt: true },
-    });
+    const me = req.user;
 
+    const article = await articleRepository.getArticleById(id);
     if (!article) {
       return res.status(404).json({ success: false, message: 'Article not found' });
     }
 
-    res.status(200).json({ success: true, data: article });
+    const myLike = await articleRepository.getMyLike(me.id, id);
+    const isLiked = Boolean(myLike);
+    const likeCount = article.likeCount;
+
+    const response = {
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      isLiked,
+      likeCount,
+      createdAt: article.createdAt,
+      updatedAt: article.updatedAt,
+    };
+
+    res.status(200).json({ success: true, data: response });
   } catch (error) {
     next(error);
   }
@@ -116,15 +113,7 @@ export const updateArticle = async (req, res, next) => {
     const { id } = req.params;
     const { title, content } = req.body;
 
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
-    const article = await prisma.article.update({
-      where: { id },
-      data: { title, content },
-      select: { id: true, title: true, content: true, like: true, createdAt: true },
-    });
+    const article = await articleRepository.updateArticle(id, title, content);
     res.status(200).json({ success: true, data: article });
   } catch (error) {
     next(error);
@@ -135,11 +124,7 @@ export const deleteArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
-    await prisma.article.delete({ where: { id } });
+    await articleRepository.deleteArticle(id);
     res.status(200).json({ success: true, data: null });
   } catch (error) {
     next(error);

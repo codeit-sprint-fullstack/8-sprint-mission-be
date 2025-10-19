@@ -13,33 +13,102 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                String   @id @default(uuid()) @db.Uuid
+  email             String   @unique @db.VarChar(255)
+  nickname          String   @db.VarChar(255)
+  image             String?  @default("") @db.VarChar(255)
+  encryptedPassword String   @db.VarChar(255)
+  refreshToken      String?  @db.VarChar(255)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  products       Product[]
+  articles       Article[]
+  productLikes   ProductLike[]
+  articleLikes   ArticleLike[]
+  ProductComment ProductComment[]
+  ArticleComment ArticleComment[]
+}
+
 model Product {
-  id          String   @id @default(uuid()) @db.Uuid
-  name        String   @db.VarChar(255)
-  description String   @db.VarChar(255)
-  price       Int
-  tags        String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String           @id @default(uuid()) @db.Uuid
+  name           String           @db.VarChar(255)
+  description    String           @db.VarChar(255)
+  image          String?          @db.VarChar(255)
+  price          Int
+  tags           String[]
+  ownerId        String           @db.Uuid
+  owner          User             @relation(fields: [ownerId], references: [id])
+  createdAt      DateTime         @default(now())
+  likeCount      Int              @default(0)
+  updatedAt      DateTime         @updatedAt
+  ProductLike    ProductLike[]
+  ProductComment ProductComment[]
+
+  @@index([ownerId])
+}
+
+model ProductLike {
+  userId    String   @db.Uuid
+  productId String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, productId])
 }
 
 model Article {
   id        String   @id @default(uuid()) @db.Uuid
   title     String
   content   String
-  like      Int      @default(0)
+  likeCount Int      @default(0)
+  ownerId   String   @db.Uuid
+  owner     User     @relation(fields: [ownerId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  comments Comment[] @relation("ArticleComments")
+  ArticleLike    ArticleLike[]
+  ArticleComment ArticleComment[]
+
+  @@index([ownerId])
 }
 
-model Comment {
-  id        String   @id @default(uuid()) @db.Uuid
-  content   String
+model ArticleLike {
+  userId    String   @db.Uuid
+  articleId String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  article   Article  @relation(fields: [articleId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  article   Article? @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String?  @db.Uuid
+  @@id([userId, articleId])
+}
+
+model ProductComment {
+  id        String   @id @default(uuid()) @db.Uuid
+  content   String
+  ownerId   String   @db.Uuid
+  owner     User     @relation(fields: [ownerId], references: [id])
+  productId String   @db.Uuid
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+}
+
+model ArticleComment {
+  id        String   @id @default(uuid()) @db.Uuid
+  content   String
+  ownerId   String   @db.Uuid
+  owner     User     @relation(fields: [ownerId], references: [id])
+  articleId String   @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
 }

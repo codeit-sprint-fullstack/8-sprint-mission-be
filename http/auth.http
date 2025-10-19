@@ -1,0 +1,72 @@
+### 인증 API 테스트
+### 서버 실행: npm run dev (포트 3000)
+
+@base_url = http://localhost:3000
+
+### ===========================================
+### 1. 회원가입
+### ===========================================
+POST {{base_url}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "nickname": "테스트유저",
+  "password": "password123"
+}
+
+### ===========================================
+### 2. 로그인
+### ===========================================
+POST {{base_url}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### ===========================================
+### 3. 잘못된 이메일로 로그인
+### ===========================================
+POST {{base_url}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "wrong@example.com",
+  "password": "password123"
+}
+
+### ===========================================
+### 4. 잘못된 비밀번호로 로그인
+### ===========================================
+POST {{base_url}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrongpassword"
+}
+
+### ===========================================
+### 5. 토큰 갱신
+### ===========================================
+POST {{base_url}}/auth/refresh
+
+### ===========================================
+### 6. 필수 필드 누락 테스트
+### ===========================================
+POST {{base_url}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test@example.com"
+}
+
+### ===========================================
+### 7. 빈 요청 테스트
+### ===========================================
+POST {{base_url}}/auth/signin
+Content-Type: application/json
+
+{}
