@@ -7,6 +7,7 @@ import {
   deleteArticle,
 } from '../controllers/articleControllers.js';
 import * as likeControllers from '../controllers/likeControllers.js';
+import passport from '../config/passport.js';
 
 const router = Router();
 

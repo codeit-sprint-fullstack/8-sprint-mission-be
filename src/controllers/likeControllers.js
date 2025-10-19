@@ -3,9 +3,9 @@ import * as likeRepository from '../repositories/likeRepository.js';
 export const likeProduct = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { productId } = req.params;
+    const { id } = req.params;
 
-    const result = await likeRepository.addProductLike(userId, productId);
+    const result = await likeRepository.addProductLike(userId, id);
 
     res.status(201).json({ success: true, message: 'Product liked successfully' });
   } catch (error) {
@@ -16,9 +16,9 @@ export const likeProduct = async (req, res, next) => {
 export const unlikeProduct = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { productId } = req.params;
+    const { id } = req.params;
 
-    const result = await likeRepository.removeProductLike(userId, productId);
+    const result = await likeRepository.removeProductLike(userId, id);
 
     res.status(200).json({ success: true, message: 'Product unliked successfully' });
   } catch (error) {
@@ -29,9 +29,9 @@ export const unlikeProduct = async (req, res, next) => {
 export const likeArticle = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { articleId } = req.params;
+    const { id } = req.params;
 
-    const result = await likeRepository.addArticleLike(userId, articleId);
+    const result = await likeRepository.addArticleLike(userId, id);
 
     res.status(201).json({ success: true, message: 'Article liked successfully' });
   } catch (error) {
@@ -42,9 +42,9 @@ export const likeArticle = async (req, res, next) => {
 export const unlikeArticle = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { articleId } = req.params;
+    const { id } = req.params;
 
-    const result = await likeRepository.removeArticleLike(userId, articleId);
+    const result = await likeRepository.removeArticleLike(userId, id);
 
     res.status(200).json({ success: true, message: 'Article unliked successfully' });
   } catch (error) {

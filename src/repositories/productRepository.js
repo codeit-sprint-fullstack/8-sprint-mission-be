@@ -86,7 +86,16 @@ export const createProduct = async (name, description, price, tags, imageUrl, ow
 export const getProductById = async (id) => {
   const product = await prisma.product.findUnique({
     where: { id },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      tags: true,
+      image: true,
+      likeCount: true,
+      createdAt: true,
+      updatedAt: true,
       owner: { select: { id: true, nickname: true, image: true } },
       comments: {
         select: { id: true, content: true, createdAt: true },

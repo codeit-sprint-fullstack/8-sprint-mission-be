@@ -41,6 +41,7 @@ model Product {
   likeCount   Int           @default(0)
   updatedAt   DateTime      @updatedAt
   ProductLike ProductLike[]
+  comments    Comment[]     @relation("ProductComments")
 
   @@index([ownerId])
 }
@@ -80,11 +81,13 @@ model ArticleLike {
 }
 
 model Comment {
-  id        String   @id @default(uuid()) @db.Uuid
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      String @id @default(uuid()) @db.Uuid
+  content String
 
   article   Article? @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
   articleId String?  @db.Uuid
+  product   Product? @relation("ProductComments", fields: [productId], references: [id], onDelete: Cascade)
+  productId String?  @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
