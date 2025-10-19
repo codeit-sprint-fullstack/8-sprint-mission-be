@@ -25,6 +25,7 @@ model User {
 
   products    Product[]
   ProductLike ProductLike[]
+  ArticleLike ArticleLike[]
 }
 
 model Product {
@@ -37,6 +38,7 @@ model Product {
   ownerId     String        @db.Uuid
   owner       User          @relation(fields: [ownerId], references: [id])
   createdAt   DateTime      @default(now())
+  likeCount   Int           @default(0)
   updatedAt   DateTime      @updatedAt
   ProductLike ProductLike[]
 
@@ -58,11 +60,23 @@ model Article {
   id        String   @id @default(uuid()) @db.Uuid
   title     String
   content   String
-  like      Int      @default(0)
+  createdAt DateTime @default(now())
+  likeCount Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  comments    Comment[]     @relation("ArticleComments")
+  ArticleLike ArticleLike[]
+}
+
+model ArticleLike {
+  userId    String   @db.Uuid
+  articleId String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  article   Article  @relation(fields: [articleId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  comments Comment[] @relation("ArticleComments")
+  @@id([userId, articleId])
 }
 
 model Comment {

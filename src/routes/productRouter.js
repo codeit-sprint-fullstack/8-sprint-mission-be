@@ -14,6 +14,7 @@ import {
   validateProductId,
   validatePagination,
 } from '../middlewares/validate/validateProductZod.js';
+import * as likeControllers from '../controllers/likeControllers.js';
 
 const router = Router();
 
@@ -33,5 +34,15 @@ router.get(
 );
 router.patch('/:id', validateProductId, validateUpdateProduct, updateProduct);
 router.delete('/:id', validateProductId, deleteProduct);
+router.post(
+  '/:id/like',
+  passport.authenticate('access-token', { session: false }),
+  likeControllers.likeProduct,
+);
+router.delete(
+  '/:id/like',
+  passport.authenticate('access-token', { session: false }),
+  likeControllers.unlikeProduct,
+);
 
 export default router;
