@@ -4,10 +4,6 @@ export const createArticle = async (req, res, next) => {
   try {
     const { title, content } = req.body;
 
-    if (!title || !content) {
-      return res.status(400).json({ success: false, message: 'Title and content are required' });
-    }
-
     const article = await articleRepository.createArticle(title, content);
 
     res.status(201).json({ success: true, data: article });
@@ -117,10 +113,6 @@ export const updateArticle = async (req, res, next) => {
     const { id } = req.params;
     const { title, content } = req.body;
 
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
     const article = await articleRepository.updateArticle(id, title, content);
     res.status(200).json({ success: true, data: article });
   } catch (error) {
@@ -131,10 +123,6 @@ export const updateArticle = async (req, res, next) => {
 export const deleteArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
 
     await articleRepository.deleteArticle(id);
     res.status(200).json({ success: true, data: null });

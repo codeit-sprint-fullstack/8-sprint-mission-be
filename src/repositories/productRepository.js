@@ -137,3 +137,13 @@ export const deleteProduct = async (id) => {
   await prisma.product.delete({ where: { id } });
   return true;
 };
+
+export const findByIdForOwner = async (id) => {
+  return await prisma.product.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      ownerId: true,
+    },
+  });
+};

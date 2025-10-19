@@ -47,3 +47,13 @@ export const updateArticle = async (id, title, content) => {
 export const deleteArticle = async (id) => {
   return await prisma.article.delete({ where: { id } });
 };
+
+export const findByIdForOwner = async (id) => {
+  return await prisma.article.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      ownerId: true,
+    },
+  });
+};

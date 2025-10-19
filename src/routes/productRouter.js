@@ -34,6 +34,8 @@ router.get('/:id', passport.authenticate('access-token', { session: false }), ge
 router.patch(
   '/:id',
   passport.authenticate('access-token', { session: false }),
+  productIdValidator,
+  handleValidation,
   verifyProductOwner,
   updateProductValidator,
   handleValidation,
@@ -43,9 +45,9 @@ router.patch(
 router.delete(
   '/:id',
   passport.authenticate('access-token', { session: false }),
-  verifyProductOwner,
   productIdValidator,
   handleValidation,
+  verifyProductOwner,
   deleteProduct,
 );
 
