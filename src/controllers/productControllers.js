@@ -40,7 +40,15 @@ export const createProduct = async (req, res, next) => {
         .json({ success: false, message: 'Name, description, and price are required' });
     }
 
-    const product = await productRepository.createProduct(name, description, price, tags, imageUrl);
+    const ownerId = req.user.id;
+    const product = await productRepository.createProduct(
+      name,
+      description,
+      price,
+      tags,
+      imageUrl,
+      ownerId,
+    );
 
     res.status(201).json({ success: true, data: product });
   } catch (error) {

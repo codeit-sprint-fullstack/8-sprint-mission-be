@@ -57,9 +57,16 @@ export const getAllProducts = async (page, limit, searchQuery) => {
 };
 
 // 상품 생성
-export const createProduct = async (name, description, price, tags, imageUrl) => {
+export const createProduct = async (name, description, price, tags, imageUrl, ownerId) => {
   const product = await prisma.product.create({
-    data: { name: name.trim(), description: description.trim(), price, tags, image: imageUrl },
+    data: {
+      name: name.trim(),
+      description: description.trim(),
+      price,
+      tags,
+      image: imageUrl,
+      ownerId,
+    },
     select: {
       id: true,
       name: true,

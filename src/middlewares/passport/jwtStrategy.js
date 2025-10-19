@@ -1,4 +1,5 @@
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { findUserById } from '../../repositories/userRepository.js';
 
 const accessTokenOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
