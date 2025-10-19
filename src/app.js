@@ -57,6 +57,48 @@ app.use((req, res) => {
 
 // Global 에러 핸들러
 app.use((err, req, res, next) => {
+  // Zod 유효성 검사 오류 처리 (이미 응답이 전송된 경우 무시)
+  if (err.name === 'ZodError') {
+    // Zod 오류는 이미 validateRequest 미들웨어에서 처리되었으므로
+    // 여기서는 추가 처리를 하지 않음
+    return;
+  }
+
+  // Prisma 오류 처리
+  if (err.code === 'P2002') {
+    return res.status(409).json({
+      success: false,
+      message: '중복된 데이터가 존재합니다.',
+    });
+  }
+
+  if (err.code === 'P2025') {
+    return res.status(404).json({
+      success: false,
+      message: '요청한 데이터를 찾을 수 없습니다.',
+    });
+  }
+
+  // JWT 오류 처리
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      success: false,
+      message: '유효하지 않은 토큰입니다.',
+    });
+  }
+
+  if (err.name === 'TokenExpiredError') {
+    return res.status(401).json({
+      success: false,
+      message: '토큰이 만료되었습니다.',
+    });
+  }
+
+  // 이미 응답이 전송된 경우 무시
+  if (res.headersSent) {
+    return next(err);
+  }
+
   console.error('Error:', err.message);
   console.error('Stack:', err.stack);
 

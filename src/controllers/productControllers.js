@@ -34,12 +34,6 @@ export const createProduct = async (req, res, next) => {
     const { name, description, price, tags } = req.body;
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-    if (!name || !description || !price) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Name, description, and price are required' });
-    }
-
     const ownerId = req.user.id;
     const product = await productRepository.createProduct(
       name,
@@ -60,10 +54,6 @@ export const getProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
     const product = await productRepository.getProductById(id);
     res.status(200).json({ success: true, data: product });
   } catch (error) {
@@ -76,14 +66,10 @@ export const updateProduct = async (req, res, next) => {
     const { id } = req.params;
     const { name, description, price, tags } = req.body;
 
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
     // 업데이트할 데이터 구성 (undefined인 필드는 제외)
     const updateData = {};
-    if (name !== undefined) updateData.name = name.trim();
-    if (description !== undefined) updateData.description = description.trim();
+    if (name !== undefined) updateData.name = name;
+    if (description !== undefined) updateData.description = description;
     if (price !== undefined) updateData.price = price;
     if (tags !== undefined) updateData.tags = tags;
 
@@ -113,10 +99,6 @@ export const updateProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
 
     await productRepository.deleteProduct(id);
     res.status(200).json({ success: true, data: null });

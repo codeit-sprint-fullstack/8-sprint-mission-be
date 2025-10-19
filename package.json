@@ -31,7 +31,8 @@
     "superstruct": "^2.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "eslint": "^9.35.0",
