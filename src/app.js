@@ -12,7 +12,8 @@ import { specs, swaggerUiOptions } from './swaggerOptions.js';
 // 라우터 import
 import productRouter from './routes/productRouter.js';
 import articleRouter from './routes/articleRouter.js';
-import commentRouter from './routes/commentRouter.js';
+import productCommentRouter from './routes/productCommentRouter.js';
+import articleCommentRouter from './routes/articleCommentRouter.js';
 import authRouter from './routes/authRouter.js';
 
 const app = express();
@@ -32,7 +33,8 @@ app.use(morgan('combined'));
 // 라우터 설정
 app.use('/products', productRouter);
 app.use('/articles', articleRouter);
-app.use('/comments', commentRouter);
+app.use('/product-comments', productCommentRouter);
+app.use('/article-comments', articleCommentRouter);
 app.use('/auth', authRouter);
 
 // Swagger API Docs Setting

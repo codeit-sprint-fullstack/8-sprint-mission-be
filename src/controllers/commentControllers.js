@@ -1,70 +1,11 @@
 import prisma from '../middlewares/prisma.js';
 
-export const createComment = async (req, res, next) => {
-  try {
-    const { content, articleId } = req.body;
-
-    if (!content) {
-      return res.status(400).json({ success: false, message: 'Content is required' });
-    }
-
-    const comment = await prisma.comment.create({ data: { content, articleId } });
-    res.status(201).json({ success: true, data: comment });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const updateComment = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { content } = req.body;
-
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
-    const comment = await prisma.comment.update({ where: { id }, data: { content } });
-    res.status(200).json({ success: true, data: comment });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const deleteComment = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
-
-    await prisma.comment.delete({ where: { id } });
-    res.status(200).json({ success: true, data: null });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getComment = async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findMany();
-    res.status(200).json({ success: true, data: comment });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const getCommentByArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
     const cursor = req.query.cursor;
     const limit = parseInt(req.query.limit) || 10;
     const direction = req.query.direction || 'next'; // 'next' or 'prev'
-
-    if (!id) {
-      return res.status(400).json({ success: false, message: 'Id is required' });
-    }
 
     const validLimit = Math.min(Math.max(1, limit), 50); // 1-50 사이로 제한
 
@@ -109,6 +50,71 @@ export const getCommentByArticle = async (req, res, next) => {
     }
 
     // cursor 정보 계산
+    const nextCursor =
+      comments.length > 0 ? comments[comments.length - 1].createdAt.toISOString() : null;
+    const prevCursor = comments.length > 0 ? comments[0].createdAt.toISOString() : null;
+
+    res.status(200).json({
+      success: true,
+      data: comments,
+      pagination: {
+        hasNextPage,
+        hasPrevPage: !!cursor,
+        nextCursor,
+        prevCursor,
+        limit: validLimit,
+        direction,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCommentByProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const cursor = req.query.cursor;
+    const limit = parseInt(req.query.limit) || 10;
+    const direction = req.query.direction || 'next'; // 'next' or 'prev'
+
+    const validLimit = Math.min(Math.max(1, limit), 50); // 1-50 사이로 제한
+
+    let whereCondition = { productId: id };
+    let orderBy = { createdAt: 'desc' };
+
+    if (cursor) {
+      const cursorDate = new Date(cursor);
+      if (direction === 'prev') {
+        whereCondition.createdAt = { lt: cursorDate };
+        orderBy = { createdAt: 'desc' };
+      } else {
+        whereCondition.createdAt = { gt: cursorDate };
+        orderBy = { createdAt: 'asc' };
+      }
+    }
+
+    const comments = await prisma.comment.findMany({
+      where: whereCondition,
+      take: validLimit + 1, // 한 개 더 가져와서 hasNextPage 확인
+      orderBy,
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    const hasNextPage = comments.length > validLimit;
+    if (hasNextPage) {
+      comments.pop(); // 마지막 요소 제거
+    }
+
+    if (direction === 'prev') {
+      comments.reverse();
+    }
+
     const nextCursor =
       comments.length > 0 ? comments[comments.length - 1].createdAt.toISOString() : null;
     const prevCursor = comments.length > 0 ? comments[0].createdAt.toISOString() : null;

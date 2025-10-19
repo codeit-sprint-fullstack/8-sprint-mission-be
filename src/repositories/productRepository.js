@@ -97,9 +97,14 @@ export const getProductById = async (id) => {
       createdAt: true,
       updatedAt: true,
       owner: { select: { id: true, nickname: true, image: true } },
-      comments: {
-        select: { id: true, content: true, createdAt: true },
-        orderBy: { createdAt: 'desc' },
+      ProductComment: {
+        select: {
+          id: true,
+          content: true,
+          owner: { select: { id: true, nickname: true, image: true } },
+          createdAt: true,
+          updatedAt: true,
+        },
       },
     },
   });

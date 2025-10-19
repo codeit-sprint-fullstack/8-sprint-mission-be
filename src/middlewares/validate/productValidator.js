@@ -14,4 +14,4 @@ export const updateProductValidator = [
   body('tags').optional().isArray().withMessage('Tags must be an array'),
 ];
 
-export const productIdValidator = [param('id').isUUID().withMessage('Invalid product ID')];
+export const productIdValidator = [param('productId').isUUID().withMessage('Invalid product ID')];
