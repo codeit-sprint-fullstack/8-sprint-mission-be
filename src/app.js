@@ -57,9 +57,6 @@ app.use((req, res) => {
 
 // Global 에러 핸들러
 app.use((err, req, res, next) => {
-  // Zod 유효성 검사 오류 처리 (이미 응답이 전송된 경우 무시)
-  if (err.name === 'ZodError') return;
-
   // Prisma 오류 처리
   if (err.code === 'P2002') {
     return res.status(409).json({

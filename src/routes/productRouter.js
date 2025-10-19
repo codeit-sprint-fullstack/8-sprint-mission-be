@@ -8,37 +8,42 @@ import {
   deleteProduct,
 } from '../controllers/productControllers.js';
 import upload from '../utils/upload.js';
-import {
-  validateCreateProduct,
-  validateUpdateProduct,
-  validateProductId,
-  validatePagination,
-} from '../middlewares/validate/validateProductZod.js';
 import * as likeControllers from '../controllers/likeControllers.js';
+import { verifyProductOwner } from '../middlewares/ownership.js';
 
 const router = Router();
 
-router.get('/', validatePagination, getAllProducts);
+router.get('/', getAllProducts);
+
 router.post(
   '/',
   passport.authenticate('access-token', { session: false }),
-  validateCreateProduct,
   upload.single('image'),
   createProduct,
 );
-router.get(
+
+router.get('/:id', passport.authenticate('access-token', { session: false }), getProductById);
+
+router.patch(
   '/:id',
   passport.authenticate('access-token', { session: false }),
-  validateProductId,
-  getProductById,
+  verifyProductOwner,
+  updateProduct,
 );
-router.patch('/:id', validateProductId, validateUpdateProduct, updateProduct);
-router.delete('/:id', validateProductId, deleteProduct);
+
+router.delete(
+  '/:id',
+  passport.authenticate('access-token', { session: false }),
+  verifyProductOwner,
+  deleteProduct,
+);
+
 router.post(
   '/:id/like',
   passport.authenticate('access-token', { session: false }),
   likeControllers.likeProduct,
 );
+
 router.delete(
   '/:id/like',
   passport.authenticate('access-token', { session: false }),
