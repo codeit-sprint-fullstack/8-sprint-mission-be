@@ -15,12 +15,6 @@ export const signup = async (req, res, next) => {
   try {
     const { email, nickname, password } = req.body;
 
-    if (!email || !nickname || !password) {
-      const error = new Error('Email, nickname, and password are required');
-      error.status = 400;
-      throw error;
-    }
-
     const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
@@ -49,12 +43,6 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      const error = new Error('Email and password are required');
-      error.status = 400;
-      throw error;
-    }
 
     const user = await verifyUser(email, password);
 

@@ -10,7 +10,12 @@ import {
 import upload from '../utils/upload.js';
 import * as likeControllers from '../controllers/likeControllers.js';
 import { verifyProductOwner } from '../middlewares/ownership.js';
-
+import {
+  createProductValidator,
+  updateProductValidator,
+  productIdValidator,
+} from '../middlewares/validate/productValidator.js';
+import { handleValidation } from '../middlewares/validate/index.js';
 const router = Router();
 
 router.get('/', getAllProducts);
@@ -19,6 +24,8 @@ router.post(
   '/',
   passport.authenticate('access-token', { session: false }),
   upload.single('image'),
+  createProductValidator,
+  handleValidation,
   createProduct,
 );
 
@@ -28,6 +35,8 @@ router.patch(
   '/:id',
   passport.authenticate('access-token', { session: false }),
   verifyProductOwner,
+  updateProductValidator,
+  handleValidation,
   updateProduct,
 );
 
@@ -35,6 +44,8 @@ router.delete(
   '/:id',
   passport.authenticate('access-token', { session: false }),
   verifyProductOwner,
+  productIdValidator,
+  handleValidation,
   deleteProduct,
 );
 
