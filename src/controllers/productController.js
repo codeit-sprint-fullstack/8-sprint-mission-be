@@ -15,9 +15,9 @@ const getProducts = async (req, res, next) => {
       orderBy === "recent" ? { createdAt: "desc" } : { createdAt: "asc" };
     const searchQuery = keyword
       ? {
-          $or: [
-            { name: { $regex: keyword, $options: "i" } },
-            { description: { $regex: keyword, $options: "i" } },
+          OR: [
+            { name: { contains: keyword } },
+            { description: { contains: keyword } },
           ],
         }
       : {};

@@ -37,6 +37,12 @@ app.use(productRoutes);
 app.use(articleRoutes);
 app.use(commentRoutes);
 
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .send("<h1 style='text-align: center;'>check backend api</h1>");
+});
+
 app.get("/hello", (req, res) => {
   res.status(200).send("Hellod World");
 });

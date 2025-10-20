@@ -22,37 +22,146 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  password String
+  nickname String @unique
+  image String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  articles Article[]
+  products Product[]
+  comments Comment[]
+
+  productLikes ProductLike[]
+  articleLikes ArticleLike[]
+}
+
 model Product {
   id          String    @id @default(uuid())
   name        String
-  description String
+  description String   @db.Text
   price       Int
-  tags        String[]
+  likeCount   Int @default(0)
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  images      ProductImage[]
+  tags        Tag[]
   comments    Comment[]
+  productLikes ProductLike[]
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
 }
+
 
 model Article {
   id        String    @id @default(uuid())
   title     String
-  content   String
-  likes     Int?
-  author   String?
+  content   String   @db.Text
+  likeCount Int @default(0)
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime  @default(now()) @updatedAt
+
+  images    ArticleImage[]
   comments  Comment[]
+  articleLikes ArticleLike[]
+
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+
 }
+
+model Image {
+  id String @id @default(uuid())
+  url String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  productImages ProductImage[]
+  articleImages ArticleImage[]
+}
+
+model ProductImage {
+  id String @id @default(uuid())
+  order Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId String
+
+  @@unique([productId, imageId])
+}
+
+model ArticleImage {
+  id String @id @default(uuid())
+  order Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId String
+
+  @@unique([articleId, imageId])
+}
+
+model ProductLike {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  @@unique([userId, productId])
+}
+
+model ArticleLike {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+
+  @@unique([userId, articleId])
+}
+
+
+model Tag {
+  id String @id @default(uuid())
+  name String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  products Product[]
+}
+
 
 model Comment {
   id        String   @id @default(uuid())
-  content   String
+  content   String   @db.Text
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 
-  article   Article? @relation(fields: [articleId], references: [id])
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
   articleId String?
 
-  product   Product? @relation(fields: [productId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String?
 }
