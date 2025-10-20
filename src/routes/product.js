@@ -2,6 +2,7 @@ import express from 'express';
 import { productController } from '../controllers/productController.js';
 import { asyncHandler } from '../middlewares/errorHandler.js';
 import { validateUUID, validateProduct } from '../middlewares/validation.js';
+import { upload } from '../middlewares/upload.js';
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.get(
 // 상품 등록
 router.post(
   '/',
+  upload.single('image'),
   validateProduct,
   asyncHandler(productController.createProduct),
 );
@@ -26,6 +28,7 @@ router.post(
 router.patch(
   '/:id',
   validateUUID,
+  upload.single('image'),
   asyncHandler(productController.updateProduct),
 );
 

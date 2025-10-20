@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import userRouter from './routes/user.js';
 import articleRouter from './routes/article.js';
 import commentRouter from './routes/comment.js';
@@ -10,6 +12,9 @@ import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js';
 dotenv.config();
 console.log('Prisma ready');
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.use(
   cors({
@@ -18,6 +23,9 @@ app.use(
   }),
 );
 app.use(express.json());
+
+// 정적 파일 제공 (업로드된 이미지)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // User API
 app.use('/users', userRouter);

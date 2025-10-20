@@ -36,6 +36,7 @@ model Product {
   description      String?           @db.VarChar(500)
   price            Decimal           @db.Decimal(10, 2)
   tags             String[]
+  imageUrl         String?           @db.VarChar(500)
   favoriteCount    Int               @default(0)
   deleted          Boolean           @default(false)
   createdAt        DateTime          @default(now())
