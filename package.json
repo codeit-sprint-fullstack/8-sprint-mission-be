@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@prisma/client": "^5.4.2",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^5.1.0",
@@ -20,6 +21,7 @@
     "studio": "prisma studio"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "schema": "src/prisma/schema.prisma",
+    "seed": "node src/prisma/seed.js"
   }
 }

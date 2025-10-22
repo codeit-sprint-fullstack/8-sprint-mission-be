@@ -1,52 +1,33 @@
-export const Freeboarddata = [
-  {
-    id: "a1",
-    title: "첫 번째 게시글",
-    content: "자유게시판에 올린 첫 번째 글입니다.",
-    user_name: "alice",
-    heart_count: 10,
-    isDeleted: false,
-    createdAt: new Date("2025-09-01T10:00:00Z"),
-    updatedAt: new Date("2025-09-01T10:00:00Z"),
-  },
-  {
-    id: "a2",
-    title: "두 번째 게시글",
-    content: "오늘 날씨가 정말 좋네요.",
-    user_name: "bob",
-    heart_count: 5,
-    isDeleted: false,
-    createdAt: new Date("2025-09-02T09:30:00Z"),
-    updatedAt: new Date("2025-09-02T09:30:00Z"),
-  },
-  {
-    id: "a3",
-    title: "세 번째 게시글",
-    content: "프리즈마 스키마 테스트 중입니다.",
-    user_name: "carol",
-    heart_count: 8,
-    isDeleted: false,
-    createdAt: new Date("2025-09-03T14:00:00Z"),
-    updatedAt: new Date("2025-09-03T14:00:00Z"),
-  },
-  {
-    id: "a4",
-    title: "네 번째 게시글",
-    content: "소프트 삭제와 하드 삭제 차이점이 뭘까요?",
-    user_name: "dave",
-    heart_count: 3,
-    isDeleted: false,
-    createdAt: new Date("2025-09-04T11:00:00Z"),
-    updatedAt: new Date("2025-09-04T11:00:00Z"),
-  },
-  {
-    id: "a5",
-    title: "다섯 번째 게시글",
-    content: "이건 삭제된 글로 테스트합니다.",
-    user_name: "eve",
-    heart_count: 0,
-    isDeleted: true,
-    createdAt: new Date("2025-09-05T08:00:00Z"),
-    updatedAt: new Date("2025-09-05T08:00:00Z"),
-  },
-];
+const mockArticles = (userId, count = 30) => {
+  const titles = ["일상 기록", "오늘의 생각", "IT 트렌드", "여행 후기"];
+  const contents = [
+    "오늘은 새로운 프로젝트를 시작했다.",
+    "요즘 인공지능 관련 뉴스가 흥미롭다.",
+    "오랜만에 여행을 다녀왔다.",
+    "개발자로서 성장하고 있다.",
+  ];
+  const images = ["article_1.jpg", "article_2.jpg", "article_3.jpg"];
+
+  const articles = [];
+
+  for (let i = 0; i < count; i++) {
+    const title = titles[i % titles.length];
+    const content = contents[i % contents.length];
+    const image = [`/images/${images[i % images.length]}`];
+
+    articles.push({
+      id: `article-${userId}-${i + 1}`,
+      userId,
+      title,
+      content,
+      image,
+      isDeleted: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  }
+
+  return articles;
+};
+
+export default mockArticles;

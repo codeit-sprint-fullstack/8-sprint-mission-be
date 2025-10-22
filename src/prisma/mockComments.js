@@ -1,47 +1,37 @@
-export const Commentdata = [
-  {
-    id: "c1",
-    content: "좋은 글 감사합니다.",
-    user_name: "frank",
-    isDeleted: false,
-    createdAt: new Date("2025-09-01T11:00:00Z"),
-    updatedAt: new Date("2025-09-01T11:00:00Z"),
-    freeboardId: "a1",
-  },
-  {
-    id: "c2",
-    content: "동의합니다!",
-    user_name: "grace",
-    isDeleted: false,
-    createdAt: new Date("2025-09-02T10:00:00Z"),
-    updatedAt: new Date("2025-09-02T10:00:00Z"),
-    freeboardId: "a2",
-  },
-  {
-    id: "c3",
-    content: "도움이 많이 되었어요.",
-    user_name: "heidi",
-    isDeleted: false,
-    createdAt: new Date("2025-09-03T15:00:00Z"),
-    updatedAt: new Date("2025-09-03T15:00:00Z"),
-    freeboardId: "a3",
-  },
-  {
-    id: "c4",
-    content: "저도 궁금했는데 잘 봤습니다.",
-    user_name: "ivan",
-    isDeleted: false,
-    createdAt: new Date("2025-09-04T12:00:00Z"),
-    updatedAt: new Date("2025-09-04T12:00:00Z"),
-    freeboardId: "a4",
-  },
-  {
-    id: "c5",
-    content: "삭제된 글에도 댓글이 남나요?",
-    user_name: "judy",
-    isDeleted: false,
-    createdAt: new Date("2025-09-05T09:00:00Z"),
-    updatedAt: new Date("2025-09-05T09:00:00Z"),
-    freeboardId: "a5",
-  },
-];
+const mockComments = (userId, articles = [], products = [], count = 200) => {
+  const contents = [
+    "좋은 글이에요!",
+    "흥미로운 상품이네요.",
+    "공감됩니다.",
+    "가격이 괜찮네요.",
+    "잘 보고 갑니다.",
+  ];
+
+  const comments = [];
+
+  for (let i = 0; i < count; i++) {
+    const targetType = Math.random() < 0.5 ? "article" : "product";
+    const content = contents[i % contents.length];
+
+    comments.push({
+      id: `comment-${userId}-${i + 1}`,
+      userId,
+      articleId:
+        targetType === "article" && articles.length
+          ? articles[i % articles.length].id
+          : null,
+      productId:
+        targetType === "product" && products.length
+          ? products[i % products.length].id
+          : null,
+      content,
+      isDeleted: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  }
+
+  return comments;
+};
+
+export default mockComments;
