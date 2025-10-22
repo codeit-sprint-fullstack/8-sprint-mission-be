@@ -47,7 +47,6 @@ model Product {
   updatedAt DateTime @updatedAt
 
   Comment  Comment[]
-  Like     Like[]
   Favorite Favorite[]
 }
 
@@ -60,7 +59,7 @@ model Article {
   content String
   image   String[] @default([])
 
-  isDeleted Boolean
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -79,14 +78,14 @@ model Comment {
 
   content String
 
-  isDeleted Boolean
+  isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Favorite {
   id        String  @id @default(uuid())
-  use       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
@@ -104,8 +103,6 @@ model Like {
   articleId String
 
   createdAt DateTime @default(now())
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?
 
   @@unique([userId, articleId])
 }
