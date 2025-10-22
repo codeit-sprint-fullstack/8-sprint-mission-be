@@ -7,16 +7,20 @@
     "express": "^5.1.0",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
     "prisma": "^5.4.2",
-    "superstruct": "^1.0.3"
+    "superstruct": "^1.0.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
   },
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js",
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"
   },

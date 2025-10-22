@@ -1,26 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `freeboardId` on the `Comment` table. All the data in the column will be lost.
-  - You are about to drop the column `user_name` on the `Comment` table. All the data in the column will be lost.
-  - You are about to drop the `Freeboard` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `userId` to the `Comment` table without a default value. This is not possible if the table is not empty.
-
-*/
--- DropForeignKey
-ALTER TABLE "Comment" DROP CONSTRAINT "Comment_freeboardId_fkey";
-
--- AlterTable
-ALTER TABLE "Comment" DROP COLUMN "freeboardId",
-DROP COLUMN "user_name",
-ADD COLUMN     "articleId" TEXT,
-ADD COLUMN     "productId" TEXT,
-ADD COLUMN     "userId" TEXT NOT NULL,
-ALTER COLUMN "isDeleted" SET DEFAULT false;
-
--- DropTable
-DROP TABLE "Freeboard";
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -63,6 +40,20 @@ CREATE TABLE "Article" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Comment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "articleId" TEXT,
+    "productId" TEXT,
+    "content" TEXT NOT NULL,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

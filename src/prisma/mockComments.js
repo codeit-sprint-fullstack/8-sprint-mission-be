@@ -1,4 +1,4 @@
-const mockComments = (userId, articles = [], products = [], count = 200) => {
+const mockComments = (userId, articles = [], products = [], count = 50) => {
   const contents = [
     "좋은 글이에요!",
     "흥미로운 상품이네요.",

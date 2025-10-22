@@ -33,14 +33,14 @@ async function main() {
   const commentsData = [];
 
   for (const user of User) {
-    productsData.push(...mockProducts(user.id, 10));
-    articlesData.push(...mockArticles(user.id, 5));
+    productsData.push(...mockProducts(user.id, 20));
+    articlesData.push(...mockArticles(user.id, 20));
     commentsData.push(
       ...mockComments(
         user.id,
-        mockArticles(user.id, 5),
-        mockProducts(user.id, 10),
-        20
+        mockArticles(user.id, 20),
+        mockProducts(user.id, 20),
+        10
       )
     );
   }

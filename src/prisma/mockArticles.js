@@ -1,4 +1,4 @@
-const mockArticles = (userId, count = 30) => {
+const mockArticles = (userId, count = 50) => {
   const titles = ["일상 기록", "오늘의 생각", "IT 트렌드", "여행 후기"];
   const contents = [
     "오늘은 새로운 프로젝트를 시작했다.",

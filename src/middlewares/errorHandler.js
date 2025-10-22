@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export default function errorHandler(e, req, res, next) {
   console.error(e);
   if (e.name === "StructError") {
