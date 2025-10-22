@@ -6,8 +6,6 @@
     "express": "^5.1.0",
     "is-email": "^1.0.2",
     "is-uuid": "^1.0.2",
-    "mongodb": "^6.19.0",
-    "mongoose": "^7.8.7",
     "prisma": "^5.4.2",
     "superstruct": "^1.0.3"
   },
@@ -17,7 +15,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "migrate": "prisma migrate dev",
+    "studio": "prisma studio"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
