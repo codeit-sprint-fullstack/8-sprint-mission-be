@@ -1,4 +1,4 @@
-import { prisma } from "../config/prisma.js";
+import prisma from "../config/prisma.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 // 게시글 목록 조회
