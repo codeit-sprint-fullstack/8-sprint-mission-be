@@ -40,6 +40,7 @@ model Product {
   description String
   price       Int
   images      String[] @default([])
+  tags        String[] @default([])
 
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -55,9 +56,9 @@ model Article {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  title       String
-  content     String
-  heart_count Int?
+  title   String
+  content String
+  image   String[] @default([])
 
   isDeleted Boolean
   createdAt DateTime @default(now())

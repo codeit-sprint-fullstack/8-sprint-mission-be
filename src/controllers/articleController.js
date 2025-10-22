@@ -1,5 +1,9 @@
-export const getArticles = async (req, res) => {
-  const { order = "newest", cursor, limit = 5 } = req.query;
+import { prisma } from "../config/prisma.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
+
+// 게시글 목록 조회
+export const getArticles = asyncHandler(async (req, res) => {
+  const { order = "newest", cursor, limit = 10 } = req.query;
   const orderBy =
     order === "oldest" ? { createdAt: "asc" } : { createdAt: "desc" };
 
@@ -7,58 +11,75 @@ export const getArticles = async (req, res) => {
     orderBy,
     take: parseInt(limit),
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
-    include: { user: true, likes: true, comments: true },
+    include: {
+      user: { select: { id: true, nickname: true, image: true } },
+      likes: true, 
+    },
   });
 
   res.json(articles);
-};
+});
 
-export const getArticleById = async (req, res) => {
+// 게시글 상세 조회
+export const getArticleById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const article = await prisma.article.findUnique({
     where: { id },
     include: {
-      user: true,
+      user: { select: { id: true, nickname: true, image: true } },
       comments: true,
       likes: true,
     },
   });
-  if (!article) return res.status(404).json({ message: "Article not found" });
+  if (!article) return res.status(404).json({ message: "게시글을 찾을 수 없습니다" });
   res.json(article);
-};
+});
 
-export const createArticle = async (req, res) => {
-  const { title, content } = req.body;
-  const userId = req.user.id;
+// 게시글 등록
+export const createArticle = asyncHandler(async (req, res) => {
+  const { title, content, image } = req.body;
 
   const article = await prisma.article.create({
     data: {
       title,
       content,
-      userId,
+      image,
+      userId: req.user.id,
       isDeleted: false,
     },
   });
-  res.status(201).json(article);
-};
+  res.status(201).json(message: "게시글 등록 완료", article);
+});
 
-export const updateArticle = async (req, res) => {
+// 게시글 수정
+export const updateArticle = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { title, content } = req.body;
-  const article = await prisma.article.update({
+  const { title, content, image } = req.body;
+
+  const exist = await prisma.article.findUnique({ where: { id } });
+  if (!exist) return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
+  const updated = await prisma.article.update({
     where: { id },
-    data: { title, content },
+    data: { title, content, image },
   });
-  res.json(article);
-};
 
-export const deleteArticle = async (req, res) => {
+  res.json({ message: "게시글 수정 완료", article: updated });
+});
+
+// 게시글 삭제
+export const deleteArticle = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  await prisma.article.delete({ where: { id } });
-  res.sendStatus(204);
-};
 
-export const likeArticle = async (req, res) => {
+  const exist = await prisma.article.findUnique({ where: { id } });
+  if (!exist) return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
+
+  await prisma.article.delete({ where: { id } });
+  res.status(204).end();
+});
+
+// 좋아요 등록
+export const likeArticle = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
 
@@ -71,10 +92,11 @@ export const likeArticle = async (req, res) => {
       data: { likeCount: { increment: 1 } },
     }),
   ]);
-  res.status(201).json({ message: "Liked" });
-};
+  res.status(201).json({ message: "좋아요(Like) 등록" });
+});
 
-export const unlikeArticle = async (req, res) => {
+// 좋아요 취소
+export const unlikeArticle = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
 
@@ -87,5 +109,5 @@ export const unlikeArticle = async (req, res) => {
       data: { likeCount: { decrement: 1 } },
     }),
   ]);
-  res.json({ message: "Unliked" });
-};
+  res.json({ message: "좋아요(Like) 취소" });
+});
