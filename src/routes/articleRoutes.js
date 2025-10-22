@@ -10,6 +10,7 @@ import { likeArticle, unlikeArticle } from "../controllers/likeController.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { checkOwnership } from "../middlewares/ownership.js";
+import { validateArticle } from "../middlewares/validateArticle.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/", asyncHandler(getArticles));
 // 게시글 상세
 router.get("/:id", asyncHandler(getArticleById));
 // 게시글 등록 (로그인 필요)
-router.post("/", authMiddleware, asyncHandler(createArticle));
+router.post("/", authMiddleware, validateArticle, asyncHandler(createArticle));
 // 게시글 수정 (작성자만)
 router.patch(
   "/:id",

@@ -13,6 +13,7 @@ import {
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { checkOwnership } from "../middlewares/ownership.js";
+import { validateProduct } from "../middlewares/validateProduct.js";
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.get("/", asyncHandler(getProducts));
 // 상품 상세
 router.get("/:id", asyncHandler(getProductById));
 // 상품 등록
-router.post("/", authMiddleware, asyncHandler(createProduct));
+router.post("/", authMiddleware, validateProduct, asyncHandler(createProduct));
 // 상품 수정
 router.patch(
   "/:id",
