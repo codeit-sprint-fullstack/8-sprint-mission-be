@@ -3,12 +3,16 @@ import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 // 댓글 목록 조회
 export const getComments = asyncHandler(async (req, res) => {
-  const { productId } = req.params;
+  const { articleId, productId } = req.params;
+
+  const where = articleId ? { articleId } : { productId };
+
   const comments = await prisma.comment.findMany({
-    where: { productId },
+    where,
     include: {
       user: { select: { id: true, nickname: true, image: true } },
     },
+    orderBy: { createdAt: "desc" },
   });
   res.json({ comments });
 });
@@ -16,13 +20,17 @@ export const getComments = asyncHandler(async (req, res) => {
 // 댓글 작성
 export const createComment = asyncHandler(async (req, res) => {
   const { content } = req.body;
-  const { productId } = req.params;
+  const { articleId, productId } = req.params;
 
   const comment = await prisma.comment.create({
     data: {
       content,
-      productId,
       userId: req.user.id,
+      articleId: articleId ?? null,
+      productId: productId ?? null,
+    },
+    include: {
+      user: { select: { id: true, nickname: true, image: true } },
     },
   });
   res.status(201).json({ message: "댓글 작성 완료", comment });
@@ -40,6 +48,9 @@ export const updateComment = asyncHandler(async (req, res) => {
   const updated = await prisma.comment.update({
     where: { id },
     data: { content },
+    include: {
+      user: { select: { id: true, nickname: true, image: true } },
+    },
   });
 
   res.json({ message: "댓글 수정 완료", comment: updated });

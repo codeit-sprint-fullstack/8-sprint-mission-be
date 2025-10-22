@@ -15,6 +15,8 @@ export const getProducts = asyncHandler(async (req, res) => {
 // 상품 상세 조회
 export const getProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const userId = req.user?.id;
+
   const product = await prisma.product.findUnique({
     where: { id },
     include: {
@@ -23,9 +25,17 @@ export const getProductById = asyncHandler(async (req, res) => {
       comments: true,
     },
   });
+
   if (!product)
     return res.status(404).json({ message: "상품을 찾을 수 없습니다" });
-  res.json({ product });
+
+  const isFavorite = userId
+    ? !!(await prisma.favorite.findFirst({
+        where: { productId: id, userId },
+      }))
+    : false;
+
+  res.json({ ...product, isFavorite });
 });
 
 // 상품 등록
@@ -72,24 +82,4 @@ export const deleteProduct = asyncHandler(async (req, res) => {
 
   await prisma.product.delete({ where: { id } });
   res.json({ message: "상품이 삭제되었습니다" });
-});
-
-// favorite 토글
-export const toggleFavorite = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const userId = req.user.id;
-
-  const existing = await prisma.favorite.findFirst({
-    where: { userId, productId: id },
-  });
-
-  if (existing) {
-    await prisma.favorite.delete({ where: { id: existing.id } });
-    res.json({ message: "좋아요(favorite) 취소" });
-  } else {
-    await prisma.favorite.create({
-      data: { userId, productId },
-    });
-    res.json({ message: "좋아요(favorite) 등록" });
-  }
 });
