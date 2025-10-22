@@ -12,6 +12,7 @@ import {
 } from "../controllers/likeController.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { checkOwnership } from "../middlewares/ownership.js";
 
 const router = express.Router();
 
@@ -22,9 +23,19 @@ router.get("/:id", asyncHandler(getProductById));
 // 상품 등록
 router.post("/", authMiddleware, asyncHandler(createProduct));
 // 상품 수정
-router.patch("/:id", authMiddleware, asyncHandler(updateProduct));
+router.patch(
+  "/:id",
+  authMiddleware,
+  checkOwnership("product"),
+  asyncHandler(updateProduct)
+);
 // 상품 삭제
-router.delete("/:id", authMiddleware, asyncHandler(deleteProduct));
+router.delete(
+  "/:id",
+  authMiddleware,
+  checkOwnership("product"),
+  asyncHandler(deleteProduct)
+);
 // 좋아요 추가
 router.post("/:id/favorite", authMiddleware, asyncHandler(favoriteProduct));
 // 좋아요 취소
