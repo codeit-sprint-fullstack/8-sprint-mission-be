@@ -10,6 +10,10 @@ import {
   favoriteProduct,
   unfavoriteProduct,
 } from "../controllers/likeController.js";
+import {
+  getComments,
+  createComment,
+} from "../controllers/commentController.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { checkOwnership } from "../middlewares/ownership.js";
@@ -41,5 +45,14 @@ router.delete(
 router.post("/:id/favorite", authMiddleware, asyncHandler(favoriteProduct));
 // 좋아요 취소
 router.delete("/:id/favorite", authMiddleware, asyncHandler(unfavoriteProduct));
+
+// 댓글 목록 조회
+router.get("/:productId/comments", asyncHandler(getComments));
+// 댓글 등록
+router.post(
+  "/:productId/comments",
+  authMiddleware,
+  asyncHandler(createComment)
+);
 
 export default router;

@@ -7,6 +7,10 @@ import {
   deleteArticle,
 } from "../controllers/articleController.js";
 import { likeArticle, unlikeArticle } from "../controllers/likeController.js";
+import {
+  getComments,
+  createComment,
+} from "../controllers/commentController.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { checkOwnership } from "../middlewares/ownership.js";
@@ -38,5 +42,14 @@ router.delete(
 router.post("/:id/like", authMiddleware, asyncHandler(likeArticle));
 // 좋아요 취소
 router.delete("/:id/like", authMiddleware, asyncHandler(unlikeArticle));
+
+// 댓글 목록 조회
+router.get("/:articleId/comments", asyncHandler(getComments));
+// 댓글 등록
+router.post(
+  "/:articleId/comments",
+  authMiddleware,
+  asyncHandler(createComment)
+);
 
 export default router;

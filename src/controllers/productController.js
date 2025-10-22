@@ -1,5 +1,9 @@
 import prisma from "../config/prisma.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
+import {
+  DEFAULT_PRODUCT_IMAGE,
+  DEFAULT_PROFILE_IMAGE,
+} from "../config/constants.js";
 
 // 상품 목록 조회
 export const getProducts = asyncHandler(async (req, res) => {
@@ -11,7 +15,7 @@ export const getProducts = asyncHandler(async (req, res) => {
       orderBy = { createdAt: "asc" };
       break;
     case "like":
-      orderBy = { favorites: { _count: "desc" } };
+      orderBy = { Favorite: { _count: "desc" } };
       break;
     default:
       orderBy = { createdAt: "desc" };
@@ -21,6 +25,8 @@ export const getProducts = asyncHandler(async (req, res) => {
     ? { title: { contains: search, mode: "insensitive" } }
     : {};
 
+  const totalCount = await prisma.product.count({ where });
+
   const products = await prisma.product.findMany({
     where,
     orderBy,
@@ -28,11 +34,24 @@ export const getProducts = asyncHandler(async (req, res) => {
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     include: {
       user: { select: { id: true, nickname: true, image: true } },
-      favorites: true,
+      _count: { select: { Favorite: true } },
     },
   });
 
-  res.json({ products });
+  const list = products.map((p) => ({
+    id: p.id,
+    name: p.title,
+    description: p.description,
+    price: p.price,
+    images: p.images || DEFAULT_PRODUCT_IMAGE,
+    tags: p.tags,
+    createdAt: p.createdAt,
+    userId: p.user.id,
+    nickname: p.user.nickname,
+    favoriteCount: p._count.Favorite,
+  }));
+
+  res.json({ totalCount, list });
 });
 
 // 상품 상세 조회
@@ -44,8 +63,9 @@ export const getProductById = asyncHandler(async (req, res) => {
     where: { id },
     include: {
       user: { select: { id: true, nickname: true, image: true } },
-      favorites: true,
-      comments: true,
+      _count: { select: { Favorite: true } },
+      Favorite: true,
+      Comment: true,
     },
   });
 
@@ -58,17 +78,32 @@ export const getProductById = asyncHandler(async (req, res) => {
       }))
     : false;
 
-  res.json({ ...product, isFavorite });
+  const data = {
+    id: product.id,
+    name: product.title,
+    description: product.description,
+    price: product.price,
+    images: product.images.length ? product.images : [DEFAULT_PRODUCT_IMAGE],
+    tags: product.tags,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
+    userId: product.user.id,
+    nickname: product.user.nickname,
+    favoriteCount: product._count.Favorite,
+    isFavorite,
+  };
+
+  res.json(data);
 });
 
 // 상품 등록
 export const createProduct = asyncHandler(async (req, res) => {
-  const { title, content, price, images, tags } = req.body;
+  const { title, description, price, images, tags } = req.body;
 
   const product = await prisma.product.create({
     data: {
       title,
-      content,
+      description,
       price: parseInt(price),
       images,
       tags,
@@ -81,7 +116,7 @@ export const createProduct = asyncHandler(async (req, res) => {
 // 상품 수정
 export const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { title, content, price, images, tags } = req.body;
+  const { title, description, price, images, tags } = req.body;
 
   const exist = await prisma.product.findUnique({ where: { id } });
   if (!exist)
@@ -89,7 +124,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 
   const updated = await prisma.product.update({
     where: { id },
-    data: { title, content, price, images, tags },
+    data: { title, description, price, images, tags },
   });
 
   res.json({ message: "상품 정보가 수정되었습니다", product: updated });

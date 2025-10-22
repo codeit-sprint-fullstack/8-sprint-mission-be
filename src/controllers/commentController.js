@@ -1,20 +1,44 @@
 import prisma from "../config/prisma.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
+import { DEFAULT_PROFILE_IMAGE } from "../config/constants.js";
 
 // 댓글 목록 조회
 export const getComments = asyncHandler(async (req, res) => {
   const { articleId, productId } = req.params;
+  const { limit = 10, cursor } = req.query;
+  const take = parseInt(limit);
 
   const where = articleId ? { articleId } : { productId };
 
   const comments = await prisma.comment.findMany({
     where,
+    orderBy: { createdAt: "desc" },
+    take: take + 1,
+    ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     include: {
       user: { select: { id: true, nickname: true, image: true } },
     },
-    orderBy: { createdAt: "desc" },
   });
-  res.json({ comments });
+
+  let nextCursor = null;
+  if (comments.length > take) {
+    nextCursor = comments[comments.length - 1].id;
+    comments.pop(); // 초과한 마지막 댓글 제거
+  }
+
+  const list = comments.map((c) => ({
+    id: c.id,
+    content: c.content,
+    createdAt: c.createdAt,
+    updatedAt: c.updatedAt,
+    writer: {
+      id: c.user.id,
+      nickname: c.user.nickname,
+      image: c.user.image || DEFAULT_PROFILE_IMAGE,
+    },
+  }));
+
+  res.json({ nextCursor, list });
 });
 
 // 댓글 작성

@@ -1,5 +1,9 @@
 import prisma from "../config/prisma.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
+import {
+  DEFAULT_ARTICLE_IMAGE,
+  DEFAULT_PROFILE_IMAGE,
+} from "../config/constants.js";
 
 // 게시글 목록 조회
 export const getArticles = asyncHandler(async (req, res) => {
@@ -11,7 +15,7 @@ export const getArticles = asyncHandler(async (req, res) => {
       orderBy = { createdAt: "asc" };
       break;
     case "like":
-      orderBy = { likes: { _count: "desc" } };
+      orderBy = { Like: { _count: "desc" } };
       break;
     default:
       orderBy = { createdAt: "desc" };
@@ -21,19 +25,32 @@ export const getArticles = asyncHandler(async (req, res) => {
     ? { title: { contains: search, mode: "insensitive" } }
     : {};
 
+  const totalCount = await prisma.article.count({ where });
+
   const articles = await prisma.article.findMany({
     where,
     orderBy,
     take: parseInt(limit),
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     include: {
-      user: { select: { id: true, nickname: true, image: true } },
-      likes: true,
-      comments: true,
+      user: { select: { id: true, nickname: true } },
+      _count: { select: { Like: true } },
     },
   });
 
-  res.json({ articles });
+  const list = articles.map((a) => ({
+    id: a.id,
+    title: a.title,
+    content: a.content,
+    image: a.image[0] || DEFAULT_ARTICLE_IMAGE,
+    createdAt: a.createdAt,
+    updatedAt: a.updatedAt,
+    userId: a.user.id,
+    nickname: a.user.nickname ?? "오류",
+    likeCount: a._count.Like,
+  }));
+
+  res.json({ totalCount, list });
 });
 
 // 게시글 상세 조회
@@ -45,8 +62,8 @@ export const getArticleById = asyncHandler(async (req, res) => {
     where: { id },
     include: {
       user: { select: { id: true, nickname: true, image: true } },
-      comments: true,
-      likes: true,
+      _count: { select: { Like: true } },
+      Comment: true,
     },
   });
 
@@ -54,12 +71,26 @@ export const getArticleById = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "게시글을 찾을 수 없습니다" });
 
   const isLiked = userId
-    ? !!(await prisma.articleLike.findFirst({
+    ? !!(await prisma.Like.findFirst({
         where: { articleId: id, userId },
       }))
     : false;
 
-  res.json({ ...article, isLiked });
+  const data = {
+    id: article.id,
+    title: article.title,
+    content: article.content,
+    image: article.image.length ? article.image[0] : DEFAULT_ARTICLE_IMAGE,
+    createdAt: article.createdAt,
+    updatedAt: article.updatedAt,
+    userId: article.user.id,
+    nickname: article.user.nickname ?? "오류",
+    image: article.user.image || DEFAULT_PROFILE_IMAGE,
+    likeCount: article._count.Like,
+    isLiked,
+  };
+
+  res.json(data);
 });
 
 // 게시글 등록

@@ -11,7 +11,14 @@ import { assert } from "superstruct";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = ["http://localhost:3000"];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true, // 쿠키, Authorization 헤더 허용
+  })
+);
 
 app.use("/uploads", express.static("uploads")); // 이미지 허용
 
