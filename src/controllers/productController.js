@@ -3,12 +3,35 @@ import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 // 상품 목록 조회
 export const getProducts = asyncHandler(async (req, res) => {
+  const { search, order = "newest", limit = 10, cursor } = req.query;
+
+  let orderBy;
+  switch (order) {
+    case "oldest":
+      orderBy = { createdAt: "asc" };
+      break;
+    case "like":
+      orderBy = { favorites: { _count: "desc" } };
+      break;
+    default:
+      orderBy = { createdAt: "desc" };
+  }
+
+  const where = search
+    ? { title: { contains: search, mode: "insensitive" } }
+    : {};
+
   const products = await prisma.product.findMany({
+    where,
+    orderBy,
+    take: parseInt(limit),
+    ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     include: {
-      user: { select: { id: true } },
+      user: { select: { id: true, nickname: true, image: true } },
       favorites: true,
     },
   });
+
   res.json({ products });
 });
 

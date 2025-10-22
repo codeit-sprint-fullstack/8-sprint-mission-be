@@ -3,21 +3,37 @@ import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 // 게시글 목록 조회
 export const getArticles = asyncHandler(async (req, res) => {
-  const { order = "newest", cursor, limit = 10 } = req.query;
-  const orderBy =
-    order === "oldest" ? { createdAt: "asc" } : { createdAt: "desc" };
+  const { search, order = "newest", limit = 10, cursor } = req.query;
+
+  let orderBy;
+  switch (order) {
+    case "oldest":
+      orderBy = { createdAt: "asc" };
+      break;
+    case "like":
+      orderBy = { likes: { _count: "desc" } };
+      break;
+    default:
+      orderBy = { createdAt: "desc" };
+  }
+
+  const where = search
+    ? { title: { contains: search, mode: "insensitive" } }
+    : {};
 
   const articles = await prisma.article.findMany({
+    where,
     orderBy,
     take: parseInt(limit),
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     include: {
       user: { select: { id: true, nickname: true, image: true } },
       likes: true,
+      comments: true,
     },
   });
 
-  res.json(articles);
+  res.json({ articles });
 });
 
 // 게시글 상세 조회
