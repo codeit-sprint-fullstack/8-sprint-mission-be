@@ -4,7 +4,7 @@ import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 const router = express.Router();
 
-router.post("/register", asyncHandler(register));
-router.post("/login", asyncHandler(login));
+router.post("/signUp", asyncHandler(register));
+router.post("/signIn", asyncHandler(login));
 
 export default router;
