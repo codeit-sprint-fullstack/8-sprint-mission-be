@@ -1,4 +1,4 @@
-import prisma from "../config/database.js";
+import * as productService from "../services/productService.js";
 
 const getProducts = async (req, res, next) => {
   try {
@@ -8,36 +8,16 @@ const getProducts = async (req, res, next) => {
       orderBy = "recent",
       keyword = "",
     } = req.query;
-    const skip = (page - 1) * pageSize;
-    const take = Number(pageSize);
-    // Prisma 정렬 옵션 설정
-    const sortOption =
-      orderBy === "recent" ? { createdAt: "desc" } : { createdAt: "asc" };
-    const searchQuery = keyword
-      ? {
-          OR: [
-            { name: { contains: keyword } },
-            { description: { contains: keyword } },
-          ],
-        }
-      : {};
 
-    const totalCount = await prisma.product.count({ where: searchQuery });
-    const sortedProducts = await prisma.product.findMany({
-      where: searchQuery,
-      skip,
-      take,
-      orderBy: sortOption,
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        createdAt: true,
-      },
+    const { products, totalCount } = await productService.getProducts({
+      page,
+      pageSize,
+      orderBy,
+      keyword,
     });
 
     res.status(200).json({
-      products: sortedProducts,
+      products,
       totalCount,
     });
   } catch (error) {
@@ -48,17 +28,8 @@ const getProducts = async (req, res, next) => {
 const getProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const product = await prisma.product.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        tags: true,
-        createdAt: true,
-      },
-    });
+    const userId = req.user?.userId; // 인증된 사용자가 있으면 userId 전달
+    const product = await productService.getProductById(id, userId);
     res.status(200).json(product);
   } catch (error) {
     next(error);
@@ -67,12 +38,15 @@ const getProductById = async (req, res, next) => {
 
 const createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, tags } = req.body;
-    const newProduct = await prisma.product.create({
+    const { name, description, price, tags, images } = req.body;
+    const userId = req.user.userId;
+    const newProduct = await productService.createProduct({
       name,
       description,
       price,
       tags,
+      images,
+      userId,
     });
     res.status(201).json(newProduct);
   } catch (error) {
@@ -83,15 +57,13 @@ const createProduct = async (req, res, next) => {
 const updateProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, description, price, tags } = req.body;
-    const updatedProduct = await prisma.product.update({
-      where: { id },
-      data: {
-        name,
-        description,
-        price,
-        tags,
-      },
+    const { name, description, price, tags, images } = req.body;
+    const updatedProduct = await productService.updateProduct(id, {
+      name,
+      description,
+      price,
+      tags,
+      images,
     });
     res.status(200).json(updatedProduct);
   } catch (error) {
@@ -102,7 +74,7 @@ const updateProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await prisma.product.delete({ where: { id } });
+    await productService.deleteProduct(id);
     res.status(204).send();
   } catch (error) {
     next(error);

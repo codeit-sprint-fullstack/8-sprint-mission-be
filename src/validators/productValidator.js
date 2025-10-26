@@ -76,11 +76,6 @@ export const createProductSchema = z.object({
     .int("가격은 정수여야 합니다.")
     .min(0, "가격은 0 이상이어야 합니다.")
     .max(999999999, "가격은 999,999,999 이하여야 합니다."),
-  userId: z
-    .string({
-      required_error: "사용자 ID는 필수입니다.",
-    })
-    .uuid("올바른 UUID 형식이 아닙니다."),
   tags: z
     .array(z.string().trim().min(1, "태그는 빈 문자열일 수 없습니다."))
     .optional()
