@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../config/prisma.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 const JWT_EXPIRES_IN = "1h";
@@ -36,4 +38,30 @@ export const loginUser = async ({ email, password }) => {
   });
 
   return { user, token };
+};
+
+export const refreshAccessTokenService = async (refreshToken) => {
+  if (!refreshToken) throw new Error("리프레시 토큰이 제공되지 않았습니다.");
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+    });
+
+    if (!user || user.refreshToken !== refreshToken) {
+      throw new Error("유효하지 않은 리프레시 토큰입니다.");
+    }
+
+    const newAccessToken = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return { accessToken: newAccessToken };
+  } catch (error) {
+    throw new Error("토큰 갱신 실패: " + error.message);
+  }
 };

@@ -1,5 +1,9 @@
 import express from "express";
-import { register, login } from "../controllers/authController.js";
+import {
+  register,
+  login,
+  refreshAccessToken,
+} from "../controllers/authController.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 const router = express.Router();
@@ -117,5 +121,39 @@ router.post("/signUp", asyncHandler(register));
  *         description: 이메일 또는 비밀번호 불일치
  */
 router.post("/signIn", asyncHandler(login));
+
+/**
+ * @swagger
+ * /auth/refresh-token:
+ *   post:
+ *     summary: "Access Token 갱신"
+ *     description: "Refresh Token을 사용해 새로운 Access Token을 발급합니다."
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: "Refresh Token (쿠키 또는 body 중 하나)"
+ *     responses:
+ *       200:
+ *         description: "새로운 Access Token 발급 성공"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *       400:
+ *         description: "리프레시 토큰이 제공되지 않음"
+ *       401:
+ *         description: "토큰 검증 실패 또는 만료"
+ */
+router.post("/refresh-token", refreshAccessToken);
 
 export default router;

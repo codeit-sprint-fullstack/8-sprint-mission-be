@@ -17,6 +17,8 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true, // 쿠키, Authorization 헤더 허용
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
 
