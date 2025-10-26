@@ -5,9 +5,30 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Sprint10 API 문서",
+      title: "PandaMarket API",
       version: "1.0.0",
+      description: "Sprint 10 PandaMarket API 문서",
     },
+    servers: [
+      {
+        url: "http://localhost:5000/api",
+        description: "개발 서버",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ["./src/routes/*.js"],
 };
