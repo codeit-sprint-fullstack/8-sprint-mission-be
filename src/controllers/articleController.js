@@ -28,7 +28,8 @@ const getArticles = async (req, res, next) => {
 const getArticleById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const article = await articleService.getArticleById(id);
+    const userId = req.user?.userId; // 인증된 사용자가 있으면 userId 전달
+    const article = await articleService.getArticleById(id, userId);
     res.status(200).json(article);
   } catch (error) {
     next(error);
@@ -37,7 +38,8 @@ const getArticleById = async (req, res, next) => {
 
 const createArticle = async (req, res, next) => {
   try {
-    const { title, content, userId } = req.body;
+    const { title, content } = req.body;
+    const userId = req.user.userId;
     const newArticle = await articleService.createArticle({
       title,
       content,

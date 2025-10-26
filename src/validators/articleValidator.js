@@ -64,11 +64,6 @@ export const createArticleSchema = z.object({
     .min(1, "내용은 최소 1자 이상이어야 합니다.")
     .max(5000, "내용은 최대 5000자까지 입력 가능합니다.")
     .trim(),
-  userId: z
-    .string({
-      required_error: "사용자 ID는 필수입니다.",
-    })
-    .uuid("올바른 UUID 형식이 아닙니다."),
 });
 
 // 게시글 수정 스키마 (부분 업데이트 허용)

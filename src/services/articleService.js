@@ -63,9 +63,23 @@ export const getArticles = async ({
   };
 };
 
-export const getArticleById = async (id) => {
+export const getArticleById = async (id, userId = null) => {
   const article = await articleRepository.findArticleById(id);
-  return article;
+
+  if (!article) {
+    return null;
+  }
+
+  // 로그인한 사용자의 경우 좋아요 여부 확인
+  let isLiked = false;
+  if (userId) {
+    isLiked = await articleRepository.checkArticleLike(id, userId);
+  }
+
+  return {
+    ...article,
+    isLiked,
+  };
 };
 
 export const createArticle = async (article) => {

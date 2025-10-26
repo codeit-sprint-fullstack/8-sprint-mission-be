@@ -110,3 +110,40 @@ export const deleteArticle = async (id) => {
     where: { id },
   });
 };
+
+/**
+ * 게시글 소유자 ID 조회
+ * @params id - 게시글 ID
+ * @returns {Promise<string>} 게시글 작성자의 userId
+ */
+export const getArticleOwnerId = async (id) => {
+  const article = await prisma.article.findUnique({
+    where: { id },
+    select: { userId: true },
+  });
+
+  if (!article) {
+    throw new Error("게시글을 찾을 수 없습니다.");
+  }
+
+  return article.userId;
+};
+
+/**
+ * 사용자의 게시글 좋아요 여부 확인
+ * @params articleId - 게시글 ID
+ * @params userId - 사용자 ID
+ * @returns {Promise<boolean>} 좋아요 여부
+ */
+export const checkArticleLike = async (articleId, userId) => {
+  const like = await prisma.articleLike.findUnique({
+    where: {
+      userId_articleId: {
+        userId,
+        articleId,
+      },
+    },
+  });
+
+  return !!like;
+};
