@@ -10,7 +10,7 @@ export const validate = (schema, source = "body") => {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errorMessages = error.errors.map((err) => ({
+        const errorMessages = error.errors?.map((err) => ({
           field: err.path.join("."),
           message: err.message,
         }));
