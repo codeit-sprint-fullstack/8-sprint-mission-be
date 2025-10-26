@@ -24,6 +24,7 @@ model User {
   products         Product[]
   productFavorites ProductFavorite[]
   articles         Article[]
+  articleFavorites ArticleFavorite[]
   comments         Comment[]
 
   @@index([createdAt])
@@ -36,7 +37,7 @@ model Product {
   description      String?           @db.VarChar(500)
   price            Decimal           @db.Decimal(10, 2)
   tags             String[]
-  imageUrl         String?           @db.VarChar(500)
+  images           String[]
   favoriteCount    Int               @default(0)
   deleted          Boolean           @default(false)
   createdAt        DateTime          @default(now())
@@ -63,17 +64,33 @@ model ProductFavorite {
 }
 
 model Article {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @db.Uuid
-  title     String   @db.VarChar(100)
-  content   String   @db.VarChar(2000)
-  deleted   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[]
+  id               String            @id @default(uuid()) @db.Uuid
+  userId           String            @db.Uuid
+  title            String            @db.VarChar(100)
+  content          String            @db.VarChar(2000)
+  favoriteCount    Int               @default(0)
+  deleted          Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments         Comment[]
+  articleFavorites ArticleFavorite[]
 
   @@index([createdAt])
+  @@index([favoriteCount])
+}
+
+model ArticleFavorite {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @db.Uuid
+  articleId     String   @db.Uuid
+  favoriteState Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article       Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
 }
 
 model Comment {

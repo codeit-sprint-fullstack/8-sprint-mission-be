@@ -19,17 +19,17 @@ export const validateParamUUID = paramName => {
 };
 
 export const validateArticleData = (req, res, next) => {
-  const { userId, title, content } = req.body;
-  if (!userId || !title || !content) {
-    return res.status(400).json({ message: 'userId, title, content required' });
+  const { title, content } = req.body;
+  if (!title || !content) {
+    return res.status(400).json({ message: 'title, content required' });
   }
   next();
 };
 
 export const validateCommentData = (req, res, next) => {
-  const { userId, content } = req.body;
-  if (!userId || !content) {
-    return res.status(400).json({ message: 'userId, content required' });
+  const { content } = req.body;
+  if (!content) {
+    return res.status(400).json({ message: 'content required' });
   }
   next();
 };
@@ -51,16 +51,35 @@ export const validateUser = (req, res, next) => {
   next();
 };
 
-export const validateProduct = (req, res, next) => {
-  const { userId, name, price } = req.body;
-  if (!userId || !name || price === undefined) {
-    return res.status(400).json({ message: 'userId, name, price required' });
+export const validateLogin = (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: 'email, password required' });
   }
 
-  // 가격 검증
-  if (isNaN(price) || price < 0) {
+  // 이메일 형식 검증
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email format' });
+  }
+
+  next();
+};
+
+export const validateProduct = (req, res, next) => {
+  const { name, price } = req.body;
+  if (!name || price === undefined) {
+    return res.status(400).json({ message: 'name, price required' });
+  }
+
+  // 가격 검증 및 변환
+  const numPrice = Number(price);
+  if (isNaN(numPrice) || numPrice < 0) {
     return res.status(400).json({ message: 'Invalid price' });
   }
+
+  // 숫자로 변환된 price를 req.body에 다시 할당
+  req.body.price = numPrice;
 
   next();
 };

@@ -36,6 +36,21 @@ export const userRepository = {
     });
   },
 
+  // 이메일로 사용자 조회 (비밀번호 포함)
+  async findByEmailWithPassword(email) {
+    return await prisma.user.findUnique({
+      where: { email, deleted: false },
+      select: {
+        id: true,
+        email: true,
+        nickname: true,
+        password: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  },
+
   // 사용자 수정
   async update(id, data) {
     return await prisma.user.update({
@@ -56,30 +71,6 @@ export const userRepository = {
     return await prisma.user.update({
       where: { id },
       data: { deleted: true },
-    });
-  },
-
-  // 사용자 개수 조회
-  async count(where = {}) {
-    return await prisma.user.count({
-      where: { ...where, deleted: false },
-    });
-  },
-
-  // 사용자 목록 조회
-  async findMany({ where, orderBy, skip, take }) {
-    return await prisma.user.findMany({
-      where: { ...where, deleted: false },
-      orderBy,
-      skip,
-      take,
-      select: {
-        id: true,
-        email: true,
-        nickname: true,
-        createdAt: true,
-        updatedAt: true,
-      },
     });
   },
 };

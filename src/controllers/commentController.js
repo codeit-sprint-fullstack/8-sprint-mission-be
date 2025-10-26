@@ -3,7 +3,8 @@ import { commentRepository } from '../repositories/commentRepository.js';
 export const commentController = {
   // 자유게시판 댓글 등록
   async createArticleComment(req, res) {
-    const { userId, content } = req.body;
+    const userId = req.user.id; // 인증 미들웨어에서 설정된 user 정보
+    const { content } = req.body;
     const { articleId } = req.params;
 
     const comment = await commentRepository.createForArticle({
@@ -16,7 +17,8 @@ export const commentController = {
 
   // 중고마켓 댓글 등록
   async createProductComment(req, res) {
-    const { userId, content } = req.body;
+    const userId = req.user.id; // 인증 미들웨어에서 설정된 user 정보
+    const { content } = req.body;
     const { productId } = req.params;
 
     const comment = await commentRepository.createForProduct({

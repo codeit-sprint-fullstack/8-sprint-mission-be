@@ -47,6 +47,20 @@ export const commentRepository = {
     });
   },
 
+  // 댓글 조회 (단일)
+  async findById(id) {
+    return await prisma.comment.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        userId: true,
+        content: true,
+        createdAt: true,
+        deleted: true,
+      },
+    });
+  },
+
   // Article 댓글 목록 조회 (cursor)
   async findManyByArticle({ articleId, cursor, take }) {
     return await prisma.comment.findMany({

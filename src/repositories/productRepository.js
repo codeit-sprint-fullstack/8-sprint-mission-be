@@ -1,10 +1,12 @@
 import prisma from '../../prisma/prismaClient.js';
 
 export const productRepository = {
-  // 상품 목록 조회
-  async findMany({ orderBy }) {
-    return await prisma.product.findMany({
-      where: { deleted: false },
+  // 상품 목록 조회 (좋아요 상태 포함)
+  async findManyWithLikes({ where, orderBy, skip, take, userId }) {
+    const products = await prisma.product.findMany({
+      where: { ...where, deleted: false },
+      skip,
+      take,
       orderBy,
       include: {
         user: {
@@ -13,8 +15,20 @@ export const productRepository = {
             nickname: true,
           },
         },
+        productFavorites: userId
+          ? {
+              where: { userId, favoriteState: true },
+              select: { id: true },
+            }
+          : false,
       },
     });
+
+    return products.map(product => ({
+      ...product,
+      isLiked: userId ? product.productFavorites.length > 0 : false,
+      productFavorites: undefined,
+    }));
   },
 
   // 상품 단건 조회
@@ -32,10 +46,50 @@ export const productRepository = {
     });
   },
 
-  // 상품 생성
-  async create({ userId, name, description, price, tags }) {
+  // 상품 단건 조회 (댓글, 좋아요 상태 포함)
+  async findByIdWithDetails(id, userId = null) {
+    const product = await prisma.product.findUnique({
+      where: { id, deleted: false },
+      include: {
+        user: {
+          select: {
+            id: true,
+            nickname: true,
+          },
+        },
+        comments: {
+          where: { deleted: false },
+          include: {
+            user: {
+              select: {
+                id: true,
+                nickname: true,
+              },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+        productFavorites: userId
+          ? {
+              where: { userId, favoriteState: true },
+              select: { id: true },
+            }
+          : false,
+      },
+    });
+
+    if (!product) return null;
+
+    return {
+      ...product,
+      isLiked: userId ? product.productFavorites.length > 0 : false,
+      productFavorites: undefined,
+    };
+  },
+
+  async create({ userId, name, description, price, tags, images }) {
     return await prisma.product.create({
-      data: { userId, name, description, price, tags },
+      data: { userId, name, description, price, tags, images },
       include: {
         user: {
           select: {

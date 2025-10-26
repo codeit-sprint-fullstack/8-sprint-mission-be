@@ -50,3 +50,13 @@ export const upload = multer({
     fileSize: 5 * 1024 * 1024, // 5MB 제한
   },
 });
+
+// 다중 이미지 업로드 (최대 3개)
+export const uploadMultiple = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB 제한
+    files: 3, // 최대 3개 파일
+  },
+}).array('images', 3);
