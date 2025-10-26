@@ -4,12 +4,14 @@ import User from "./mockUser.js";
 import mockArticles from "./mockArticles.js";
 import mockProducts from "./mockProduct.js";
 import mockComments from "./mockComments.js";
+import mockFavorite from "./mockFavorite.js";
+import mockLike from "./mockLike.js";
 
 async function main() {
   // 기존 데이터 삭제
   await prisma.comment.deleteMany();
-  // await prisma.favorite.deleteMany();
-  // await prisma.like.deleteMany();
+  await prisma.favorite.deleteMany();
+  await prisma.like.deleteMany();
   await prisma.product.deleteMany();
   await prisma.article.deleteMany();
   await prisma.user.deleteMany();
@@ -31,23 +33,29 @@ async function main() {
   const productsData = [];
   const articlesData = [];
   const commentsData = [];
+  const favoritesData = [];
+  const likesData = [];
 
   for (const user of User) {
-    productsData.push(...mockProducts(user.id, 20));
-    articlesData.push(...mockArticles(user.id, 20));
-    commentsData.push(
-      ...mockComments(
-        user.id,
-        mockArticles(user.id, 20),
-        mockProducts(user.id, 20),
-        10
-      )
-    );
+    const userProducts = mockProducts(user.id, 20);
+    const userArticles = mockArticles(user.id, 20);
+    const userComments = mockComments(user.id, userArticles, userProducts, 10);
+
+    productsData.push(...userProducts);
+    articlesData.push(...userArticles);
+    commentsData.push(...userComments);
+    favoritesData.push(...mockFavorite(User, productsData));
+    likesData.push(...mockLike(User, articlesData));
   }
 
   await prisma.product.createMany({ data: productsData, skipDuplicates: true });
   await prisma.article.createMany({ data: articlesData, skipDuplicates: true });
   await prisma.comment.createMany({ data: commentsData, skipDuplicates: true });
+  await prisma.favorite.createMany({
+    data: favoritesData,
+    skipDuplicates: true,
+  });
+  await prisma.like.createMany({ data: likesData, skipDuplicates: true });
 
   console.log("Seeding completed.");
 }
