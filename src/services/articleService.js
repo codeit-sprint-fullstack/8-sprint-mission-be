@@ -47,6 +47,21 @@ export const getArticles = async ({
       likeCount: true,
       createdAt: true,
       updatedAt: true,
+      images: {
+        select: {
+          id: true,
+          order: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+            },
+          },
+        },
+        orderBy: {
+          order: "asc",
+        },
+      },
       user: {
         select: {
           id: true,

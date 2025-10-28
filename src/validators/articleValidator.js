@@ -48,6 +48,22 @@ export const articleIdSchema = z.object({
     .uuid("올바른 UUID 형식이 아닙니다."),
 });
 
+// 이미지 스키마
+const imageSchema = z
+  .union([
+    z.string().min(1, "이미지 URL은 빈 문자열일 수 없습니다."),
+    z.object({
+      url: z.string().min(1, "이미지 URL은 빈 문자열일 수 없습니다."),
+    }),
+  ])
+  .transform((val) => {
+    // 문자열이면 객체로 변환
+    if (typeof val === "string") {
+      return { url: val };
+    }
+    return val;
+  });
+
 // 게시글 생성 스키마
 export const createArticleSchema = z.object({
   title: z
@@ -64,6 +80,7 @@ export const createArticleSchema = z.object({
     .min(1, "내용은 최소 1자 이상이어야 합니다.")
     .max(5000, "내용은 최대 5000자까지 입력 가능합니다.")
     .trim(),
+  images: z.array(imageSchema).optional().default([]),
 });
 
 // 게시글 수정 스키마 (부분 업데이트 허용)
@@ -81,6 +98,7 @@ export const updateArticleSchema = z
       .max(5000, "내용은 최대 5000자까지 입력 가능합니다.")
       .trim()
       .optional(),
+    images: z.array(imageSchema).optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "최소 하나 이상의 필드를 입력해야 합니다.",

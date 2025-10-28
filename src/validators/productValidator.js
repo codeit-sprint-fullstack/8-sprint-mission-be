@@ -44,13 +44,20 @@ export const productIdSchema = z.object({
 });
 
 // 이미지 스키마
-const imageSchema = z.object({
-  url: z
-    .string({
-      required_error: "이미지 URL은 필수입니다.",
-    })
-    .url("올바른 URL 형식이 아닙니다."),
-});
+const imageSchema = z
+  .union([
+    z.string().min(1, "이미지 URL은 빈 문자열일 수 없습니다."),
+    z.object({
+      url: z.string().min(1, "이미지 URL은 빈 문자열일 수 없습니다."),
+    }),
+  ])
+  .transform((val) => {
+    // 문자열이면 객체로 변환
+    if (typeof val === "string") {
+      return { url: val };
+    }
+    return val;
+  });
 
 // 상품 생성 스키마
 export const createProductSchema = z.object({

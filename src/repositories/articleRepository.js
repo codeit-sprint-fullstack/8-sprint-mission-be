@@ -26,6 +26,21 @@ export const findArticleById = async (id) => {
       likeCount: true,
       createdAt: true,
       updatedAt: true,
+      images: {
+        select: {
+          id: true,
+          order: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+            },
+          },
+        },
+        orderBy: {
+          order: "asc",
+        },
+      },
       user: {
         select: {
           id: true,
@@ -48,6 +63,21 @@ export const findBestArticles = async (limit = 3) => {
       likeCount: true,
       createdAt: true,
       updatedAt: true,
+      images: {
+        select: {
+          id: true,
+          order: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+            },
+          },
+        },
+        orderBy: {
+          order: "asc",
+        },
+      },
       user: {
         select: {
           id: true,
@@ -64,14 +94,46 @@ export const countArticles = async (where) => {
 };
 
 export const createArticle = async (data) => {
+  const { images, ...articleData } = data;
+
   return await prisma.article.create({
-    data,
+    data: {
+      ...articleData,
+      images: images
+        ? {
+            create: images.map((img, index) => ({
+              order: index,
+              image: {
+                connectOrCreate: {
+                  where: { url: img.url },
+                  create: { url: img.url },
+                },
+              },
+            })),
+          }
+        : undefined,
+    },
     select: {
       id: true,
       title: true,
       content: true,
       likeCount: true,
       createdAt: true,
+      images: {
+        select: {
+          id: true,
+          order: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+            },
+          },
+        },
+        orderBy: {
+          order: "asc",
+        },
+      },
       user: {
         select: {
           id: true,
@@ -84,9 +146,33 @@ export const createArticle = async (data) => {
 };
 
 export const updateArticle = async (id, data) => {
+  const { images, ...articleData } = data;
+
+  // 이미지가 전달된 경우 기존 이미지 연결 해제
+  if (images !== undefined) {
+    await prisma.articleImage.deleteMany({
+      where: { articleId: id },
+    });
+  }
+
   return await prisma.article.update({
     where: { id },
-    data,
+    data: {
+      ...articleData,
+      images: images
+        ? {
+            create: images.map((img, index) => ({
+              order: index,
+              image: {
+                connectOrCreate: {
+                  where: { url: img.url },
+                  create: { url: img.url },
+                },
+              },
+            })),
+          }
+        : undefined,
+    },
     select: {
       id: true,
       title: true,
@@ -94,6 +180,21 @@ export const updateArticle = async (id, data) => {
       likeCount: true,
       createdAt: true,
       updatedAt: true,
+      images: {
+        select: {
+          id: true,
+          order: true,
+          image: {
+            select: {
+              id: true,
+              url: true,
+            },
+          },
+        },
+        orderBy: {
+          order: "asc",
+        },
+      },
       user: {
         select: {
           id: true,

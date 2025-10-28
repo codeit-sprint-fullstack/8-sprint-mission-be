@@ -9,18 +9,6 @@ export const validate = (schema, source = "body") => {
       req[source] = validatedData; // 검증된 데이터로 대체
       next();
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const errorMessages = error.errors?.map((err) => ({
-          field: err.path.join("."),
-          message: err.message,
-        }));
-
-        return res.status(400).json({
-          success: false,
-          message: "유효성 검사 실패",
-          errors: errorMessages,
-        });
-      }
       next(error);
     }
   };

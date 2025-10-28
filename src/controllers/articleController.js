@@ -38,11 +38,12 @@ const getArticleById = async (req, res, next) => {
 
 const createArticle = async (req, res, next) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, images } = req.body;
     const userId = req.user.userId;
     const newArticle = await articleService.createArticle({
       title,
       content,
+      images,
       userId,
     });
     res.status(201).json(newArticle);
@@ -54,10 +55,11 @@ const createArticle = async (req, res, next) => {
 const updateArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, content } = req.body;
+    const { title, content, images } = req.body;
     const updatedArticle = await articleService.updateArticle(id, {
       title,
       content,
+      images,
     });
     res.status(200).json(updatedArticle);
   } catch (error) {

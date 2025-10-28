@@ -6,6 +6,7 @@ import productRoutes from "./src/routes/ProductRoutes.js";
 import articleRoutes from "./src/routes/ArticleRoutes.js";
 import commentRoutes from "./src/routes/CommentRoutes.js";
 import authRoutes from "./src/routes/AuthRoutes.js";
+import uploadRoutes from "./src/routes/UploadRoutes.js";
 import cors from "cors";
 import {
   errorHandler,
@@ -13,6 +14,12 @@ import {
 } from "./src/middlewares/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./src/config/swagger.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// ES 모듈에서 __dirname 사용하기
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -44,12 +51,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+// 정적 파일 제공 (업로드된 이미지)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(authRoutes);
 app.use(productRoutes);
 app.use(articleRoutes);
 app.use(commentRoutes);
+app.use(uploadRoutes);
 
 app.get("/", (req, res) => {
   res
