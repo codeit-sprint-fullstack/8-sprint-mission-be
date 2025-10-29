@@ -4,6 +4,8 @@ const mockData = [
     description: "최신형 스마트폰입니다",
     price: 990000,
     tags: ["전자기기", "스마트폰"],
+    likes: 245,
+    author: "김철수",
     createdAt: "2023-09-24T09:00:00.000Z",
   },
   {
@@ -11,6 +13,8 @@ const mockData = [
     description: "고성능 노트북입니다",
     price: 1590000,
     tags: ["전자기기", "노트북"],
+    likes: 189,
+    author: "이영희",
     createdAt: "2023-09-24T08:50:00.000Z",
   },
   {
@@ -18,6 +22,8 @@ const mockData = [
     description: "가벼운 태블릿입니다",
     price: 690000,
     tags: ["전자기기", "태블릿"],
+    likes: 156,
+    author: "박민수",
     createdAt: "2023-09-24T08:40:00.000Z",
   },
   {
@@ -25,6 +31,8 @@ const mockData = [
     description: "건강관리용 스마트워치입니다",
     price: 290000,
     tags: ["전자기기", "웨어러블"],
+    likes: 134,
+    author: "정수현",
     createdAt: "2023-09-24T08:30:00.000Z",
   },
   {
@@ -32,13 +40,18 @@ const mockData = [
     description: "노이즈캔슬링 이어폰입니다",
     price: 190000,
     tags: ["전자기기", "음향기기"],
+    likes: 298,
+    author: "최지원",
     createdAt: "2023-09-24T08:20:00.000Z",
   },
   {
+    id: "6",
     name: "게이밍모니터 F6",
     description: "고주사율 게이밍 모니터입니다",
     price: 490000,
     tags: ["전자기기", "모니터"],
+    likes: 167,
+    author: "강동현",
     createdAt: "2023-09-24T08:10:00.000Z",
   },
   {
@@ -46,6 +59,8 @@ const mockData = [
     description: "청축 기계식 키보드입니다",
     price: 150000,
     tags: ["전자기기", "주변기기"],
+    likes: 223,
+    author: "윤서영",
     createdAt: "2023-09-24T08:00:00.000Z",
   },
   {
@@ -53,6 +68,8 @@ const mockData = [
     description: "고성능 게이밍 마우스입니다",
     price: 89000,
     tags: ["전자기기", "주변기기"],
+    likes: 145,
+    author: "임준호",
     createdAt: "2023-09-24T07:50:00.000Z",
   },
   {
@@ -60,13 +77,18 @@ const mockData = [
     description: "스마트 공기청정기입니다",
     price: 390000,
     tags: ["가전", "공기청정"],
+    likes: 201,
+    author: "한미영",
     createdAt: "2023-09-24T07:40:00.000Z",
   },
   {
+    id: "10",
     name: "로봇청소기 J10",
     description: "AI 로봇청소기입니다",
     price: 690000,
     tags: ["가전", "청소기"],
+    likes: 312,
+    author: "오성민",
     createdAt: "2023-09-24T07:30:00.000Z",
   },
   {
@@ -74,13 +96,18 @@ const mockData = [
     description: "4K 스마트 TV입니다",
     price: 990000,
     tags: ["가전", "TV"],
+    likes: 276,
+    author: "송하늘",
     createdAt: "2023-09-24T07:20:00.000Z",
   },
   {
+    id: "12",
     name: "전자레인지 L12",
     description: "스마트 전자레인지입니다",
     price: 190000,
     tags: ["가전", "주방가전"],
+    likes: 89,
+    author: "신예린",
     createdAt: "2023-09-24T07:10:00.000Z",
   },
   {
@@ -88,6 +115,8 @@ const mockData = [
     description: "자동 커피머신입니다",
     price: 290000,
     tags: ["가전", "주방가전"],
+    likes: 234,
+    author: "장우진",
     createdAt: "2023-09-24T07:00:00.000Z",
   },
   {
@@ -95,6 +124,8 @@ const mockData = [
     description: "대용량 식기세척기입니다",
     price: 790000,
     tags: ["가전", "주방가전"],
+    likes: 178,
+    author: "배수지",
     createdAt: "2023-09-24T06:50:00.000Z",
   },
   {
@@ -102,6 +133,8 @@ const mockData = [
     description: "히트펌프 의류건조기입니다",
     price: 990000,
     tags: ["가전", "생활가전"],
+    likes: 156,
+    author: "고민정",
     createdAt: "2023-09-24T06:40:00.000Z",
   },
   {
@@ -109,6 +142,8 @@ const mockData = [
     description: "고사양 게이밍노트북입니다",
     price: 1990000,
     tags: ["전자기기", "노트북"],
+    likes: 389,
+    author: "남태현",
     createdAt: "2023-09-24T06:30:00.000Z",
   },
   {
@@ -116,6 +151,8 @@ const mockData = [
     description: "휴대용 블루투스 스피커입니다",
     price: 89000,
     tags: ["전자기기", "음향기기"],
+    likes: 167,
+    author: "문채원",
     createdAt: "2023-09-24T06:20:00.000Z",
   },
   {
@@ -123,6 +160,8 @@ const mockData = [
     description: "IoT 스마트 플러그입니다",
     price: 29000,
     tags: ["전자기기", "스마트홈"],
+    likes: 98,
+    author: "서준영",
     createdAt: "2023-09-24T06:10:00.000Z",
   },
   {
@@ -130,6 +169,8 @@ const mockData = [
     description: "강력한 흡입력의 무선청소기입니다",
     price: 390000,
     tags: ["가전", "청소기"],
+    likes: 245,
+    author: "홍지민",
     createdAt: "2023-09-24T06:00:00.000Z",
   },
   {
@@ -137,6 +178,8 @@ const mockData = [
     description: "체지방 측정 가능한 체중계입니다",
     price: 69000,
     tags: ["전자기기", "헬스케어"],
+    likes: 134,
+    author: "조현우",
     createdAt: "2023-09-24T05:50:00.000Z",
   },
   {
@@ -144,6 +187,8 @@ const mockData = [
     description: "접이식 전기자전거입니다",
     price: 890000,
     tags: ["전자기기", "이동수단"],
+    likes: 287,
+    author: "유소영",
     createdAt: "2023-09-24T05:40:00.000Z",
   },
   {
@@ -151,6 +196,8 @@ const mockData = [
     description: "지문인식 도어락입니다",
     price: 190000,
     tags: ["전자기기", "보안기기"],
+    likes: 198,
+    author: "안지훈",
     createdAt: "2023-09-24T05:30:00.000Z",
   },
   {
@@ -158,6 +205,8 @@ const mockData = [
     description: "인체공학적 게이밍의자입니다",
     price: 290000,
     tags: ["가구", "의자"],
+    likes: 212,
+    author: "김다은",
     createdAt: "2023-09-24T05:20:00.000Z",
   },
   {
@@ -165,6 +214,8 @@ const mockData = [
     description: "LED 스마트 스탠드입니다",
     price: 89000,
     tags: ["전자기기", "조명"],
+    likes: 156,
+    author: "이재원",
     createdAt: "2023-09-24T05:10:00.000Z",
   },
   {
@@ -172,6 +223,8 @@ const mockData = [
     description: "접이식 전동킥보드입니다",
     price: 490000,
     tags: ["전자기기", "이동수단"],
+    likes: 234,
+    author: "박서연",
     createdAt: "2023-09-24T05:00:00.000Z",
   },
   {
@@ -179,6 +232,8 @@ const mockData = [
     description: "USB충전포트 내장 백팩입니다",
     price: 89000,
     tags: ["패션", "가방"],
+    likes: 178,
+    author: "정민호",
     createdAt: "2023-09-24T04:50:00.000Z",
   },
   {
@@ -186,6 +241,8 @@ const mockData = [
     description: "고속 무선충전기입니다",
     price: 39000,
     tags: ["전자기기", "충전기"],
+    likes: 123,
+    author: "최하영",
     createdAt: "2023-09-24T04:40:00.000Z",
   },
   {
@@ -193,6 +250,8 @@ const mockData = [
     description: "RGB 스마트 전구입니다",
     price: 29000,
     tags: ["전자기기", "조명"],
+    likes: 145,
+    author: "강수빈",
     createdAt: "2023-09-24T04:30:00.000Z",
   },
   {
@@ -200,6 +259,8 @@ const mockData = [
     description: "휴대용 블루투스 키보드입니다",
     price: 49000,
     tags: ["전자기기", "주변기기"],
+    likes: 167,
+    author: "윤정아",
     createdAt: "2023-09-24T04:20:00.000Z",
   },
   {
@@ -207,6 +268,8 @@ const mockData = [
     description: "대용량 보조배터리입니다",
     price: 39000,
     tags: ["전자기기", "충전기"],
+    likes: 189,
+    author: "임태영",
     createdAt: "2023-09-24T04:10:00.000Z",
   },
 ];

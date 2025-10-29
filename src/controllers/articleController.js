@@ -1,35 +1,21 @@
-import prisma from "../config/database.js";
+import * as articleService from "../services/articleService.js";
 
 const getArticles = async (req, res, next) => {
   try {
-    const { page = 1, pageSize = 10, orderBy = "recent", keyword = "" } = req.query;
-    const skip = (page - 1) * pageSize;
-    const take = Number(pageSize);
-
-    // Prisma 정렬 옵션 설정
-    const sortOption = orderBy === "recent" ? { createdAt: "desc" } : { createdAt: "asc" };
-
-    // 검색 조건 설정
-    const searchQuery = keyword
-      ? {
-          OR: [{ title: { contains: keyword } }, { content: { contains: keyword } }],
-        }
-      : {};
-
-    const totalCount = await prisma.article.count({ where: searchQuery });
-    const articles = await prisma.article.findMany({
-      where: searchQuery,
-      skip,
-      take,
-      orderBy: sortOption,
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        createdAt: true,
-      },
+    const {
+      page = 1,
+      pageSize = 10,
+      orderBy = "recent",
+      keyword = "",
+      isBest = false,
+    } = req.query;
+    const { articles, totalCount } = await articleService.getArticles({
+      page,
+      pageSize,
+      orderBy,
+      keyword,
+      isBest,
     });
-
     res.status(200).json({
       articles,
       totalCount,
@@ -39,39 +25,26 @@ const getArticles = async (req, res, next) => {
   }
 };
 
-// 특정 게시글 조회
 const getArticleById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const article = await prisma.article.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        createdAt: true,
-      },
-    });
-
-    if (!article) {
-      return res.status(404).json({ message: "게시글을 찾을 수 없습니다." });
-    }
-
+    const userId = req.user?.userId; // 인증된 사용자가 있으면 userId 전달
+    const article = await articleService.getArticleById(id, userId);
     res.status(200).json(article);
   } catch (error) {
     next(error);
   }
 };
 
-// 게시글 생성
 const createArticle = async (req, res, next) => {
   try {
-    const { title, content } = req.body;
-    const newArticle = await prisma.article.create({
-      data: {
-        title,
-        content,
-      },
+    const { title, content, images } = req.body;
+    const userId = req.user.userId;
+    const newArticle = await articleService.createArticle({
+      title,
+      content,
+      images,
+      userId,
     });
     res.status(201).json(newArticle);
   } catch (error) {
@@ -79,18 +52,14 @@ const createArticle = async (req, res, next) => {
   }
 };
 
-// 게시글 수정
 const updateArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, content } = req.body;
-
-    const updatedArticle = await prisma.article.update({
-      where: { id },
-      data: {
-        title,
-        content,
-      },
+    const { title, content, images } = req.body;
+    const updatedArticle = await articleService.updateArticle(id, {
+      title,
+      content,
+      images,
     });
     res.status(200).json(updatedArticle);
   } catch (error) {
@@ -98,11 +67,10 @@ const updateArticle = async (req, res, next) => {
   }
 };
 
-// 게시글 삭제
 const deleteArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await prisma.article.delete({ where: { id } });
+    await articleService.deleteArticle(id);
     res.status(204).send();
   } catch (error) {
     next(error);

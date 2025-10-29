@@ -1,14 +1,11 @@
-import prisma from "../config/database.js";
+import * as commentService from "../services/commentService.js";
 
-// 댓글 등록
-const createComment = async (req, res, next) => {
+// 자유게시판 댓글 목록 조회
+const getArticleComments = async (req, res, next) => {
   try {
-    const { content } = req.body;
-
-    const newComment = await prisma.comment.create({
-      data: { content },
-    });
-    res.status(201).json(newComment);
+    const { articleId } = req.params;
+    const comments = await commentService.getArticleComments(articleId);
+    res.status(200).json(comments);
   } catch (error) {
     next(error);
   }
@@ -19,14 +16,57 @@ const createArticleComment = async (req, res, next) => {
   try {
     const { articleId } = req.params;
     const { content } = req.body;
+    const userId = req.user.userId;
 
-    const newComment = await prisma.comment.create({
-      data: {
-        articleId,
-        content,
-      },
+    const newComment = await commentService.createArticleComment({
+      articleId,
+      content,
+      userId,
     });
     res.status(201).json(newComment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 자유게시판 댓글 수정
+const updateArticleComment = async (req, res, next) => {
+  try {
+    const { articleId, commentId } = req.params;
+    const { content } = req.body;
+
+    const updatedComment = await commentService.updateArticleComment({
+      commentId,
+      articleId,
+      content,
+    });
+    res.status(200).json(updatedComment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 자유게시판 댓글 삭제
+const deleteArticleComment = async (req, res, next) => {
+  try {
+    const { articleId, commentId } = req.params;
+
+    await commentService.deleteArticleComment({
+      commentId,
+      articleId,
+    });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 중고마켓 댓글 목록 조회
+const getProductComments = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const comments = await commentService.getProductComments(productId);
+    res.status(200).json(comments);
   } catch (error) {
     next(error);
   }
@@ -37,12 +77,12 @@ const createProductComment = async (req, res, next) => {
   try {
     const { productId } = req.params;
     const { content } = req.body;
+    const userId = req.user.userId;
 
-    const newComment = await prisma.comment.create({
-      data: {
-        productId,
-        content,
-      },
+    const newComment = await commentService.createProductComment({
+      productId,
+      content,
+      userId,
     });
     res.status(201).json(newComment);
   } catch (error) {
@@ -50,15 +90,18 @@ const createProductComment = async (req, res, next) => {
   }
 };
 
-// 댓글 수정
-const updateComment = async (req, res, next) => {
+// 중고마켓 댓글 수정
+const updateProductComment = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { productId, commentId } = req.params;
     const { content } = req.body;
+    const userId = req.user.userId;
 
-    const updatedComment = await prisma.comment.update({
-      where: { id },
-      data: { content },
+    const updatedComment = await commentService.updateProductComment({
+      commentId,
+      productId,
+      content,
+      userId,
     });
     res.status(200).json(updatedComment);
   } catch (error) {
@@ -66,125 +109,31 @@ const updateComment = async (req, res, next) => {
   }
 };
 
-// 댓글 삭제
-const deleteComment = async (req, res, next) => {
+// 중고마켓 댓글 삭제
+const deleteProductComment = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    await prisma.comment.delete({ where: { id } });
+    const { productId, commentId } = req.params;
+
+    await commentService.deleteProductComment({
+      commentId,
+      productId,
+    });
     res.status(204).send();
   } catch (error) {
     next(error);
   }
 };
 
-// 댓글 목록 조회
-const getComment = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { cursor, limit = 10 } = req.query;
-    const take = Number(limit) + 1;
-
-    const comments = await prisma.comment.findMany({
-      where: { id },
-      take,
-      skip: cursor ? 1 : 0,
-      cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        content: true,
-        createdAt: true,
-      },
-    });
-
-    const hasNext = comments.length > limit;
-    if (hasNext) comments.pop();
-    const nextCursor = hasNext ? comments[comments.length - 1]?.id : null;
-
-    res.status(200).json({
-      comments,
-      nextCursor,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// 자유게시판 댓글 목록 조회
-const getArticleComments = async (req, res, next) => {
-  try {
-    const { articleId } = req.params;
-    const { cursor, limit = 10 } = req.query;
-    const take = Number(limit) + 1;
-
-    const comments = await prisma.comment.findMany({
-      where: { articleId },
-      take,
-      skip: cursor ? 1 : 0,
-      cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        content: true,
-        createdAt: true,
-      },
-    });
-
-    const hasNext = comments.length > limit;
-    if (hasNext) comments.pop();
-    const nextCursor = hasNext ? comments[comments.length - 1]?.id : null;
-
-    res.status(200).json({
-      comments,
-      nextCursor,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// 중고마켓 댓글 목록 조회
-const getProductComments = async (req, res, next) => {
-  try {
-    const { productId } = req.params;
-    const { cursor, limit = 10 } = req.query;
-    const take = Number(limit) + 1;
-
-    const comments = await prisma.comment.findMany({
-      where: { productId },
-      take,
-      skip: cursor ? 1 : 0,
-      cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        content: true,
-        createdAt: true,
-      },
-    });
-
-    const hasNext = comments.length > limit;
-    if (hasNext) comments.pop();
-    const nextCursor = hasNext ? comments[comments.length - 1]?.id : null;
-
-    res.status(200).json({
-      comments,
-      nextCursor,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 const commentController = {
-  createComment,
-  getComment,
-  createArticleComment,
-  createProductComment,
-  updateComment,
-  deleteComment,
   getArticleComments,
+  createArticleComment,
+  updateArticleComment,
+  deleteArticleComment,
+
   getProductComments,
+  createProductComment,
+  updateProductComment,
+  deleteProductComment,
 };
 
 export default commentController;

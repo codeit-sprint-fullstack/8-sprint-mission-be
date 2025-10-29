@@ -2,6 +2,11 @@
 
 - 배포주소 : https://panda-market-api-qg1h.onrender.com
 
+# 2025.10.18. 스프린트 10 벡엔드 진행
+
+- prisma schema 수정
+- article api 수정
+
 # 2025.09.01. 스프린트 7 벡엔드 진행
 
 - mongodb 에서 prisma, postgreSQL로 마이그레이션
