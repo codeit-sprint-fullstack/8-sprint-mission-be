@@ -1,0 +1,30 @@
+GET http://localhost:5432/mockArticles
+
+###
+
+GET http://localhost:5432/mockArticles?sort=newestcount=5
+
+###
+
+GET http://localhost:5432/mockArticles/1
+
+###
+
+POST http://localhost:5432/mockArticles
+Content-Type: application/json
+
+{
+  "title": "New Article",
+  "content": "This is the content of the new article.",
+}
+
+###
+PATCH http://localhost:5432/mockArticles
+Content-Type: application/json
+
+{
+  "title": "New New",
+}
+
+###
+DELETE http://localhost:5432/mockArticles/1
