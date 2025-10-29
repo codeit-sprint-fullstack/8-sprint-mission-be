@@ -5,3 +5,7 @@ node_modules
 *.log
 *.gz
 .DS_Store
+
+.history
+# 업로드된 파일들
+uploads/
