@@ -1,4 +1,4 @@
-import { UserPasswordBuilder } from '../../src/infra/UserPasswordBuilder';
+import { UserPasswordBuilder } from '../../src/auth/UserPasswordBuilder';
 import { User } from '@prisma/client';
 
 interface userMock {
