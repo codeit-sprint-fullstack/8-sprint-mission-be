@@ -5,4 +5,5 @@ export const CreateProductRequestStruct = object({
     description: nonempty(string()),
     price: min(integer(), 0),
     tags: array(nonempty(string())),
+    images: array(nonempty(string())),
 });

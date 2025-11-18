@@ -8,17 +8,10 @@ import {
     max,
     enums,
     nonempty,
-    defaulted, Struct,
+    defaulted,
 } from 'superstruct';
 
-interface structType {
-    cursor: number;
-    take: number;
-    orderBy?: "recent" | undefined;
-    word?: string | undefined;
-}
-
-export const GetArticleListRequestStruct: Struct<structType> = object({
+export const GetArticleListRequestStruct = object({
     /**
      * [데이터 전처리 - 기본값 설정]
      *
@@ -34,12 +27,14 @@ export const GetArticleListRequestStruct: Struct<structType> = object({
      */
     cursor: defaulted(
         coerce(min(integer(), 0), string(), (value) => Number.parseInt(value, 10)),
-        0,
+        0
     ),
-    take: defaulted(
-        coerce(max(min(integer(), 1), 10), string(), (value) => Number.parseInt(value, 10)),
-        10,
+    limit: defaulted(
+        coerce(max(min(integer(), 1), 10), string(), (value) =>
+            Number.parseInt(value, 10)
+        ),
+        10
     ),
-    orderBy: optional(enums(['recent'])),
-    word: optional(nonempty(string())),
+    orderBy: defaulted(enums(['recent', 'favorite']), 'recent'),
+    keyword: optional(nonempty(string())),
 });

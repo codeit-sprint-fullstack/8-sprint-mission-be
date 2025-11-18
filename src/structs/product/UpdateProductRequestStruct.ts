@@ -1,5 +1,5 @@
 import { partial } from 'superstruct';
 
-import { CreateProductRequestStruct } from './CreateProductRequestStruct.js';
+import { CreateProductRequestStruct } from './CreateProductRequestStruct';
 
 export const UpdateProductRequestStruct = partial(CreateProductRequestStruct);

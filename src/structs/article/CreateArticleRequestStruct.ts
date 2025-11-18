@@ -1,4 +1,4 @@
-import {coerce, object, nonempty, string} from 'superstruct';
+import { coerce, nullable, object, nonempty, string } from 'superstruct';
 
 export const CreateArticleRequestStruct = object({
     /**
@@ -16,4 +16,5 @@ export const CreateArticleRequestStruct = object({
      */
     title: coerce(nonempty(string()), string(), (value) => value.trim()), // 또는 trimmed() 를 사용하여 구현할 수 있습니다.
     content: nonempty(string()),
+    image: nullable(string()),
 });

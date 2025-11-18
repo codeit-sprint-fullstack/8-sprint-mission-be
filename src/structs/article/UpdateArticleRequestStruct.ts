@@ -1,5 +1,5 @@
-import {partial} from 'superstruct';
+import { partial } from 'superstruct';
 
-import { CreateArticleRequestStruct } from './CreateArticleRequestStruct.js';
+import { CreateArticleRequestStruct } from './CreateArticleRequestStruct';
 
 export const UpdateArticleRequestStruct = partial(CreateArticleRequestStruct);
