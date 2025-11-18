@@ -9,7 +9,7 @@ interface commentType {
     updatedAt: Comment['updatedAt'];
 }
 
-export class CommentClass {
+export class CommentModel {
     /** ID */
     _id;
 

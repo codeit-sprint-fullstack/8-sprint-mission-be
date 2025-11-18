@@ -10,7 +10,7 @@ interface productType {
     updatedAt: Product['updatedAt'];
 }
 
-export class ProductClass {
+export class ProductModel {
     /** ID */
     _id;
 

@@ -8,7 +8,7 @@ interface articleType {
     updatedAt: Article['updatedAt'];
 }
 
-export class ArticleClass {
+export class ArticleModel {
     /** ID */
     _id;
 
