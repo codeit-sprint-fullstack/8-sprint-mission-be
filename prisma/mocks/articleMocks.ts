@@ -1,7 +1,8 @@
 import {Article} from "@prisma/client";
 
-export const ArticleMocks
-    : {writerId: Article['writerId'], title: Article['title'], content: Article['content'], image:Article['image']|null}[] = [
+interface articleMock extends Omit<Article, 'id' | 'writer' | 'ArticleComment' | 'createdAt' | 'updatedAt' | 'Likes'> {}
+
+export const ArticleMocks: articleMock[] = [
     {
         writerId: 1,
         title: 'Article 1',

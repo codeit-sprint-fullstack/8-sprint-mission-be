@@ -1,8 +1,16 @@
 import {Like} from "@prisma/client";
 
-export const LikeMocks: (
-    | {userId: Like['userId'], productId: Like['productId']}
-    | {userId: Like['userId'], articleId: Like['articleId']})[] = [
+interface productLikeMock {
+    userId: Like['userId'];
+    productId: Like['productId'];
+}
+
+interface articleLikeMock {
+    userId: Like['userId'];
+    articleId: Like['articleId'];
+}
+
+export const LikeMocks: (productLikeMock | articleLikeMock)[] = [
     {
         userId: 1,
         productId: 1,

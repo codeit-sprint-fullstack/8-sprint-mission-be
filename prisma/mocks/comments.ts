@@ -1,9 +1,15 @@
 import { Comment } from '@prisma/client';
 
-export const CommentMocks: (
-    | {writerId: Comment['writerId'], content: Comment['content'], articleId: Comment['articleId']}
-    | {writerId: Comment['writerId'], content: Comment['content'], productId: Comment['productId']}
-)[] = [
+interface commentMock extends Omit<Comment, 'id' | 'createdAt' | 'updatedAt' | 'articleId' | 'productId'> {}
+interface articleCommentMock extends commentMock {
+    articleId: number;
+    productId?: never;
+}
+interface productCommentMock extends commentMock {
+    productId: number;
+    articleId?: never;
+}
+export const CommentMocks: ( articleCommentMock | productCommentMock )[] = [
     {
         writerId: 1,
         content: 'Article 1 Comment 1',
