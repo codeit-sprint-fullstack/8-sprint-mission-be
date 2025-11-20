@@ -1,0 +1,19 @@
+// 각자 입맛에 맞게 변경해서 사용하기.
+### 회원가입
+POST http://localhost:4000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "12345678",
+  "name": "테스터"
+}
+
+### 로그인
+POST http://localhost:4000/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "12345678"
+}
