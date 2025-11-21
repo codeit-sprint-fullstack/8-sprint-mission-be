@@ -5,7 +5,7 @@ export const GetCommentListRequestStruct = object({
         coerce(min(integer(), 0), string(), (value) => Number.parseInt(value, 10)),
         0,
     ),
-    take: defaulted(
+    limit: defaulted(
         coerce(max(min(integer(), 1), 10), string(), (value) => Number.parseInt(value, 10)),
         10,
     ),
