@@ -97,6 +97,10 @@ AuthRouter.get(
     asyncErrorHandler(async (req: Request, res: Response): Promise<void> => {
         const { code } = req.query;
 
+        if (typeof code !== 'string') {
+            throw new Error('Authorization code not provided');
+        }
+
         const { accessToken, refreshToken } = await AuthByGoogleHandler.handle({
             code,
         });
