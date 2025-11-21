@@ -13,7 +13,7 @@ import { CommentDomain } from '../../utils/domain/Comment';
 import { UserDomain } from '../../utils/domain/User';
 
 export class UpdateCommentHandler {
-    static async handle(requester: any, { commentId, content }: { commentId: Comment['id'], content: NonNullable<Comment['content']> }): Promise<any> {
+    static async handle(requester: { userId: number }, { commentId, content }: { commentId: Comment['id'], content: NonNullable<Comment['content']> }) {
         const commentEntity = await prismaClient.$transaction(async (tx) => {
             const targetCommentEntity = await tx.comment.findUnique({
                 where: {
