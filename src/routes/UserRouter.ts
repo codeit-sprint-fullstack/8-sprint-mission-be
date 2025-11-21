@@ -46,6 +46,10 @@ UserRouter.patch(
 
         const { image } = create(req.body, UpdateProfileRequestStruct);
 
+        if(!image) {
+            throw new Error('Image is required');
+        }
+
         const userView = await UpdateUserProfileHandler.handle(requester, {
             image,
         });

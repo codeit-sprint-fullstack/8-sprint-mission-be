@@ -84,6 +84,10 @@ ProductRouter.patch(
             UpdateProductRequestStruct,
         );
 
+        if(!name || !description || price === undefined || !tags || !images) {
+            throw new Error('Invalid input data');
+        }
+
         const productView = await UpdateProductHandler.handle(requester, {
             productId: Number(productId),
             name,
@@ -159,12 +163,12 @@ ProductRouter.get(
     '/:productId/comments',
     asyncErrorHandler(async (req: Request, res: Response): Promise<void> => {
         const { productId } = req.params;
-        const { cursor, limit } = create(req.query, GetCommentListRequestStruct);
+        const { cursor, take } = create(req.query, GetCommentListRequestStruct);
 
         const productCommentListView = await GetProductCommentListHandler.handle({
             productId: Number(productId),
             cursor,
-            limit,
+            limit: take,
         });
 
         res.send(productCommentListView);

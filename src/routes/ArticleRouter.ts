@@ -49,6 +49,10 @@ ArticleRouter.post(
          */
         const { title, content, image } = create(req.body, CreateArticleRequestStruct);
 
+        if (!image) {
+            throw new Error('Image is required');
+        }
+
         const articleView = await CreateArticleHandler.handle(requester, {
             title,
             content,
@@ -86,6 +90,10 @@ ArticleRouter.patch(
 
         const { articleId } = req.params;
         const { title, content, image } = create(req.body, UpdateArticleRequestStruct);
+
+        if(!title||!content||!image) {
+            throw new Error('All fields are required');
+        }
 
         const articleView = await UpdateArticleHandler.handle(requester, {
             articleId: Number(articleId),

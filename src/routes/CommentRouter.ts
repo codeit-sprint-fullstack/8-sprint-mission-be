@@ -24,10 +24,7 @@ CommentRouter.patch(
     '/:commentId',
     AuthN(),
     asyncErrorHandler(async (req: Request, res: Response): Promise<void> => {
-        let requester = undefined;
-        if (req.headers.authorization != null) {
-            requester = AuthTokenManager.getRequesterFromToken(req.headers.authorization);
-        }
+        const requester = AuthTokenManager.getRequesterFromToken(req.headers.authorization as string);
 
         const { commentId } = req.params;
         const { content } = create(req.body, UpdateCommentRequestStruct);
