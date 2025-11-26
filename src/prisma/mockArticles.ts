@@ -1,4 +1,18 @@
-const mockArticles = (userId, count = 50) => {
+import { v4 as uuidv4 } from "uuid";
+
+interface MockArticle {
+  id: string;
+  userId: string;
+  title: string;
+  content: string;
+  image: string[];
+  likeCount: number;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const mockArticles = (userId: string, count = 50): MockArticle[] => {
   const titles = ["일상 기록", "오늘의 생각", "IT 트렌드", "여행 후기"];
   const contents = [
     "오늘은 새로운 프로젝트를 시작했다.",
@@ -8,7 +22,7 @@ const mockArticles = (userId, count = 50) => {
   ];
   const images = ["article_1.jpg", "article_2.jpg", "article_3.jpg"];
 
-  const articles = [];
+  const articles: MockArticle[] = [];
 
   for (let i = 0; i < count; i++) {
     const title = titles[i % titles.length];
@@ -16,11 +30,12 @@ const mockArticles = (userId, count = 50) => {
     const image = [`/images/${images[i % images.length]}`];
 
     articles.push({
-      id: `article-${userId}-${i + 1}`,
+      id: uuidv4(),
       userId,
       title,
       content,
       image,
+      likeCount: Math.floor(Math.random() * 501),
       isDeleted: false,
       createdAt: new Date(),
       updatedAt: new Date(),

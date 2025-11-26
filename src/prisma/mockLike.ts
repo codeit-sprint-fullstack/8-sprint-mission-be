@@ -1,12 +1,29 @@
-const mockLike = (users, articles) => {
-  const likes = [];
+import { v4 as uuidv4 } from "uuid";
+
+interface User {
+  id: string;
+}
+
+interface Article {
+  id: string;
+}
+
+interface Like {
+  id: string;
+  userId: string;
+  articleId: string;
+  createdAt: Date;
+}
+
+const mockLike = (users: User[], articles: Article[]): Like[] => {
+  const likes: Like[] = [];
   const hotArticles = articles.slice(0, 5); // 상위 5개 게시글에 집중 좋아요
 
   for (const user of users) {
     // 인기 게시글(상위 5개)에 모두 좋아요
     hotArticles.forEach((article) => {
       likes.push({
-        id: `like-${user.id}-${article.id}`,
+        id: uuidv4(),
         userId: user.id,
         articleId: article.id,
         createdAt: new Date(),
@@ -21,7 +38,7 @@ const mockLike = (users, articles) => {
       if (likes.some((l) => l.userId === user.id && l.articleId === article.id))
         return;
       likes.push({
-        id: `like-${user.id}-${article.id}`,
+        id: uuidv4(),
         userId: user.id,
         articleId: article.id,
         createdAt: new Date(),
