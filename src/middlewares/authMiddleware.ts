@@ -1,16 +1,23 @@
-import jwt from "jsonwebtoken";
-import prisma from "../config/prisma.js";
+import { Request, Response, NextFunction } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import prisma from "../config/prisma";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-export const authMiddleware = async (req, res, next) => {
+export const authMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers.authorization;
   if (!authHeader)
     return res.status(401).json({ message: "토큰이 필요합니다." });
 
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload & {
+      id: string;
+    };
     const user = await prisma.user.findUnique({ where: { id: decoded.id } });
 
     if (!user)

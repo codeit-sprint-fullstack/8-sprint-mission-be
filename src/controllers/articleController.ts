@@ -9,7 +9,7 @@ import {
 interface GetArticlesQuery {
   search?: string;
   order?: "newest" | "oldest" | "like";
-  limit?: string | number;
+  limit?: number;
   cursor?: string;
 }
 
