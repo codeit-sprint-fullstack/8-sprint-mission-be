@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 // Router import
 import authRouter from './routes/auth.route';
 import tokenRouter from './routes/token.route';
+import productRouter from './routes/product.route';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(morgan('combined'));
 // Routes
 app.use('/auth', authRouter);
 app.use('/token', tokenRouter);
+app.use('/products', productRouter);
 
 // Swagger Setup
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerUiOptions));
