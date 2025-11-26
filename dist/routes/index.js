@@ -1,0 +1,13 @@
+import express from "express";
+import articleRouter from "./articleRoutes";
+import commentRouter from "./commentRoutes";
+import productRouter from "./productRoutes";
+import uploadRouter from "./uploadRoutes";
+import authRouter from "./authRoutes";
+const router = express.Router();
+router.use("/articles", articleRouter);
+router.use("/comments", commentRouter);
+router.use("/products", productRouter);
+router.use("/image", uploadRouter);
+router.use("/auth", authRouter);
+export default router;

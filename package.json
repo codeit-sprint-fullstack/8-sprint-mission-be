@@ -30,7 +30,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+    "dev": "tsc --watch",
     "start": "node dist/app.js",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"
