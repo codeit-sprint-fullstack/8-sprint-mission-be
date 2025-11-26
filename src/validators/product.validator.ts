@@ -28,17 +28,17 @@ export const getProductsQuerySchema = z.object({
     }),
 });
 
-export const createProductSchema = z.object({
+export const productSchema = z.object({
   name: z.string().min(1, '상품 이름은 필수 입력 필드입니다.'),
   description: z.string().min(1, '상품 설명은 필수 입력 필드입니다.'),
   price: z.number().min(0, '상품 가격은 필수 입력 필드입니다.'),
   tags: z.array(z.string()).optional(),
 });
 
-export const getProductByIdSchema = z.object({
+export const productIdSchema = z.object({
   id: z.string().uuid('올바르지 않은 상품 ID 형식입니다.'),
 });
 
 export type GetProductsQuerySchema = z.infer<typeof getProductsQuerySchema>;
-export type CreateProductSchema = z.infer<typeof createProductSchema>;
-export type GetProductByIdSchema = z.infer<typeof getProductByIdSchema>;
+export type ProductSchema = z.infer<typeof productSchema>;
+export type ProductIdSchema = z.infer<typeof productIdSchema>;

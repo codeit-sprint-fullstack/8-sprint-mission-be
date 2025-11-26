@@ -5,6 +5,7 @@ import {
   getAllProductsService,
   createProductService,
   getProductByIdService,
+  updateProductService,
 } from '../services/product.service';
 import HTTP_STATUS from '../constants/http.constant';
 
@@ -75,6 +76,21 @@ export const getProductByIdController = asyncHandler(async (req: Request, res: R
   res.status(HTTP_STATUS.OK).json({
     success: true,
     message: '상품 상세 조회 성공',
+    data: {
+      product,
+    },
+  });
+});
+
+export const updateProductController = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { name, description, price, tags } = req.body;
+
+  const product = await updateProductService({ id, name, description, price, tags });
+
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: '상품 수정 성공',
     data: {
       product,
     },

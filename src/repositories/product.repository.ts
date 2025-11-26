@@ -52,6 +52,42 @@ export const createProductRepository = async (
       tags,
       ownerId,
     },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      tags: true,
+      likeCount: true,
+      createdAt: true,
+    },
+  });
+};
+
+export const updateProductRepository = async (
+  id: string,
+  name: string,
+  description: string,
+  price: number,
+  tags: string[],
+) => {
+  return prisma.product.update({
+    where: { id },
+    data: {
+      name,
+      description,
+      price,
+      tags,
+    },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      tags: true,
+      likeCount: true,
+      createdAt: true,
+    },
   });
 };
 

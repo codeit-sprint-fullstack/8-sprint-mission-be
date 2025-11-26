@@ -3,9 +3,10 @@ import {
   getAllProductsRepository,
   getProductByIdRepository,
   getProductsCountRepository,
+  updateProductRepository,
 } from '../repositories/product.repository';
 import { ProductOrderByWithRelationInput, ProductWhereInput } from '../generated/models';
-import { CreateProductSchema } from '../validators/product.validator';
+import { ProductSchema } from '../validators/product.validator';
 import AppError from '../utils/AppError';
 import HTTP_STATUS from '../constants/http.constant';
 import { getMyLikeProductRepository } from '../repositories/like.repository';
@@ -62,7 +63,7 @@ export const getAllProductsService = async (
   };
 };
 
-interface CreateProductServiceParams extends CreateProductSchema {
+interface CreateProductServiceParams extends ProductSchema {
   ownerId: string;
 }
 
@@ -89,4 +90,16 @@ export const getProductByIdService = async (id: string, ownerId: string) => {
     ...product,
     isLiked,
   };
+};
+
+type UpdateProductServiceParams = Partial<ProductSchema> & { id: string };
+
+export const updateProductService = async ({
+  name = '',
+  description = '',
+  price = 0,
+  tags = [],
+  id,
+}: UpdateProductServiceParams) => {
+  return await updateProductRepository(id, name, description, price, tags);
 };

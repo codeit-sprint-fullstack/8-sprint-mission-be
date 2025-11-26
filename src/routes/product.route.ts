@@ -2,27 +2,31 @@ import Router from 'express';
 import { verifyAccessToken } from '../middlewares/auth.middleware';
 import { validateBody, validateParams, validateQuery } from '../middlewares/validator.middleware';
 import {
-  createProductSchema,
-  getProductByIdSchema,
   getProductsQuerySchema,
+  productIdSchema,
+  productSchema,
 } from '../validators/product.validator';
 import {
   createProductController,
   getAllProductsController,
   getProductByIdController,
+  updateProductController,
 } from '../controllers/product.controller';
 
 const router = Router();
 
 router.get('/', verifyAccessToken, validateQuery(getProductsQuerySchema), getAllProductsController);
 
-router.get(
+router.get('/:id', verifyAccessToken, validateParams(productIdSchema), getProductByIdController);
+
+router.post('/', verifyAccessToken, validateBody(productSchema), createProductController);
+
+router.patch(
   '/:id',
   verifyAccessToken,
-  validateParams(getProductByIdSchema),
-  getProductByIdController,
+  validateParams(productIdSchema),
+  validateBody(productSchema),
+  updateProductController,
 );
-
-router.post('/', verifyAccessToken, validateBody(createProductSchema), createProductController);
 
 export default router;
