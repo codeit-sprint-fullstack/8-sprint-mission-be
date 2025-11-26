@@ -1,4 +1,10 @@
-export const validateArticle = (req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+
+export const validateArticle = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { title, content, image } = req.body;
 
   // 필수 필드 존재 여부
