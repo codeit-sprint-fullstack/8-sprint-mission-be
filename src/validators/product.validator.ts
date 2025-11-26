@@ -35,10 +35,5 @@ export const productSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-export const productIdSchema = z.object({
-  id: z.string().uuid('올바르지 않은 상품 ID 형식입니다.'),
-});
-
 export type GetProductsQuerySchema = z.infer<typeof getProductsQuerySchema>;
 export type ProductSchema = z.infer<typeof productSchema>;
-export type ProductIdSchema = z.infer<typeof productIdSchema>;

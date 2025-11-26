@@ -1,11 +1,8 @@
 import Router from 'express';
 import { verifyAccessToken } from '../middlewares/auth.middleware';
 import { validateBody, validateParams, validateQuery } from '../middlewares/validator.middleware';
-import {
-  getProductsQuerySchema,
-  productIdSchema,
-  productSchema,
-} from '../validators/product.validator';
+import { getProductsQuerySchema, productSchema } from '../validators/product.validator';
+import { idSchema } from '../validators/id.validator';
 import {
   createProductController,
   deleteProductController,
@@ -18,18 +15,18 @@ const router = Router();
 
 router.get('/', verifyAccessToken, validateQuery(getProductsQuerySchema), getAllProductsController);
 
-router.get('/:id', verifyAccessToken, validateParams(productIdSchema), getProductByIdController);
+router.get('/:id', verifyAccessToken, validateParams(idSchema), getProductByIdController);
 
 router.post('/', verifyAccessToken, validateBody(productSchema), createProductController);
 
 router.patch(
   '/:id',
   verifyAccessToken,
-  validateParams(productIdSchema),
+  validateParams(idSchema),
   validateBody(productSchema),
   updateProductController,
 );
 
-router.delete('/:id', verifyAccessToken, validateParams(productIdSchema), deleteProductController);
+router.delete('/:id', verifyAccessToken, validateParams(idSchema), deleteProductController);
 
 export default router;
