@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
+import { Prisma } from "@prisma/client";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import {
   DEFAULT_ARTICLE_IMAGE,
@@ -18,7 +19,7 @@ export const getArticles = asyncHandler(async (req: Request, res: Response) => {
   const {
     search,
     order = "newest",
-    limit = 10,
+    limit = "10",
     cursor,
   } = req.query as GetArticlesQuery;
 
@@ -35,7 +36,7 @@ export const getArticles = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const where = search
-    ? { title: { contains: search, mode: "insensitive" } }
+    ? { title: { contains: search, mode: Prisma.QueryMode.insensitive } }
     : {};
 
   const totalCount = await prisma.article.count({ where });
@@ -43,7 +44,7 @@ export const getArticles = asyncHandler(async (req: Request, res: Response) => {
   const articles = await prisma.article.findMany({
     where,
     orderBy,
-    take: parseInt(limit),
+    take: parseInt(String(limit)),
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     include: {
       user: { select: { id: true, nickname: true } },
@@ -111,6 +112,10 @@ export const getArticleById = asyncHandler(
 // 게시글 등록
 export const createArticle = asyncHandler(
   async (req: Request, res: Response) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "로그인이 필요합니다." });
+    }
+
     const { title, content, image } = req.body;
 
     const article = await prisma.article.create({
