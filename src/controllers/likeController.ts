@@ -1,13 +1,18 @@
-import prisma from "../config/prisma.js";
-import { asyncHandler } from "../middlewares/asyncHandler.js";
+import { Request, Response } from "express";
+import prisma from "../config/prisma";
+import { asyncHandler } from "../middlewares/asyncHandler";
 
 // 게시글 좋아요 등록
-export const likeArticle = asyncHandler(async (req, res) => {
+export const likeArticle = asyncHandler(async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인이 필요합니다." });
+  }
+
   const { id } = req.params; // articleId
   const userId = req.user.id;
 
   await prisma.$transaction([
-    prisma.articleLike.create({
+    prisma.like.create({
       data: { articleId: id, userId },
     }),
     prisma.article.update({
@@ -21,11 +26,15 @@ export const likeArticle = asyncHandler(async (req, res) => {
 
 // 게시글 좋아요 취소
 export const unlikeArticle = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인이 필요합니다." });
+  }
+
   const { id } = req.params; // articleId
   const userId = req.user.id;
 
   await prisma.$transaction([
-    prisma.articleLike.deleteMany({
+    prisma.like.deleteMany({
       where: { articleId: id, userId },
     }),
     prisma.article.update({
@@ -39,6 +48,10 @@ export const unlikeArticle = asyncHandler(async (req, res) => {
 
 // 상품 좋아요 등록
 export const favoriteProduct = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인이 필요합니다." });
+  }
+
   const { id } = req.params;
   const userId = req.user.id;
 
@@ -57,6 +70,10 @@ export const favoriteProduct = asyncHandler(async (req, res) => {
 
 // 상품 좋아요 취소
 export const unfavoriteProduct = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "로그인이 필요합니다." });
+  }
+
   const { id } = req.params;
   const userId = req.user.id;
 

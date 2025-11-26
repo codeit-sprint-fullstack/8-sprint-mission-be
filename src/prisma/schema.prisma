@@ -37,11 +37,12 @@ model Product {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  title       String
-  description String
-  price       Int
-  images      String[] @default([])
-  tags        String[] @default([])
+  title         String
+  description   String
+  price         Int
+  images        String[] @default([])
+  tags          String[] @default([])
+  favoriteCount Int      @default(0)
 
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -56,9 +57,10 @@ model Article {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  title   String
-  content String
-  image   String[] @default([])
+  title     String
+  content   String
+  image     String[] @default([])
+  likeCount Int      @default(0)
 
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
