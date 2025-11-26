@@ -1,7 +1,7 @@
 import swaggerUi from "swagger-ui-express";
-import swaggerJsDoc from "swagger-jsdoc";
+import swaggerJsDoc, { OAS3Options } from "swagger-jsdoc";
 
-const options = {
+const options: OAS3Options = {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -30,7 +30,7 @@ const options = {
       },
     ],
   },
-  apis: ["./src/routes/*.js"],
+  apis: ["./src/routes/*.ts"],
 };
 
 const specs = swaggerJsDoc(options);
