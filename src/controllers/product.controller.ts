@@ -6,6 +6,7 @@ import {
   createProductService,
   getProductByIdService,
   updateProductService,
+  deleteProductService,
 } from '../services/product.service';
 import HTTP_STATUS from '../constants/http.constant';
 
@@ -91,6 +92,20 @@ export const updateProductController = asyncHandler(async (req: Request, res: Re
   res.status(HTTP_STATUS.OK).json({
     success: true,
     message: '상품 수정 성공',
+    data: {
+      product,
+    },
+  });
+});
+
+export const deleteProductController = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const product = await deleteProductService(id);
+
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: '상품 삭제 성공',
     data: {
       product,
     },

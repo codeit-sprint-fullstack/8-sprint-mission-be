@@ -112,3 +112,18 @@ export const getProductByIdRepository = async (id: string) => {
     },
   });
 };
+
+export const deleteProductRepository = async (id: string) => {
+  return prisma.product.delete({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      tags: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+};

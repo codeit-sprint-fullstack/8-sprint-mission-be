@@ -4,6 +4,7 @@ import {
   getProductByIdRepository,
   getProductsCountRepository,
   updateProductRepository,
+  deleteProductRepository,
 } from '../repositories/product.repository';
 import { ProductOrderByWithRelationInput, ProductWhereInput } from '../generated/models';
 import { ProductSchema } from '../validators/product.validator';
@@ -102,4 +103,8 @@ export const updateProductService = async ({
   id,
 }: UpdateProductServiceParams) => {
   return await updateProductRepository(id, name, description, price, tags);
+};
+
+export const deleteProductService = async (id: string) => {
+  return await deleteProductRepository(id);
 };

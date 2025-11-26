@@ -8,6 +8,7 @@ import {
 } from '../validators/product.validator';
 import {
   createProductController,
+  deleteProductController,
   getAllProductsController,
   getProductByIdController,
   updateProductController,
@@ -28,5 +29,7 @@ router.patch(
   validateBody(productSchema),
   updateProductController,
 );
+
+router.delete('/:id', verifyAccessToken, validateParams(productIdSchema), deleteProductController);
 
 export default router;
