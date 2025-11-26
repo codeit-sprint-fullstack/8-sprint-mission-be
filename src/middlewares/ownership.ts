@@ -5,6 +5,10 @@ type PrismaModels = keyof typeof prisma;
 
 export const checkOwnership = (model: PrismaModels) => {
   return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "로그인이 필요합니다." });
+    }
+
     const { id } = req.params;
     const record = await (prisma[model] as any).findUnique({ where: { id } });
 
