@@ -86,7 +86,7 @@ export const getArticleById = asyncHandler(
       return res.status(404).json({ message: "게시글을 찾을 수 없습니다" });
 
     const isLiked = userId
-      ? !!(await prisma.Like.findFirst({
+      ? !!(await prisma.like.findFirst({
           where: { articleId: id, userId },
         }))
       : false;
@@ -95,12 +95,14 @@ export const getArticleById = asyncHandler(
       id: article.id,
       title: article.title,
       content: article.content,
-      image: article.image.length ? article.image[0] : DEFAULT_ARTICLE_IMAGE,
+      articleImage: article.image.length
+        ? article.image[0]
+        : DEFAULT_ARTICLE_IMAGE,
       createdAt: article.createdAt,
       updatedAt: article.updatedAt,
       userId: article.user.id,
       nickname: article.user.nickname ?? "오류",
-      image: article.user.image || DEFAULT_PROFILE_IMAGE,
+      profileImage: article.user.image || DEFAULT_PROFILE_IMAGE,
       likeCount: article._count.Like,
       isLiked,
     };
