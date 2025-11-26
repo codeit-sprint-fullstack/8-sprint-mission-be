@@ -1,24 +1,41 @@
 import prisma from '../../prisma/prismaClient.js';
+import { CreateArticleData, UpdateArticleData } from '../types/index.js';
+import { Prisma } from '@prisma/client';
+
+interface FindManyParams {
+  where?: Prisma.ArticleWhereInput;
+  orderBy?: Prisma.ArticleOrderByWithRelationInput | Prisma.ArticleOrderByWithRelationInput[];
+  skip?: number;
+  take?: number;
+}
+
+interface FindManyWithLikesParams extends FindManyParams {
+  userId?: string | null;
+}
 
 export const articleRepository = {
   // 게시글 생성
-  async create({ userId, title, content }) {
-    return await prisma.article.create({
-      data: { userId, title, content },
+  async create({ writerId, title, content }: Omit<CreateArticleData, 'image'> & { writerId: string }) {
+    const article = await prisma.article.create({
+      data: { userId: writerId, title, content },
       include: {
         user: {
           select: {
             id: true,
+            email: true,
             nickname: true,
           },
         },
       },
     });
+    
+    const { user, ...rest } = article;
+    return { ...rest, writer: user };
   },
 
   // 게시글 단건 조회
-  async findById(id) {
-    return await prisma.article.findUnique({
+  async findById(id: string) {
+    const article = await prisma.article.findUnique({
       where: { id, deleted: false },
       select: {
         id: true,
@@ -30,21 +47,27 @@ export const articleRepository = {
         user: {
           select: {
             id: true,
+            email: true,
             nickname: true,
           },
         },
       },
     });
+    
+    if (!article) return null;
+    const { user, ...rest } = article;
+    return { ...rest, writer: user };
   },
 
   // 게시글 단건 조회 (댓글, 좋아요 상태 포함)
-  async findByIdWithDetails(id, userId = null) {
+  async findByIdWithDetails(id: string, userId: string | null = null) {
     const article = await prisma.article.findUnique({
       where: { id, deleted: false },
       include: {
         user: {
           select: {
             id: true,
+            email: true,
             nickname: true,
           },
         },
@@ -54,6 +77,7 @@ export const articleRepository = {
             user: {
               select: {
                 id: true,
+                email: true,
                 nickname: true,
               },
             },
@@ -71,16 +95,21 @@ export const articleRepository = {
 
     if (!article) return null;
 
-    // isLiked 필드 추가
+    // isLiked 필드 추가 및 user를 writer로 변환
+    const { articleFavorites, user, comments, ...rest } = article;
     return {
-      ...article,
-      isLiked: userId ? article.articleFavorites.length > 0 : false,
-      articleFavorites: undefined, // 제거
+      ...rest,
+      writer: user,
+      comments: comments.map(comment => {
+        const { user: commentUser, ...commentRest } = comment;
+        return { ...commentRest, writer: commentUser };
+      }),
+      isLiked: userId && Array.isArray(articleFavorites) ? articleFavorites.length > 0 : false,
     };
   },
 
   // 게시글 수정
-  async update(id, { title, content }) {
+  async update(id: string, { title, content }: Omit<UpdateArticleData, 'image'>) {
     return await prisma.article.update({
       where: { id },
       data: { title, content },
@@ -88,7 +117,7 @@ export const articleRepository = {
   },
 
   // 게시글 삭제 (soft delete)
-  async delete(id) {
+  async delete(id: string) {
     return await prisma.article.update({
       where: { id },
       data: { deleted: true },
@@ -96,15 +125,15 @@ export const articleRepository = {
   },
 
   // 게시글 개수 조회
-  async count(where = {}) {
+  async count(where: Prisma.ArticleWhereInput = {}) {
     return await prisma.article.count({
       where: { ...where, deleted: false },
     });
   },
 
   // 게시글 목록 조회
-  async findMany({ where, orderBy, skip, take }) {
-    return await prisma.article.findMany({
+  async findMany({ where, orderBy, skip, take }: FindManyParams) {
+    const articles = await prisma.article.findMany({
       where: { ...where, deleted: false },
       orderBy,
       skip,
@@ -119,15 +148,21 @@ export const articleRepository = {
         user: {
           select: {
             id: true,
+            email: true,
             nickname: true,
           },
         },
       },
     });
+    
+    return articles.map(article => {
+      const { user, ...rest } = article;
+      return { ...rest, writer: user };
+    });
   },
 
   // 게시글 목록 조회 (좋아요 상태 포함)
-  async findManyWithLikes({ where, orderBy, skip, take, userId }) {
+  async findManyWithLikes({ where, orderBy, skip, take, userId }: FindManyWithLikesParams) {
     const articles = await prisma.article.findMany({
       where: { ...where, deleted: false },
       orderBy,
@@ -137,6 +172,7 @@ export const articleRepository = {
         user: {
           select: {
             id: true,
+            email: true,
             nickname: true,
           },
         },
@@ -149,11 +185,14 @@ export const articleRepository = {
       },
     });
 
-    // isLiked 필드 추가
-    return articles.map(article => ({
-      ...article,
-      isLiked: userId ? article.articleFavorites.length > 0 : false,
-      articleFavorites: undefined, // 제거
-    }));
+    // isLiked 필드 추가 및 user를 writer로 변환
+    return articles.map(article => {
+      const { articleFavorites, user, ...rest } = article;
+      return {
+        ...rest,
+        writer: user,
+        isLiked: userId && Array.isArray(articleFavorites) ? articleFavorites.length > 0 : false,
+      };
+    });
   },
 };

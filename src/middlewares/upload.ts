@@ -14,10 +14,10 @@ if (!fs.existsSync(uploadDir)) {
 
 // 파일 저장 설정
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, uploadDir);
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     // 고유한 파일명 생성 (타임스탬프 + 랜덤값 + 원본 확장자)
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
@@ -26,10 +26,10 @@ const storage = multer.diskStorage({
 });
 
 // 파일 필터링 (이미지만 허용)
-const fileFilter = (req, file, cb) => {
+const fileFilter: multer.Options['fileFilter'] = (_req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|gif|webp/;
   const extname = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase(),
+    path.extname(file.originalname).toLowerCase()
   );
   const mimetype = allowedTypes.test(file.mimetype);
 
@@ -37,7 +37,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
   } else {
     cb(
-      new Error('이미지 파일만 업로드 가능합니다. (jpeg, jpg, png, gif, webp)'),
+      new Error('이미지 파일만 업로드 가능합니다. (jpeg, jpg, png, gif, webp)')
     );
   }
 };

@@ -9,3 +9,5 @@ node_modules
 .history
 # 업로드된 파일들
 uploads/
+# 빌드 결과물
+dist/

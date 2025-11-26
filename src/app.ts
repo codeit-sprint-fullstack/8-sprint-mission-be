@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: 'http://localhost:3000', // 특정 출처만 허용
     credentials: true, // 쿠키 허용
-  }),
+  })
 );
 app.use(express.json());
 app.use(cookieParser());
