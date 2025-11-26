@@ -1,4 +1,10 @@
-export const validateProduct = (req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+
+export const validateProduct = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { title, description, price, images, tags } = req.body;
 
   // 필수 필드 존재 여부 검사
