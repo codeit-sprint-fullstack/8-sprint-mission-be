@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 import { Prisma } from "@prisma/client";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
 import {
   DEFAULT_ARTICLE_IMAGE,
   DEFAULT_PROFILE_IMAGE,
-} from "../config/constants";
+} from "../config/constants.js";
 
 interface GetArticlesQuery {
   search?: string;

@@ -5,13 +5,16 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
-} from "../controllers/articleController";
-import { likeArticle, unlikeArticle } from "../controllers/likeController";
-import { getComments, createComment } from "../controllers/commentController";
-import { asyncHandler } from "../middlewares/asyncHandler";
-import { authMiddleware } from "../middlewares/authMiddleware";
-import { checkOwnership } from "../middlewares/ownership";
-import { validateArticle } from "../middlewares/validateArticle";
+} from "../controllers/articleController.js";
+import { likeArticle, unlikeArticle } from "../controllers/likeController.js";
+import {
+  getComments,
+  createComment,
+} from "../controllers/commentController.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { checkOwnership } from "../middlewares/ownership.js";
+import { validateArticle } from "../middlewares/validateArticle.js";
 
 const router = express.Router();
 

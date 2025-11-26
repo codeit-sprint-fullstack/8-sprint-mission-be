@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../middlewares/multer";
+import { upload } from "../middlewares/multer.js";
 const router = express.Router();
 router.post("/", upload.array("images", 3), (req, res) => {
     const files = req.files.map((f) => `/uploads/${f.filename}`);

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 export const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;

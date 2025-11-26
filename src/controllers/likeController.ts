@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import prisma from "../config/prisma";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import prisma from "../config/prisma.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
 
 // 게시글 좋아요 등록
 export const likeArticle = asyncHandler(

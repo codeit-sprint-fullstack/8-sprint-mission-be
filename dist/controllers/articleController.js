@@ -1,7 +1,7 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 import { Prisma } from "@prisma/client";
-import { asyncHandler } from "../middlewares/asyncHandler";
-import { DEFAULT_ARTICLE_IMAGE, DEFAULT_PROFILE_IMAGE, } from "../config/constants";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
+import { DEFAULT_ARTICLE_IMAGE, DEFAULT_PROFILE_IMAGE, } from "../config/constants.js";
 // 게시글 목록 조회
 export const getArticles = asyncHandler(async (req, res) => {
     const { search, order = "newest", limit = "10", cursor, } = req.query;

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 

@@ -1,8 +1,11 @@
 import express from "express";
-import { updateComment, deleteComment } from "../controllers/commentController";
-import { authMiddleware } from "../middlewares/authMiddleware";
-import { asyncHandler } from "../middlewares/asyncHandler";
-import { checkOwnership } from "../middlewares/ownership";
+import {
+  updateComment,
+  deleteComment,
+} from "../controllers/commentController.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
+import { checkOwnership } from "../middlewares/ownership.js";
 
 const router = express.Router();
 

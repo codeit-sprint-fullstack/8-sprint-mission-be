@@ -1,4 +1,4 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 export const checkOwnership = (model) => {
     return async (req, res, next) => {
         if (!req.user) {

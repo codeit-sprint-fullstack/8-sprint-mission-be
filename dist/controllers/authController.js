@@ -1,4 +1,4 @@
-import { registerUser, loginUser, refreshAccessTokenService, } from "../services/authService";
+import { registerUser, loginUser, refreshAccessTokenService, } from "../services/authService.js";
 // 회원가입
 export const register = async (req, res) => {
     try {

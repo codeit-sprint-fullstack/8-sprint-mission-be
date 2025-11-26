@@ -1,6 +1,6 @@
-import prisma from "../config/prisma";
-import { asyncHandler } from "../middlewares/asyncHandler";
-import { DEFAULT_PROFILE_IMAGE } from "../config/constants";
+import prisma from "../config/prisma.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
+import { DEFAULT_PROFILE_IMAGE } from "../config/constants.js";
 // 댓글 목록 조회
 export const getComments = asyncHandler(async (req, res) => {
     const { articleId, productId } = req.params;

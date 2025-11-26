@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
 type PrismaModels = keyof typeof prisma;
 

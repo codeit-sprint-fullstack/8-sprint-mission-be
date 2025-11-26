@@ -1,6 +1,6 @@
 import express from "express";
-import { register, login, refreshAccessToken, } from "../controllers/authController";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { register, login, refreshAccessToken, } from "../controllers/authController.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
 const router = express.Router();
 /**
  * @swagger
