@@ -1,9 +1,9 @@
 import express from "express";
-import articleRouter from "./articleRoutes.js";
-import commentRouter from "./commentRoutes.js";
-import productRouter from "./productRoutes.js";
-import uploadRouter from "./uploadRoutes.js";
-import authRouter from "./authRoutes.js";
+import articleRouter from "./articleRoutes";
+import commentRouter from "./commentRoutes";
+import productRouter from "./productRoutes";
+import uploadRouter from "./uploadRoutes";
+import authRouter from "./authRoutes";
 
 const router = express.Router();
 

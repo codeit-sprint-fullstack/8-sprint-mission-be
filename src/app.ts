@@ -3,10 +3,10 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import prisma from "./config/prisma.js";
-import routes from "./routes/index.js";
-import errorHandler from "./middlewares/errorHandler.js";
-import { swaggerUi, specs } from "./config/swagger.js";
+import prisma from "./config/prisma";
+import routes from "./routes/index";
+import errorHandler from "./middlewares/errorHandler";
+import { swaggerUi, specs } from "./config/swagger";
 import { assert } from "superstruct";
 
 const app = express();
