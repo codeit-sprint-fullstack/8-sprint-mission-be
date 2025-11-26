@@ -12,7 +12,7 @@ export interface User {
   updatedAt: Date;
 }
 
-const mockUser: User[] = [
+const mockUsers: User[] = [
   {
     id: uuidv4(),
     email: "user1@example.com",
@@ -70,4 +70,4 @@ const mockUser: User[] = [
   },
 ];
 
-export default mockUser;
+export default mockUsers;
