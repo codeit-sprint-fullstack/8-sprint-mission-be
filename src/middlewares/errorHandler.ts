@@ -1,6 +1,12 @@
+import { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 
-export default function errorHandler(e, req, res, next) {
+export default function errorHandler(
+  e: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   console.error(e);
   if (e.name === "StructError") {
     return res.status(400).json({ message: e.message });
@@ -11,5 +17,7 @@ export default function errorHandler(e, req, res, next) {
   if (e.status && e.message) {
     return res.status(e.status).json({ message: e.message });
   }
-  res.status(500).json({ message: "Server error", detail: e.message });
+  return res
+    .status(500)
+    .json({ message: "Server error", detail: e.message ?? "Unknown error" });
 }
