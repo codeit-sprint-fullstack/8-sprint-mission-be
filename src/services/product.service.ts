@@ -1,8 +1,10 @@
 import {
+  createProductRepository,
   getAllProductsRepository,
   getProductsCountRepository,
 } from '../repositories/product.repository';
 import { ProductOrderByWithRelationInput, ProductWhereInput } from '../generated/models';
+import { CreateProductSchema } from '../validators/product.validator';
 
 export const getAllProductsService = async (
   page: number,
@@ -54,4 +56,18 @@ export const getAllProductsService = async (
     hasNextPage,
     hasPreviousPage,
   };
+};
+
+interface CreateProductServiceParams extends CreateProductSchema {
+  ownerId: string;
+}
+
+export const createProductService = async ({
+  name,
+  description,
+  price,
+  tags = [],
+  ownerId,
+}: CreateProductServiceParams) => {
+  return await createProductRepository(name, description, price, tags, ownerId);
 };

@@ -28,4 +28,12 @@ export const getProductsQuerySchema = z.object({
     }),
 });
 
+export const createProductSchema = z.object({
+  name: z.string().min(1, '상품 이름은 필수 입력 필드입니다.'),
+  description: z.string().min(1, '상품 설명은 필수 입력 필드입니다.'),
+  price: z.number().min(0, '상품 가격은 필수 입력 필드입니다.'),
+  tags: z.array(z.string()).optional(),
+});
+
 export type GetProductsQuerySchema = z.infer<typeof getProductsQuerySchema>;
+export type CreateProductSchema = z.infer<typeof createProductSchema>;

@@ -36,3 +36,21 @@ export const getProductsCountRepository = async (whereCondition: ProductWhereInp
     where: whereCondition,
   });
 };
+
+export const createProductRepository = async (
+  name: string,
+  description: string,
+  price: number,
+  tags: string[],
+  ownerId: string,
+) => {
+  return prisma.product.create({
+    data: {
+      name,
+      description,
+      price,
+      tags,
+      ownerId,
+    },
+  });
+};
