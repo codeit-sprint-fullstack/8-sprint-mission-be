@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id                String  @id
+  id                String  @id @default(uuid())
   email             String  @unique
   nickname          String
   image             String?
   encryptedPassword String
+  refreshToken      String?
 
-  isDelete  Boolean
+  isDelete  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

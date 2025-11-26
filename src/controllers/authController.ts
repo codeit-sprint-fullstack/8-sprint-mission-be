@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import {
   registerUser,
   loginUser,
@@ -5,31 +6,31 @@ import {
 } from "../services/authService.js";
 
 // 회원가입
-export const register = async (req, res) => {
+export const register = async (req: Request, res: Response) => {
   try {
     const { email, nickname, password } = req.body;
 
     const user = await registerUser({ email, nickname, password });
     res.status(201).json({ message: "회원가입 완료", user });
-  } catch (error) {
+  } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
 
 // 로그인
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
     const { user, accessToken } = await loginUser({ email, password });
     res.status(200).json({ message: "로그인 성공", accessToken, user });
-  } catch (error) {
+  } catch (error: any) {
     res.status(401).json({ message: error.message });
   }
 };
 
 // 토큰
-export const refreshAccessToken = async (req, res) => {
+export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     const refreshToken =
       req.cookies?.refreshToken || req.body?.refreshToken || null;
@@ -40,7 +41,7 @@ export const refreshAccessToken = async (req, res) => {
     const { accessToken } = await refreshAccessTokenService(refreshToken);
 
     return res.status(200).json({ accessToken });
-  } catch (error) {
+  } catch (error: any) {
     return res
       .status(401)
       .json({ message: error.message || "토큰 갱신에 실패했습니다." });

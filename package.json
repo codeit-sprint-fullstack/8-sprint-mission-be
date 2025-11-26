@@ -15,7 +15,10 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.9.3"
   },
   "type": "module",
   "scripts": {
