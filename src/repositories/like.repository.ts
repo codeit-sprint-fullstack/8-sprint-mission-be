@@ -11,6 +11,17 @@ export const getMyLikeProductRepository = async (userId: string, productId: stri
   });
 };
 
+export const getMyLikeArticleRepository = async (userId: string, articleId: string) => {
+  return prisma.articleLike.findUnique({
+    where: {
+      userId_articleId: {
+        userId,
+        articleId,
+      },
+    },
+  });
+};
+
 export const productLikeRepository = async (userId: string, productId: string) => {
   return prisma.$transaction(async (tx) => {
     await tx.productLike.create({

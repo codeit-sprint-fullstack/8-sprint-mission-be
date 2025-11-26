@@ -25,9 +25,7 @@ app.use(helmet());
 app.use(cors);
 app.use(cookieParser());
 
-// TODO: passport 추가
 app.use(express.json());
-// app.use(passport.initialize());
 app.use(morgan('combined'));
 
 // Routes
@@ -37,6 +35,7 @@ app.use('/products', productRouter);
 app.use('/products', productLikeRouter);
 app.use('/articles', articleRouter);
 app.use('/articles', articleLikeRouter);
+// TODO: Comment Router 추가
 
 // Swagger Setup
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerUiOptions));
