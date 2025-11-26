@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
+import { Prisma } from "@prisma/client";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import {
   DEFAULT_PRODUCT_IMAGE,
@@ -8,7 +9,7 @@ import {
 
 // 상품 목록 조회
 export const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const { search, order = "newest", limit = 10, cursor } = req.query;
+  const { search, order = "newest", limit = "10", cursor } = req.query;
 
   let orderBy: any;
   switch (order) {
@@ -23,7 +24,9 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const where = search
-    ? { title: { contains: String(search), mode: "insensitive" } }
+    ? {
+        title: { contains: String(search), mode: Prisma.QueryMode.insensitive },
+      }
     : {};
 
   const totalCount = await prisma.product.count({ where });
@@ -31,7 +34,7 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const products = await prisma.product.findMany({
     where,
     orderBy,
-    take: parseInt(Number(limit)),
+    take: parseInt(String(limit)),
     ...(cursor ? { skip: 1, cursor: { id: String(cursor) } } : {}),
     include: {
       user: { select: { id: true, nickname: true, image: true } },
@@ -102,6 +105,10 @@ export const getProductById = asyncHandler(
 // 상품 등록
 export const createProduct = asyncHandler(
   async (req: Request, res: Response) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "로그인이 필요합니다." });
+    }
+
     const { title, description, price, images, tags } = req.body;
 
     const product = await prisma.product.create({
