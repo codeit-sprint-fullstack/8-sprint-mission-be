@@ -3,7 +3,7 @@ import {
   registerUser,
   loginUser,
   refreshAccessTokenService,
-} from "../services/authService.js";
+} from "../services/authService";
 
 // 회원가입
 export const register = async (req: Request, res: Response) => {

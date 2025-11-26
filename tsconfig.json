@@ -9,8 +9,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["node"],
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]

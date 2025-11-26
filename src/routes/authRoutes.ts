@@ -3,8 +3,8 @@ import {
   register,
   login,
   refreshAccessToken,
-} from "../controllers/authController.js";
-import { asyncHandler } from "../middlewares/asyncHandler.js";
+} from "../controllers/authController";
+import { asyncHandler } from "../middlewares/asyncHandler";
 
 const router = express.Router();
 
