@@ -16,6 +16,7 @@ import productLikeRouter from './routes/product.like.route';
 import productCommentRouter from './routes/product.comment.route';
 import articleRouter from './routes/article.route';
 import articleLikeRouter from './routes/article.like.route';
+import articleCommentRouter from './routes/article.comment.route';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/products', productLikeRouter);
 app.use('/product-comments', productCommentRouter);
 app.use('/articles', articleRouter);
 app.use('/articles', articleLikeRouter);
+app.use('/article-comments', articleCommentRouter);
 
 // Swagger Setup
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerUiOptions));
