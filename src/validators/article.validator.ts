@@ -1,20 +1,13 @@
 import { z } from 'zod';
 
 export const getArticlesQuerySchema = z.object({
-  page: z
-    .string()
-    .optional()
-    .transform((val) => (val ? parseInt(val, 10) : 1))
-    .refine((value) => value >= 1, {
-      message: '페이지는 1 이상이어야 합니다.',
-      path: ['page'],
-    }),
+  cursor: z.string().optional(),
   limit: z
     .string()
     .optional()
     .transform((val) => (val ? parseInt(val, 10) : 10))
-    .refine((value) => value >= 1, {
-      message: 'limit은 1 이상이어야 합니다.',
+    .refine((value) => value >= 1 && value <= 100, {
+      message: 'limit은 1 이상 100 이하여야 합니다.',
       path: ['limit'],
     }),
   searchQuery: z.string().optional(),

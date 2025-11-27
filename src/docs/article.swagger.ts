@@ -15,32 +15,26 @@
  *         content:
  *           type: string
  *           description: 내용
- *         ownerId:
- *           type: string
- *           format: uuid
- *           description: 작성자 ID
  *         owner:
  *           type: object
  *           properties:
  *             id:
  *               type: string
  *               format: uuid
+ *               description: 작성자 ID
  *             nickname:
  *               type: string
+ *               description: 작성자 닉네임
  *         likeCount:
  *           type: integer
  *           description: 좋아요 수
  *         isLiked:
  *           type: boolean
- *           description: 현재 사용자가 좋아요를 눌렀는지 여부
+ *           description: 현재 사용자가 좋아요를 눌렀는지 여부 (상세 조회 시에만 포함)
  *         createdAt:
  *           type: string
  *           format: date-time
  *           description: 생성일시
- *         updatedAt:
- *           type: string
- *           format: date-time
- *           description: 수정일시
  *     ArticleRequest:
  *       type: object
  *       required:
@@ -76,24 +70,16 @@
  *         pagination:
  *           type: object
  *           properties:
- *             currentPage:
- *               type: integer
- *               example: 1
- *             limit:
- *               type: integer
- *               example: 10
- *             totalCount:
- *               type: integer
- *               example: 100
- *             totalPages:
- *               type: integer
- *               example: 10
+ *             nextCursor:
+ *               type: string
+ *               format: uuid
+ *               nullable: true
+ *               description: 다음 페이지 조회를 위한 cursor (null이면 마지막 페이지)
+ *               example: 123e4567-e89b-12d3-a456-426614174000
  *             hasNextPage:
  *               type: boolean
+ *               description: 다음 페이지 존재 여부
  *               example: true
- *             hasPreviousPage:
- *               type: boolean
- *               example: false
  *     ArticleResponse:
  *       type: object
  *       properties:
@@ -121,25 +107,25 @@
  *     tags:
  *       - Article
  *     summary: 게시글 목록 조회
- *     description: 페이지네이션과 검색, 정렬 기능을 지원하는 게시글 목록을 조회합니다.
+ *     description: Cursor 기반 페이지네이션과 검색, 정렬 기능을 지원하는 게시글 목록을 조회합니다. 첫 요청 시 cursor를 생략하고, 다음 페이지 조회 시 응답의 nextCursor 값을 사용하세요.
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: page
+ *         name: cursor
  *         schema:
- *           type: integer
- *           minimum: 1
- *           default: 1
- *         description: 페이지 번호
- *         example: 1
+ *           type: string
+ *           format: uuid
+ *         description: 다음 페이지 조회를 위한 cursor (첫 요청 시 생략 가능)
+ *         example: 123e4567-e89b-12d3-a456-426614174000
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
  *           minimum: 1
+ *           maximum: 100
  *           default: 10
- *         description: 페이지당 항목 수
+ *         description: 페이지당 항목 수 (최대 100)
  *         example: 10
  *       - in: query
  *         name: searchQuery

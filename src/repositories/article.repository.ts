@@ -2,16 +2,25 @@ import prisma from '../config/prisma';
 import { ArticleOrderByWithRelationInput, ArticleWhereInput } from '../generated/models';
 
 export const getAllArticlesRepository = async (
-  page: number,
+  cursor: string | undefined,
   limit: number,
   whereCondition: ArticleWhereInput,
   orderBy: ArticleOrderByWithRelationInput,
 ) => {
+  const cursorCondition = cursor
+    ? {
+        id: cursor,
+      }
+    : undefined;
+
   return prisma.article.findMany({
     where: whereCondition,
     orderBy,
-    skip: (page - 1) * limit,
-    take: limit,
+    take: limit + 1, // hasNextPage 확인을 위해 1개 더 가져옴
+    ...(cursorCondition && {
+      cursor: cursorCondition,
+      skip: 1, // cursor 자체는 제외
+    }),
     select: {
       id: true,
       title: true,

@@ -12,21 +12,18 @@ import {
 
 export const getAllArticlesController = asyncHandler(async (req: Request, res: Response) => {
   const {
-    page = 1,
+    cursor,
     limit = 10,
     searchQuery = '',
     sort = 'recent',
   } = getArticlesQuerySchema.parse(req.query);
 
-  const {
-    articles,
-    currentPage,
-    currentLimit,
-    totalCount,
-    totalPages,
-    hasNextPage,
-    hasPreviousPage,
-  } = await getAllArticlesService(page, limit, searchQuery, sort);
+  const { articles, nextCursor, hasNextPage } = await getAllArticlesService(
+    cursor,
+    limit,
+    searchQuery,
+    sort,
+  );
 
   res.status(HTTP_STATUS.OK).json({
     success: true,
@@ -35,12 +32,8 @@ export const getAllArticlesController = asyncHandler(async (req: Request, res: R
       articles,
     },
     pagination: {
-      currentPage: currentPage,
-      limit: currentLimit,
-      totalCount,
-      totalPages,
+      nextCursor,
       hasNextPage,
-      hasPreviousPage,
     },
   });
 });
