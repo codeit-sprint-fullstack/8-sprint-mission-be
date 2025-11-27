@@ -25,3 +25,26 @@ export const createUser = async (email: string, nickname: string, hashedPassword
     },
   });
 };
+
+export const findUserByRefreshToken = async (refreshToken: string) => {
+  return prisma.user.findFirst({
+    where: { refreshToken },
+    select: {
+      id: true,
+      nickname: true,
+      refreshToken: true,
+    },
+  });
+};
+
+export const updateRefreshToken = async (userId: string, refreshToken: string) => {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { refreshToken },
+    select: {
+      id: true,
+      nickname: true,
+      refreshToken: true,
+    },
+  });
+};
