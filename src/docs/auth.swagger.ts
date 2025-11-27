@@ -105,6 +105,15 @@
  *           properties:
  *             user:
  *               $ref: '#/components/schemas/User'
+ *     LogoutResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: true
+ *         message:
+ *           type: string
+ *           example: 로그아웃이 완료되었습니다.
  *     ErrorResponse:
  *       type: object
  *       properties:
@@ -297,4 +306,39 @@
  *             example:
  *               success: false
  *               message: 존재하지 않는 사용자입니다.
+ */
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: 로그아웃
+ *     description: 현재 로그인한 사용자를 로그아웃합니다. 쿠키에 저장된 refreshToken을 사용합니다.
+ *     responses:
+ *       200:
+ *         description: 로그아웃 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LogoutResponse'
+ *             example:
+ *               success: true
+ *               message: 로그아웃이 완료되었습니다.
+ *         headers:
+ *           Set-Cookie:
+ *             description: refreshToken 쿠키가 삭제됩니다.
+ *             schema:
+ *               type: string
+ *               example: refreshToken=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
+ *       401:
+ *         description: 인증 실패 (refreshToken이 없거나 유효하지 않음)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               message: Refresh token is required
  */

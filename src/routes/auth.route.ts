@@ -1,6 +1,7 @@
 import Router from 'express';
 import {
   getMyInfoController,
+  logoutController,
   signinController,
   signupController,
 } from '../controllers/auth.controller';
@@ -10,9 +11,9 @@ import { verifyAccessToken } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-// TODO: 로그아웃 로직 추가
 router.get('/me', verifyAccessToken, getMyInfoController);
 router.post('/signup', validateBody(signupSchema), signupController);
 router.post('/signin', validateBody(signinSchema), signinController);
+router.post('/logout', logoutController);
 
 export default router;

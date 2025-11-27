@@ -1,4 +1,9 @@
-import { createUser, findUserByEmail } from '../repositories/auth.repository';
+import {
+  createUser,
+  findUserByEmail,
+  findUserByRefreshToken,
+  updateRefreshToken,
+} from '../repositories/auth.repository';
 import AppError from '../utils/AppError';
 import argon2 from 'argon2';
 import { generateTokens } from '../utils/token';
@@ -44,5 +49,18 @@ export const signinService = async (email: string, password: string) => {
     user: filterSensitiveData(user),
     accessToken,
     refreshToken,
+  };
+};
+
+export const logoutService = async (refreshToken: string) => {
+  const user = await findUserByRefreshToken(refreshToken);
+  if (!user) {
+    throw new AppError('Refresh token is invalid', HTTP_STATUS.UNAUTHORIZED);
+  }
+
+  await updateRefreshToken(user.id, refreshToken);
+
+  return {
+    message: '로그아웃이 완료되었습니다.',
   };
 };
