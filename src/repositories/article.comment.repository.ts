@@ -3,6 +3,7 @@ import {
   createCommentHelper,
   deleteCommentHelper,
   updateCommentHelper,
+  getCommentHelper,
 } from '../helpers/comment.helper';
 
 export const getArticleCommentRepository = async ({
@@ -14,15 +15,7 @@ export const getArticleCommentRepository = async ({
   cursor: string;
   articleId: string;
 }) => {
-  return prisma.articleComment.findMany({
-    take,
-    where: { articleId },
-    skip: cursor ? 1 : 0,
-    ...(cursor && { cursor: { id: cursor } }),
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  return await getCommentHelper({ take, cursor, articleId });
 };
 
 export const createArticleCommentRepository = async ({

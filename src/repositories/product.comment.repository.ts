@@ -2,6 +2,7 @@ import prisma from '../config/prisma';
 import {
   createCommentHelper,
   deleteCommentHelper,
+  getCommentHelper,
   updateCommentHelper,
 } from '../helpers/comment.helper';
 
@@ -14,15 +15,7 @@ export const getProductCommentRepository = async ({
   cursor: string;
   productId: string;
 }) => {
-  return prisma.productComment.findMany({
-    take,
-    where: { productId },
-    skip: cursor ? 1 : 0,
-    ...(cursor && { cursor: { id: cursor } }),
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  return await getCommentHelper({ take, cursor, productId });
 };
 
 export const createProductCommentRepository = async ({

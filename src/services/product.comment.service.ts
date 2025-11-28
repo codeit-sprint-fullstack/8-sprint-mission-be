@@ -4,6 +4,8 @@ import {
   getProductCommentRepository,
   updateProductCommentRepository,
 } from '../repositories/product.comment.repository';
+import AppError from '../utils/AppError';
+import HTTP_STATUS from '../constants/http.constant';
 
 export const getProductCommentService = async ({
   cursor,
@@ -17,6 +19,10 @@ export const getProductCommentService = async ({
   const take = limit + 1;
 
   const comments = await getProductCommentRepository({ take, cursor, productId });
+
+  if (!comments) {
+    throw new AppError('존재하지 않는 상품입니다.', HTTP_STATUS.NOT_FOUND);
+  }
 
   let nextCursor: string | null = null;
 

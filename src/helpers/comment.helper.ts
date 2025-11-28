@@ -9,6 +9,69 @@ interface CommentHelperProps {
   ownerId: string;
 }
 
+export const getCommentHelper = async ({
+  take,
+  cursor,
+  productId,
+  articleId,
+}: {
+  take: number;
+  cursor: string;
+  productId?: string;
+  articleId?: string;
+}) => {
+  if (!productId && !articleId) {
+    throw new AppError('상품 또는 게시글 ID가 필요합니다.', HTTP_STATUS.BAD_REQUEST);
+  }
+
+  // 공통 쿼리 옵션
+  const commonQueryOptions = {
+    take,
+    skip: cursor ? 1 : 0,
+    ...(cursor && { cursor: { id: cursor } }),
+    orderBy: {
+      createdAt: 'desc' as const,
+    },
+  };
+
+  // 공통 select 필드
+  const commonSelect = {
+    id: true,
+    content: true,
+    owner: {
+      select: {
+        id: true,
+        nickname: true,
+      },
+    },
+    updatedAt: true,
+  };
+
+  if (!!productId) {
+    return prisma.productComment.findMany({
+      ...commonQueryOptions,
+      where: { productId },
+      select: {
+        ...commonSelect,
+        productId: true,
+      },
+    });
+  }
+
+  if (!!articleId) {
+    return prisma.articleComment.findMany({
+      ...commonQueryOptions,
+      where: { articleId },
+      select: {
+        ...commonSelect,
+        articleId: true,
+      },
+    });
+  }
+
+  return null;
+};
+
 export const createCommentHelper = async ({
   content,
   productId = '',
