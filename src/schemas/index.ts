@@ -109,7 +109,7 @@ export const updateArticleSchema = z.object({
 export const articleQuerySchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   limit: z.coerce.number().int().positive().optional().default(10),
-  sort: z.enum(['recent', 'favorite']).optional().default('recent'),
+  orderBy: z.enum(['recent', 'favorite']).optional().default('recent'),
   search: z.string().optional().default(''),
 });
 

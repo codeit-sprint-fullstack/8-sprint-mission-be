@@ -54,7 +54,7 @@ export const articleController = {
 
   // 게시글 목록 조회 (좋아요 상태 포함)
   async getArticles(req: AuthenticatedRequest<unknown, ArticleQuery, unknown>, res: Response): Promise<void> {
-    const { page = 1, limit = 10, search = '', sort = 'recent' } = req.query;
+    const { page = 1, limit = 10, search = '', orderBy = 'recent' } = req.query;
     const userId = req.user?.userId;
     
     // 쿼리 파라미터를 숫자로 변환
@@ -62,11 +62,11 @@ export const articleController = {
     const limitNum = Number(limit);
     const skip = (pageNum - 1) * limitNum;
 
-    let orderBy;
-    if (sort === 'favorite') {
-      orderBy = { favoriteCount: 'desc' as const };
+    let order;
+    if (orderBy === 'favorite') {
+      order = { favoriteCount: 'desc' as const };
     } else {
-      orderBy = { createdAt: 'desc' as const };
+      order = { createdAt: 'desc' as const };
     }
 
     const where = search
@@ -82,7 +82,7 @@ export const articleController = {
       articleRepository.count(where),
       articleRepository.findManyWithLikes({
         where,
-        orderBy,
+        orderBy: order,
         skip,
         take: limitNum,
         userId,
