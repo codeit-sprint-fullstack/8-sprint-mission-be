@@ -31,7 +31,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "dev": "node dist/app.js",
     "build": "tsc",
     "start": "node dist/app.js",
     "migrate": "prisma migrate dev",
