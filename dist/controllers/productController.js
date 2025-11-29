@@ -37,7 +37,7 @@ export const getProducts = asyncHandler(async (req, res) => {
     });
     const list = products.map((p) => ({
         id: p.id,
-        name: p.title,
+        title: p.title,
         description: p.description,
         price: p.price,
         images: p.images || DEFAULT_PRODUCT_IMAGE,
@@ -71,7 +71,7 @@ export const getProductById = asyncHandler(async (req, res) => {
         : false;
     const data = {
         id: product.id,
-        name: product.title,
+        title: product.title,
         description: product.description,
         price: product.price,
         images: product.images.length ? product.images : [DEFAULT_PRODUCT_IMAGE],

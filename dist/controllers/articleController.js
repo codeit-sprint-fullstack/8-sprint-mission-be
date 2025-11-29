@@ -5,6 +5,7 @@ import { DEFAULT_ARTICLE_IMAGE, DEFAULT_PROFILE_IMAGE, } from "../config/constan
 // 게시글 목록 조회
 export const getArticles = asyncHandler(async (req, res) => {
     const { search, order = "newest", limit = "10", cursor, } = req.query;
+    const take = parseInt(limit, 10);
     let orderBy;
     switch (order) {
         case "oldest":
@@ -23,7 +24,7 @@ export const getArticles = asyncHandler(async (req, res) => {
     const articles = await prisma.article.findMany({
         where,
         orderBy,
-        take: parseInt(String(limit)),
+        take,
         ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
         include: {
             user: { select: { id: true, nickname: true } },
@@ -41,7 +42,8 @@ export const getArticles = asyncHandler(async (req, res) => {
         nickname: a.user.nickname ?? "오류",
         likeCount: a._count.Like,
     }));
-    return res.json({ totalCount, list });
+    const nextCursor = list.length > 0 ? list[list.length - 1].id : null;
+    return res.json({ totalCount, list, nextCursor });
 });
 // 게시글 상세 조회
 export const getArticleById = asyncHandler(async (req, res) => {

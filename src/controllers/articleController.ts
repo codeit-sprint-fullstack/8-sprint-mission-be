@@ -10,7 +10,7 @@ import {
 interface GetArticlesQuery {
   search?: string;
   order?: "newest" | "oldest" | "like";
-  limit?: number;
+  limit?: string;
   cursor?: string;
 }
 
@@ -24,7 +24,9 @@ export const getArticles = asyncHandler(
       cursor,
     } = req.query as GetArticlesQuery;
 
-    let orderBy: any;
+    const take = parseInt(limit, 10);
+
+    let orderBy: Prisma.Enumerable<any>;
     switch (order) {
       case "oldest":
         orderBy = { createdAt: "asc" };
@@ -45,7 +47,7 @@ export const getArticles = asyncHandler(
     const articles = await prisma.article.findMany({
       where,
       orderBy,
-      take: parseInt(String(limit)),
+      take,
       ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
       include: {
         user: { select: { id: true, nickname: true } },
@@ -65,7 +67,9 @@ export const getArticles = asyncHandler(
       likeCount: a._count.Like,
     }));
 
-    return res.json({ totalCount, list });
+    const nextCursor = list.length > 0 ? list[list.length - 1].id : null;
+
+    return res.json({ totalCount, list, nextCursor });
   }
 );
 
