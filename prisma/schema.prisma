@@ -6,6 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  //-> prisma 7부터 PrismaClient에 직접 url 연결
 }
 
 model User {
@@ -33,7 +34,7 @@ model Product {
   description   String
   userName      String    @default("익명 판다")
   tags          String[]
-  images        String[]
+  images        String[]  @default([])
   favoriteCount Int       @default(0)
   comment       Comment[]
 
