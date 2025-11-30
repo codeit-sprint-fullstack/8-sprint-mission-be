@@ -1,0 +1,730 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Article
+  - name: Product
+  - name: Comment
+  - name: Image
+
+paths:
+  /articles:
+    post:
+      tags:
+        - Article
+      description: 게시글 생성 API
+      operationId: createArticle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Validation failed
+    
+    get:
+      tags:
+        - Article
+      description: 게시글 목록 조회 API
+      operationId: getArticleList
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          example: 0
+        - name: take
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 10
+          example: 10
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - recent
+          example: recent
+        - name: word
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "검색어"
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetArticleListResponse'
+
+  /articles/{articleId}:
+    get:
+      tags:
+        - Article
+      description: 게시글 조회 API
+      operationId: getArticle
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+        '404':
+          description: Not found
+    
+    patch:
+      tags:
+        - Article
+      description: "게시글 수정 API"
+      operationId: updateArticle
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequest'
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+    
+    delete:
+      tags:
+        - Article
+      description: "게시글 삭제 API"
+      operationId: deleteArticle
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: 성공
+        '404':
+          description: Not found
+    
+  /articles/{articleId}/comments:
+    post:
+      tags:
+        - Article
+      description: 댓글 생성 API
+      operationId: createArticleComment
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleCommentRequest'
+
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+
+    get:
+      tags:
+        - Article
+      description: 댓글 목록 조회 API
+      operationId: getArticleCommentList
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          example: 0
+        - name: take
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 10
+          example: 10
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetArticleCommentListResponse'
+        '404':
+          description: Not found'
+
+  /products:
+    post:
+      tags:
+        - Product
+      description: 상품 생성 API
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Validation failed
+
+    get:
+      tags:
+        - Product
+      description: 상품 목록 조회 API
+      operationId: getProductList
+      parameters:
+        - name: skip
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          example: 0
+        - name: take
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 10
+          example: 10
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - recent
+          example: recent
+        - name: word
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "검색어"
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /products/{productId}:
+    get:
+      tags:
+        - Product
+      description: 상품 조회 API
+      operationId: getProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Not found
+
+    patch:
+      tags:
+        - Product
+      description: "상품 수정 API"
+      operationId: updateProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+
+    delete:
+      tags:
+        - Product
+      description: "상품 삭제 API"
+      operationId: deleteProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: 성공
+        '404':
+          description: Not found
+
+  /products/{productId}/comments:
+    post:
+      tags:
+        - Product
+      description: 댓글 생성 API
+      operationId: createProductComment
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductCommentRequest'
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+
+    get:
+      tags:
+        - Product
+      description: 댓글 목록 조회 API
+      operationId: getProductCommentList
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          example: 0
+        - name: take
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 10
+          example: 10
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetProductCommentListResponse'
+        '404':
+          description: Not found
+
+  /comments/{commentId}:
+    patch:
+      tags:
+        - Comment
+      description: "댓글 수정 API"
+      operationId: updateComment
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommentRequest'
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Validation failed
+        '404':
+          description: Not found
+
+    delete:
+      tags:
+        - Comment
+      description: "댓글 삭제 API"
+      operationId: deleteComment
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: 성공
+        '404':
+          description: Not found
+
+  /images/upload:
+    post:
+      tags:
+        - Image
+      description: 이미지 업로드 API
+      operationId: uploadImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: url
+                    example: "http://localhost:13000/static/images/sample-image.png"
+        '400':
+          description: Validation failed
+
+components:
+  schemas:
+    CreateArticleRequest:
+      type: object
+      required:
+        - title
+        - content
+        - image
+      properties:
+        title:
+          type: string
+          example: "게시글 제목"
+        content:
+          type: string
+          example: "게시글 내용"
+        image:
+          type: string
+          format: url
+          nullable: true
+          example: "http://localhost:13000/static/images/sample-image.png"
+    
+    GetArticleListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+        nextCursor:
+          type: integer
+          example: 10
+        hasMore:
+          type: boolean
+          example: true
+
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "게시글 제목"
+        content:
+          type: string
+          example: "게시글 내용"
+        image:
+          type: string
+          format: url
+          nullable: true
+          example: "http://localhost:13000/static/images/sample-image.png"
+
+    CreateArticleCommentRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: "댓글 내용"
+    
+    GetArticleCommentListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        nextCursor:
+          type: integer
+          example: 10
+        hasMore:
+          type: boolean
+          example: true
+
+    CreateProductRequest:
+      type: object
+      required:
+        - name
+        - description
+        - price
+        - tags
+        - images
+      properties:
+        name:
+          type: string
+          example: "상품 이름"
+        description:
+          type: string
+          example: "상품 설명"
+        price:
+          type: integer
+          minimum: 0
+          example: 10000
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["태그1", "태그2"]
+        images:
+          type: array
+          items:
+            type: string
+          example: ["http://localhost:13000/static/images/sample-image.png"]
+
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "상품 이름"
+        description:
+          type: string
+          example: "상품 설명"
+        price:
+          type: integer
+          minimum: 0
+          example: 10000
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["태그1", "태그2"]
+        images:
+          type: array
+          items:
+            type: string
+          example: ["http://localhost:13000/static/images/sample-image.png"]
+
+    CreateProductCommentRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: "댓글 내용"
+    
+    GetProductCommentListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        nextCursor:
+          type: integer
+          example: 10
+        hasMore:
+          type: boolean
+          example: true
+
+    UpdateCommentRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          example: "댓글 내용"
+
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "게시글 제목"
+        content:
+          type: string
+          example: "게시글 내용"
+        image:
+          type: string
+          format: url
+          nullable: true
+          example: "http://localhost:13000/static/images/sample-image.png"
+        createdAt:
+          type: string
+          format: datetime
+          example: "2024-07-15T00:00:00.000Z"
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "상품 이름"
+        description:
+          type: string
+          example: "상품 설명"
+        price:
+          type: integer
+          example: 10000
+        tags:
+          type: array
+          items: 
+            type: string
+          example: ["태그1", "태그2"]
+        images:
+          type: array
+          items:
+            type: string
+          example: ["http://localhost:13000/static/images/sample-image.png"]
+        createdAt:
+          type: string
+          format: datetime
+          example: "2024-07-15T00:00:00.000Z"
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: datetime
+          example: "2024-07-15T00:00:00.000Z"
