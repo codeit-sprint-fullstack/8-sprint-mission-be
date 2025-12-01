@@ -1,44 +1,63 @@
 {
-  "type": "module",
+  "name": "8-sprint-mission-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "node src/app.js",
-    "seed": "node prisma/seed.js",
-    "reset": "node prisma/reset.js",
-    "migrate": "prisma migrate dev --name init"
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "migrate": "npx prisma migrate dev --name init",
+    "reset": "tsx prisma/reset.ts",
+    "seed": "tsx prisma/seed.ts"
   },
-  "prisma": {
-    "seed": "node prisma/seed.js"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MinJun916/8-sprint-mission-be.git"
   },
-  "engines": {
-    "node": ">=18.18"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MinJun916/8-sprint-mission-be/issues"
   },
+  "homepage": "https://github.com/MinJun916/8-sprint-mission-be#readme",
   "dependencies": {
-    "@prisma/client": "^6.16.2",
-    "bcrypt": "^6.0.0",
+    "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/client": "^7.0.1",
+    "argon2": "^0.44.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dayjs": "^1.11.18",
-    "dotenv": "^17.2.2",
+    "dayjs": "^1.11.19",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "express-validator": "^7.2.1",
+    "express-jwt": "^8.5.1",
     "helmet": "^8.1.0",
-    "is-email": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
-    "multer": "^2.0.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "prisma": "^6.16.2",
-    "superstruct": "^2.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "uuid": "^11.0.3"
+    "tsx": "^4.20.6",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
-    "eslint": "^9.35.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "nodemon": "^3.1.10",
-    "prettier": "^3.6.2"
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.10.1",
+    "@types/passport": "^1.0.17",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "express-async-handler": "^1.2.0",
+    "prettier": "^3.6.2",
+    "prisma": "^7.0.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }
