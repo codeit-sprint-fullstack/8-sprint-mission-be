@@ -1,0 +1,73 @@
+import { v4 as uuidv4 } from "uuid";
+
+export interface User {
+  id: string;
+  email: string;
+  nickname: string;
+  image: string | null;
+  encryptedPassword: string;
+  refreshToken?: string | null;
+  isDelete: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const mockUsers: User[] = [
+  {
+    id: uuidv4(),
+    email: "user1@example.com",
+    nickname: "테스트",
+    image: null,
+    encryptedPassword: "12345678",
+    refreshToken: null,
+    isDelete: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: uuidv4(),
+    email: "user2@example.com",
+    nickname: "유저유디",
+    image: null,
+    encryptedPassword: "12341234",
+    refreshToken: null,
+    isDelete: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: uuidv4(),
+    email: "user3@example.com",
+    nickname: "데이터유저",
+    image: null,
+    encryptedPassword: "11111111",
+    refreshToken: null,
+    isDelete: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: uuidv4(),
+    email: "user4@example.com",
+    nickname: "고양이귀여워",
+    image: null,
+    encryptedPassword: "00000000",
+    refreshToken: null,
+    isDelete: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: uuidv4(),
+    email: "user5@example.com",
+    nickname: "강아지귀여워",
+    image: null,
+    encryptedPassword: "45678901",
+    refreshToken: null,
+    isDelete: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
+export default mockUsers;
