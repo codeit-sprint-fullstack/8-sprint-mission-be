@@ -1,0 +1,20 @@
+-- CreateTable
+CREATE TABLE "public"."User" (
+    "id" TEXT NOT NULL,
+    "providerId" TEXT,
+    "provider" TEXT NOT NULL DEFAULT 'local',
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "password" TEXT,
+    "refreshToken" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_providerId_key" ON "public"."User"("providerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");

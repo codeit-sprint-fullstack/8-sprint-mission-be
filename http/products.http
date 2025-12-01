@@ -1,0 +1,35 @@
+GET http://localhost:4000/products
+
+###
+
+GET http://localhost:4000/products?page=2&pageSize=10
+
+###
+
+GET http://localhost:4000/products/4c65b0c6-a91c-4aa4-be70-113c073e7cab
+
+###
+
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "테스트 상품",
+  "price": 1500,
+  "description": "테스트 상품입니다. 테스트",
+  "tags": [],
+  "images": []
+}
+
+###
+
+PATCH http://localhost:3000/products/b8f11e76-0a9e-4b3f-bccf-8d9b4fbf331e
+Content-Type: application/json
+
+{
+  "name": "푸바오 인형"
+}
+
+###
+
+DELETE http://localhost:3000/products/b8f11e76-0a9e-4b3f-bccf-8d9b4fbf331e
