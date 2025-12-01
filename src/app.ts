@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: 'http://localhost:3000', // 특정 출처만 허용
     credentials: true, // 쿠키 허용
-  }),
+  })
 );
 app.use(express.json());
 app.use(cookieParser());
@@ -49,4 +49,4 @@ app.use('/upload', uploadRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
+app.listen(process.env.PORT || 4000, () => console.log('Server Started'));

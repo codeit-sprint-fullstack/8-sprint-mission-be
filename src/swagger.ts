@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const options = {
+const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -93,7 +93,7 @@ const options = {
       },
     },
   },
-  apis: [path.join(__dirname, './routes/*.js')],
+  apis: [path.join(__dirname, './routes/*.ts')],
 };
 
 const specs = swaggerJsdoc(options);
