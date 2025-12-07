@@ -7,6 +7,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
   //-> prisma 7부터 PrismaClient에 직접 url 연결
+  //현재 primsa 버전이 6이라서 코드 상 오류가 나오고 있습니다.(정상 작동)
 }
 
 model User {
