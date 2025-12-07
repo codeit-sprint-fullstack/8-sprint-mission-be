@@ -21,16 +21,31 @@ export const envConstants: ENV = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ?? "",
 };
 
+type SameSite = "lax" | "strict" | "none";
 interface cookieOptopns {
   httpOnly: boolean;
   secure: boolean;
-  sameSite: boolean | "lax" | "strict" | "none";
+  sameSite: SameSite;
 }
 
+function convertToBoolean(boolValue: string | undefined) {
+  if (boolValue === "true") return true;
+  if (boolValue === "false") return false;
+  return null;
+}
+
+function checkSameSiteValue(value: string | undefined): SameSite | undefined {
+  if (value === "lax" || value === "strict" || value === "none") {
+    return value;
+  }
+  return undefined;
+}
+
+const { COOKIE_HTTP_ONLY, COOKIE_SECURE, COOKIE_SAME_SITE } = process.env;
 export const CookieOptions: cookieOptopns = {
-  httpOnly: true, //JS 접근 불가
-  secure: false, //로컬 실험용. -> 배포 true
-  sameSite: "lax", //로컬 실험용. -> 배포 'None'
+  httpOnly: convertToBoolean(COOKIE_HTTP_ONLY) || true, //JS 접근 불가
+  secure: convertToBoolean(COOKIE_SECURE) || false, //로컬 실험용. -> 배포 true
+  sameSite: checkSameSiteValue(COOKIE_SAME_SITE) || "lax", //로컬 실험용. -> 배포 'none'
 };
 
 //기본 애러에 code 속성이 없어서 추가했습니다.

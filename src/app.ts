@@ -7,7 +7,7 @@ import errorHandler from "./middlewares/errorHandler";
 
 dotenv.config();
 const corsOptions = {
-  origin: ["http://localhost:3000"], //프론트엔드 개발 로컬 주소
+  origin: [process.env.CLIENT_URL || "http://localhost:3000"], //프론트엔드 개발 로컬 주소
   credentials: true,
 };
 
@@ -27,5 +27,5 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log("Server Started");
-  console.log(`Post: http://localhost:${PORT}`); //로컬 호스트 포트
+  console.log(`Host: ${PORT}`); //로컬 호스트 포트
 });
